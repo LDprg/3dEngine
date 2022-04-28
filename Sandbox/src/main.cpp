@@ -1,6 +1,16 @@
-#include "example/example.h"
+#include <Engine.h>
 
-int main()
+using namespace __XXECS;
+
+class App : public Application
 {
-	TEST();
-}
+public:
+	App() {}
+	~App() {}
+
+	void Update()
+	{
+	}
+};
+
+CREATE_APPLICATION(App)

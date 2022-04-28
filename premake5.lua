@@ -50,6 +50,7 @@ project "Engine"
 	kind "StaticLib"
 	language "C++"	
 	cppdialect "C++20"
+	staticruntime "off"
 
 	pchheader "pch.hpp"
 	pchsource "%{prj.name}/src/pch.cpp"
@@ -67,6 +68,7 @@ project "Engine"
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.glfw}",
+		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.entt}"
 	}
 
@@ -78,7 +80,7 @@ project "Engine"
 	}
 
 	filter "system:windows"
-		links { "gdi32", "kernel32", "psapi" }
+		links { "psapi" }
 	filter "system:linux"
 		links { "dl", "GL", "pthread", "X11" }
 	filter "system:macosx"
@@ -103,7 +105,9 @@ project "Sandbox"
 		"%{IncludeDir.bgfx_ext}",
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
-		"%{IncludeDir.glfw}"
+		"%{IncludeDir.glfw}",
+		"%{IncludeDir.spdlog}",
+		"%{IncludeDir.entt}"
 	}
 
 	links{
