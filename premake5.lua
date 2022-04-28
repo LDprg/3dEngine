@@ -9,6 +9,8 @@ IncludeDir["bgfx_ext"] = "Engine/vendor/bgfx/3rdparty"
 IncludeDir["bx"] = "Engine/vendor/bx/include"
 IncludeDir["bimg"] = "Engine/vendor/bimg/include"
 IncludeDir["glfw"] = "Engine/vendor/glfw/include"
+IncludeDir["spdlog"] = "Engine/vendor/spdlog/include"
+IncludeDir["entt"] = "Engine/vendor/entt/single_include/entt"
 
 workspace "Engine"
 	location(BUILD_DIR)
@@ -64,7 +66,8 @@ project "Engine"
 		"%{IncludeDir.bgfx_ext}",
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
-		"%{IncludeDir.glfw}"
+		"%{IncludeDir.glfw}",
+		"%{IncludeDir.entt}"
 	}
 
 	links { 

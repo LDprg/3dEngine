@@ -10,3 +10,9 @@
 [submodule "Engine/vendor/glfw"]
 	path = Engine/vendor/glfw
 	url = https://github.com/glfw/glfw
+[submodule "Engine/vendor/spdlog"]
+	path = Engine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Engine/vendor/entt"]
+	path = Engine/vendor/entt
+	url = https://github.com/skypjack/entt
