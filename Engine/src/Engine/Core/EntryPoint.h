@@ -7,7 +7,7 @@
 
 namespace __XXECS
 {
-	extern __XXECS::Application* CreateApplication();
+	extern Application* CreateApplication();
 }
 
 int main(int argc, char** argv)

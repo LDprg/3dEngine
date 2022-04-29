@@ -35,22 +35,25 @@ namespace __XXECS
 	{
 	public:
 		EventManager()
-			:m_apiThreadEvents(&m_allocator)
-		{}
+			: m_apiThreadEvents(&m_allocator)
+		{
+		}
 
-		virtual ~EventManager() {}
+		virtual ~EventManager()
+		{
+		}
 
-		inline void push(void * _ptr)
+		void push(void* _ptr)
 		{
 			return m_apiThreadEvents.push(_ptr);
 		}
 
-		inline void* pop()
+		void* pop()
 		{
 			return m_apiThreadEvents.pop();
 		}
 
-		inline void* peek()
+		void* peek()
 		{
 			return m_apiThreadEvents.peek();
 		}

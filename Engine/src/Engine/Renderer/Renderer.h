@@ -17,8 +17,13 @@ namespace __XXECS
 	class Renderer
 	{
 	public:
-		Renderer() {}
-		virtual ~Renderer() {}
+		Renderer()
+		{
+		}
+
+		virtual ~Renderer()
+		{
+		}
 
 		void Init();
 		void Exit();
@@ -35,4 +40,3 @@ namespace __XXECS
 		ImGuiContext* m_imgui;
 	};
 }
-

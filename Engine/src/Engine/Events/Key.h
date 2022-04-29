@@ -1,12 +1,12 @@
 #pragma once
 
-enum class Key 
+enum class Key
 {
 	Space = 32,
 	Apostrophe = 39,
-	Comma = 44,  
+	Comma = 44,
 	Minus = 45,
-	Period = 46,  
+	Period = 46,
 	Slash = 47,
 	Key0 = 48,
 	Key1 = 49,
@@ -125,7 +125,7 @@ enum class Key
 	Menu = 348
 };
 
-enum class Mouse 
+enum class Mouse
 {
 	Button1 = 0,
 	Button2 = 1,

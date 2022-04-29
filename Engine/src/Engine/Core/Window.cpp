@@ -28,7 +28,8 @@ static void glfw_keyCallback(GLFWwindow* window, int key, int scancode, int acti
 
 void __XXECS::Window::Init()
 {
-	if (!hasBeenInit){
+	if (!hasBeenInit)
+	{
 		glfwSetErrorCallback(glfw_errorCallback);
 
 		LOG_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!");
@@ -44,14 +45,15 @@ void __XXECS::Window::Init()
 	glfwSetKeyCallback(m_window, glfw_keyCallback);
 }
 
-void __XXECS::Window::Close() {
+void __XXECS::Window::Close()
+{
 	glfwTerminate();
 }
 
 void __XXECS::Window::Update()
 {
 	glfwPollEvents();
-	
+
 	if (glfwWindowShouldClose(m_window))
 	{
 		Application::Get().Close();
@@ -63,8 +65,8 @@ void __XXECS::Window::Update()
 	if (width != oldWidth || height != oldHeight)
 	{
 		auto resize = new ResizeEvent;
-		resize->width = (uint32_t)width;
-		resize->height = (uint32_t)height;
+		resize->width = static_cast<uint32_t>(width);
+		resize->height = static_cast<uint32_t>(height);
 		Application::Get().GetEventManager().push(resize);
 	}
 }
@@ -82,8 +84,8 @@ __XXECS::RenderArguments __XXECS::Window::GetRenderArgs()
 	renderArgs.platformData.nwh = glfwGetWin32Window(m_window);
 #endif
 	glfwGetWindowSize(m_window, &width, &height);
-	renderArgs.width = (uint32_t)width;
-	renderArgs.height = (uint32_t)height;
+	renderArgs.width = static_cast<uint32_t>(width);
+	renderArgs.height = static_cast<uint32_t>(height);
 
 	return renderArgs;
 }

@@ -5,24 +5,28 @@ using namespace __XXECS;
 class App : public Application
 {
 public:
-	App() {}
-	~App() {}
+	App()
+	{
+	}
 
-	void Event(EventType* event)
+	~App() override
+	{
+	}
+
+	void Event(EventType* event) override
 	{
 		if (Input::IsKeyPressed(Key::Escape))
 		{
-			Application::Get().Close();
+			Get().Close();
 		}
 	}
 
-	void Update()
+	void Update() override
 	{
 		ImGui::Text("Hello, world %d", 123);
 		ImGui::Button("Save");
 	}
 };
-
 
 
 CREATE_APPLICATION(App)

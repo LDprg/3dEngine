@@ -15,8 +15,13 @@ namespace __XXECS
 	class Window
 	{
 	public:
-		Window() {}
-		virtual ~Window() {}
+		Window()
+		{
+		}
+
+		virtual ~Window()
+		{
+		}
 
 		void Init();
 		void Close();

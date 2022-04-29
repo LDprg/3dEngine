@@ -6,14 +6,14 @@
 bool __XXECS::Input::IsKeyPressed(Key keycode)
 {
 	auto window = Application::Get().GetWindow().GetNativeWindow();
-	auto state = glfwGetKey(window, (int)keycode);
+	auto state = glfwGetKey(window, static_cast<int>(keycode));
 	return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
 bool __XXECS::Input::IsMouseButtonPressed(Mouse button)
 {
 	auto window = Application::Get().GetWindow().GetNativeWindow();
-	auto state = glfwGetMouseButton(window, (int)button);
+	auto state = glfwGetMouseButton(window, static_cast<int>(button));
 	return state == GLFW_PRESS;
 }
 
@@ -23,7 +23,7 @@ std::pair<float, float> __XXECS::Input::GetMousePosition()
 	double xpos, ypos;
 	glfwGetCursorPos(window, &xpos, &ypos);
 
-	return { (float)xpos, (float)ypos };
+	return {static_cast<float>(xpos), static_cast<float>(ypos)};
 }
 
 float __XXECS::Input::GetMouseX()

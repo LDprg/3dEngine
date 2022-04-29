@@ -18,12 +18,12 @@ namespace __XXECS
 		virtual void Event(EventType* event) = 0;
 		virtual void Update() = 0;
 
-		inline bool isRunning() { return m_Running; }
-		inline void Close() { m_Running = false; }
+		bool isRunning() { return m_Running; }
+		void Close() { m_Running = false; }
 
-		inline static Application& Get() { return *s_Instance; }
-		inline Window& GetWindow() { return *m_Window; }
-		inline EventManager& GetEventManager() { return *m_EventManager; }
+		static Application& Get() { return *s_Instance; }
+		Window& GetWindow() { return *m_Window; }
+		EventManager& GetEventManager() { return *m_EventManager; }
 
 	private:
 		void RunLoop();
