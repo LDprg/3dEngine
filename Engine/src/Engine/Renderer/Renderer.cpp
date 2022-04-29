@@ -1,12 +1,26 @@
 #include "pch.hpp"
+#include "Engine/Renderer/imgui.h"
 
 void __XXECS::Renderer::Init()
 {
 	bgfx::renderFrame();
+
+	m_imgui = ImGui::CreateContext();
+
+	ImGuiIO& io = ImGui::GetIO();
+
+	io.DisplaySize = ImVec2(1280.0f, 720.0f);
+	io.DeltaTime = 1.0f / 60.0f;
+	io.IniFilename = NULL;
+
+	io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
+	
+	//ImGui::InitDockContext();
 }
 
 void __XXECS::Renderer::Exit()
 {
+	ImGui::DestroyContext(m_imgui);
 	while (bgfx::RenderFrame::NoContext != bgfx::renderFrame()) {}
 	m_renderThread.shutdown();
 }
@@ -51,6 +65,10 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 				bgfx::setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 				width = resizeEvent->width;
 				height = resizeEvent->height;
+			} 
+			else if (*ev == EventType::Exit)
+			{
+				Application::Get().Close();
 			}
 
 			Application::Get().Event(ev);
@@ -60,7 +78,12 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 
 		bgfx::touch(kClearView);
 
+		ImGui::NewFrame();
+		
 		Application::Get().Update();
+
+		ImGui::Render();
+
 		bgfx::frame();
 	}
 	bgfx::shutdown();

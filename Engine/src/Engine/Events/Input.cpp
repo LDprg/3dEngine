@@ -3,17 +3,17 @@
 
 #include "Engine/Core/Application.h"
 
-bool __XXECS::Input::IsKeyPressed(int keycode)
+bool __XXECS::Input::IsKeyPressed(Key keycode)
 {
 	auto window = Application::Get().GetWindow().GetNativeWindow();
-	auto state = glfwGetKey(window, keycode);
+	auto state = glfwGetKey(window, (int)keycode);
 	return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
-bool __XXECS::Input::IsMouseButtonPressed(int button)
+bool __XXECS::Input::IsMouseButtonPressed(Mouse button)
 {
 	auto window = Application::Get().GetWindow().GetNativeWindow();
-	auto state = glfwGetMouseButton(window, button);
+	auto state = glfwGetMouseButton(window, (int)button);
 	return state == GLFW_PRESS;
 }
 

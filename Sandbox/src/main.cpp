@@ -10,12 +10,7 @@ public:
 
 	void Event(EventType* event)
 	{
-		if (Input::IsKeyPressed(KEY_ESCAPE))
-		{
-			Application::Get().Close();
-		}
-		
-		if (*event == EventType::Exit)
+		if (Input::IsKeyPressed(Key::Escape))
 		{
 			Application::Get().Close();
 		}
@@ -23,7 +18,8 @@ public:
 
 	void Update()
 	{
-		
+		ImGui::Text("Hello, world %d", 123);
+		ImGui::Button("Save");
 	}
 };
 

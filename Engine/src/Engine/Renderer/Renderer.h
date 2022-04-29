@@ -3,6 +3,7 @@
 #include <bgfx/bgfx.h>
 #include <bx/bx.h>
 #include <bx/thread.h>
+#include "imgui.h"
 
 namespace __XXECS
 {
@@ -31,6 +32,7 @@ namespace __XXECS
 
 		bx::Thread m_renderThread;
 		RenderArguments m_renderArgs;
+		ImGuiContext* m_imgui;
 	};
 }
 

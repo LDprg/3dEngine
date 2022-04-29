@@ -2,6 +2,7 @@ local BGFX_DIR = "bgfx"
 local BIMG_DIR = "bimg"
 local BX_DIR = "bx"
 local GLFW_DIR = "glfw"
+local IMGUI_DIR = "imgui"
 
 function setBxCompat()
 	filter "action:vs*"
@@ -164,6 +165,42 @@ project "glfw"
             path.join(GLFW_DIR, "src/nsgl_context.m"),
             path.join(GLFW_DIR, "src/osmesa_context.c"),                       
         }
+
+    filter "action:vs*"
+        defines "_CRT_SECURE_NO_WARNINGS"
+
+project "imgui"
+    kind "StaticLib"
+    language "C++"
+
+    files
+    {
+         path.join(IMGUI_DIR, "imconfig.h"),
+         path.join(IMGUI_DIR, "imgui.h"),
+         path.join(IMGUI_DIR, "imgui.cpp"),
+         path.join(IMGUI_DIR, "imgui_draw.cpp"),
+         path.join(IMGUI_DIR, "imgui_internal.h"),
+         path.join(IMGUI_DIR, "imgui_widgets.cpp"),
+         path.join(IMGUI_DIR, "imstb_rectpack.h"),
+         path.join(IMGUI_DIR, "imstb_textedit.h"),
+         path.join(IMGUI_DIR, "imstb_truetype.h"),
+         path.join(IMGUI_DIR, "imgui_demo.cpp"),
+         path.join(IMGUI_DIR, "imgui_tables.cpp"),
+
+         path.join(IMGUI_DIR, "backends/imgui_impl_glfw.cpp"),
+         path.join(IMGUI_DIR, "backends/imgui_impl_glfw.h"),
+    }
+
+    includedirs
+    {
+        IMGUI_DIR,
+        path.join(GLFW_DIR, "include"),
+    }
+
+    links
+    { 
+        "glfw"
+    }
 
     filter "action:vs*"
         defines "_CRT_SECURE_NO_WARNINGS"

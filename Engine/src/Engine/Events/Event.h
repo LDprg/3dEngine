@@ -42,7 +42,7 @@ namespace __XXECS
 
 		inline void push(void * _ptr)
 		{
-			return m_apiThreadEvents.push(std::move(_ptr));
+			return m_apiThreadEvents.push(_ptr);
 		}
 
 		inline void* pop()
