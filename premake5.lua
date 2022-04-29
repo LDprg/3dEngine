@@ -46,7 +46,6 @@ workspace "Engine"
 include "Engine/vendor"
 
 project "Engine"
-	location "Engine"
 	kind "StaticLib"
 	language "C++"	
 	cppdialect "C++20"
@@ -88,7 +87,6 @@ project "Engine"
 	setBxCompat()
 	
 project "Sandbox"
-	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
