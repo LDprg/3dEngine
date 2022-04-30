@@ -5,13 +5,8 @@ using namespace __XXECS;
 class App : public Application
 {
 public:
-	App()
-	{
-	}
-
-	~App() override
-	{
-	}
+	App() = default;
+	~App() override = default;
 
 	void Event(EventType* event) override
 	{

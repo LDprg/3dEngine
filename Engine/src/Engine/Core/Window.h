@@ -15,13 +15,9 @@ namespace __XXECS
 	class Window
 	{
 	public:
-		Window()
-		{
-		}
+		Window() = default;
 
-		virtual ~Window()
-		{
-		}
+		virtual ~Window() = default;
 
 		void Init();
 		void Close();

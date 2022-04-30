@@ -5,16 +5,19 @@ end
 
 IncludeDir = {}
 IncludeDir["bgfx"] = "Engine/vendor/bgfx/include"
+IncludeDir["bgfx_ext"] = "Engine/vendor/bgfx/3rdparty"
+IncludeDir["bgfx_lib"] = "Engine/vendor/bgfx/examples"
 IncludeDir["bx"] = "Engine/vendor/bx/include"
 IncludeDir["bimg"] = "Engine/vendor/bimg/include"
 IncludeDir["glfw"] = "Engine/vendor/glfw/include"
 IncludeDir["spdlog"] = "Engine/vendor/spdlog/include"
 IncludeDir["entt"] = "Engine/vendor/entt/single_include/entt"
-IncludeDir["imgui"] = "Engine/vendor/imgui"
 
 workspace "Engine"
 	location(BUILD_DIR)
 	startproject "Sandbox"
+	exceptionhandling "Off"
+    rtti "Off"
 
 	configurations { "Release", "Debug" }
 	if os.is64bit() and not os.istarget("windows") then
@@ -49,7 +52,8 @@ project "Engine"
 	kind "StaticLib"
 	language "C++"	
 	cppdialect "C++20"
-	staticruntime "off"
+	exceptionhandling "Off"
+    rtti "Off"
 
 	pchheader "pch.hpp"
 	pchsource "%{prj.name}/src/pch.cpp"
@@ -63,12 +67,13 @@ project "Engine"
 	includedirs{
 		"%{prj.name}/src",
 		"%{IncludeDir.bgfx}",
+		"%{IncludeDir.bgfx_ext}",
+		"%{IncludeDir.bgfx_lib}",
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.entt}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.entt}"
 	}
 
 	links { 
@@ -76,7 +81,6 @@ project "Engine"
 		"bimg", 
 		"bx", 
 		"glfw",
-		"imgui",
 	}
 
 	filter "system:windows"
@@ -102,12 +106,12 @@ project "Sandbox"
 		"Engine/src",
 		"%{IncludeDir.bgfx}",
 		"%{IncludeDir.bgfx_ext}",
+		"%{IncludeDir.bgfx_lib}",
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.entt}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.entt}"
 	}
 
 	links{
