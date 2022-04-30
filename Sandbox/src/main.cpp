@@ -5,23 +5,27 @@ using namespace __XXECS;
 class App : public Application
 {
 public:
-	App() = default;
-	~App() override = default;
-
-	void Event(EventType* event) override
+	App(const char* _name, const char* _description, const char* _url)
+		:Application(_name, _description, _url)
 	{
-		if (Input::IsKeyPressed(Key::Escape))
-		{
-			Get().Close();
-		}
+		
 	}
 
-	void Update() override
+	void init(int32_t _argc, const char* const* _argv, uint32_t _width, uint32_t _height) override
 	{
-		ImGui::Text("Hello, world %d", 123);
-		ImGui::Button("Save");
+		
+	}
+
+	bool update() override
+	{
+		
+	}
+
+	int shutdown() override
+	{
+		
 	}
 };
 
 
-CREATE_APPLICATION(App)
+CREATE_APP(App, "application", "simple test app", "https://github.com/LDprg/3dEngine");

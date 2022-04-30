@@ -4,36 +4,20 @@
 #include "Engine/Events/Event.h"
 #include "Engine/Events/Input.h"
 
-int main(int argc, char** argv);
+#include <common/common.h>
+
+#define CREATE_APP(app, ...) ENTRY_IMPLEMENT_MAIN(app, __VA_ARGS__);
 
 namespace __XXECS
 {
-	class Application
+	class Application : public entry::AppI
 	{
-		friend int ::main(int argc, char** argv);
 	public:
-		Application();
+		Application(const char* _name, const char* _description, const char* _url);
 		virtual ~Application();
 
-		virtual void Event(EventType* event) = 0;
-		virtual void Update() = 0;
-
-		bool isRunning() { return m_Running; }
-		void Close() { m_Running = false; }
-
-		static Application& Get() { return *s_Instance; }
-		Window& GetWindow() { return *m_Window; }
-		EventManager& GetEventManager() { return *m_EventManager; }
-
-	private:
-		void RunLoop();
-
-		bool m_Running = true;
-		Window* m_Window;
-		EventManager* m_EventManager;
-		Renderer* m_Renderer;
-
-	private:
-		static Application* s_Instance;
+		virtual void init(int32_t _argc, const char* const* _argv, uint32_t _width, uint32_t _height) = 0;
+		virtual int shutdown() = 0;
+		virtual bool update() = 0;
 	};
 }
