@@ -10,3 +10,6 @@
 [submodule "Engine/vendor/imgui"]
 	path = Engine/vendor/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "Engine/vendor/bgfx.cmake"]
+	path = Engine/vendor/bgfx.cmake
+	url = https://github.com/bkaradzic/bgfx.cmake

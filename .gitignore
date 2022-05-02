@@ -11,3 +11,7 @@ obj/
 *.filters
 *.vcxproj
 *.sln
+
+CMakeFiles
+*.cmake
+CMakeCache.txt
