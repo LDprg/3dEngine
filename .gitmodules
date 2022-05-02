@@ -1,12 +1,3 @@
-[submodule "Engine/vendor/bgfx"]
-	path = Engine/vendor/bgfx
-	url = https://github.com/bkaradzic/bgfx
-[submodule "Engine/vendor/bx"]
-	path = Engine/vendor/bx
-	url = https://github.com/bkaradzic/bx
-[submodule "Engine/vendor/bimg"]
-	path = Engine/vendor/bimg
-	url = https://github.com/bkaradzic/bimg
 [submodule "Engine/vendor/glfw"]
 	path = Engine/vendor/glfw
 	url = https://github.com/glfw/glfw
