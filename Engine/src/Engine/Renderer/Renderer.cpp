@@ -1,26 +1,19 @@
 #include "pch.hpp"
-#include "Engine/Renderer/imgui.h"
+
+#include "Engine/Renderer/imgui/imgui_impl_bgfx.h"
+
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+
+#include "bx/string.h"
 
 void __XXECS::Renderer::Init()
 {
 	bgfx::renderFrame();
-
-	m_imgui = ImGui::CreateContext();
-
-	ImGuiIO& io = ImGui::GetIO();
-
-	io.DisplaySize = ImVec2(1280.0f, 720.0f);
-	io.DeltaTime = 1.0f / 60.0f;
-	io.IniFilename = nullptr;
-
-	io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
-
-	//ImGui::InitDockContext();
 }
 
 void __XXECS::Renderer::Exit()
 {
-	ImGui::DestroyContext(m_imgui);
 	while (bgfx::RenderFrame::NoContext != bgfx::renderFrame());
 	m_renderThread.shutdown();
 }
@@ -53,6 +46,11 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 	uint32_t width = args->width;
 	uint32_t height = args->height;
 
+	ImGui::CreateContext();
+
+	ImGui_ImplGlfw_InitForOther(Application::Get().GetWindow().GetNativeWindow(), true);
+	ImGui_Implbgfx_Init(kClearView);
+
 	while (Application::Get().isRunning())
 	{
 		// Handle events from the main thread.
@@ -78,14 +76,19 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 
 		bgfx::touch(kClearView);
 
+		ImGui_ImplGlfw_NewFrame();
+		ImGui_Implbgfx_NewFrame();
 		ImGui::NewFrame();
 
 		Application::Get().Update();
 
 		ImGui::Render();
+		ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
 
 		bgfx::frame();
 	}
+	ImGui_Implbgfx_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
 	bgfx::shutdown();
 	return 0;
 }

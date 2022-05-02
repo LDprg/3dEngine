@@ -23,8 +23,15 @@ public:
 
 	void Update() override
 	{
-		ImGui::Text("Hello, world %d", 123);
-		ImGui::Button("Save");
+		static bool toggle = false;
+		ImGui::Begin("nice");
+
+		if (ImGui::Button("Save"))
+			toggle = !toggle;
+		if(toggle)
+			ImGui::Text("Hello, world");
+
+		ImGui::End();
 	}
 };
 

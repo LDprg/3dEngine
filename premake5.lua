@@ -101,7 +101,6 @@ project "Sandbox"
 	includedirs{
 		"Engine/src",
 		"%{IncludeDir.bgfx}",
-		"%{IncludeDir.bgfx_ext}",
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.glfw}",
@@ -111,5 +110,6 @@ project "Sandbox"
 	}
 
 	links{
-		"Engine"
+		"Engine",
+		"imgui"
 	}
