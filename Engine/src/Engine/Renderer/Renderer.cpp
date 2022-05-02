@@ -41,15 +41,18 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 	LOG_CORE_ASSERT(bgfx::init(init), "BGFX INIT FAILED");
 	// Set view 0 to the same dimensions as the window and to clear the color buffer.
 	const bgfx::ViewId kClearView = 0;
-	bgfx::setViewClear(kClearView, BGFX_CLEAR_COLOR);
+	bgfx::setViewClear(kClearView, BGFX_CLEAR_COLOR, 0x443355FF);
 	setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 	uint32_t width = args->width;
 	uint32_t height = args->height;
 
 	ImGui::CreateContext();
+	ImGui::StyleColorsDark();
 
 	ImGui_ImplGlfw_InitForOther(Application::Get().GetWindow().GetNativeWindow(), true);
 	ImGui_Implbgfx_Init(kClearView);
+
+	Application::Get().Init();
 
 	while (Application::Get().isRunning())
 	{
@@ -87,8 +90,12 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 
 		bgfx::frame();
 	}
+
+	Application::Get().Shutdown();
+
 	ImGui_Implbgfx_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	bgfx::shutdown();
 	return 0;
 }

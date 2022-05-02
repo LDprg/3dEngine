@@ -5,12 +5,15 @@ end
 
 IncludeDir = {}
 IncludeDir["bgfx"] = "Engine/vendor/bgfx/include"
+IncludeDir["bgfx_ext"] = "Engine/vendor/bgfx/3rdparty"
 IncludeDir["bx"] = "Engine/vendor/bx/include"
 IncludeDir["bimg"] = "Engine/vendor/bimg/include"
 IncludeDir["glfw"] = "Engine/vendor/glfw/include"
 IncludeDir["spdlog"] = "Engine/vendor/spdlog/include"
 IncludeDir["entt"] = "Engine/vendor/entt/single_include/entt"
 IncludeDir["imgui"] = "Engine/vendor/imgui"
+IncludeDir["fixAlloca"] = "Engine/vendor/fixAlloca"
+IncludeDir["brtshaderc"] = "Engine/vendor/brtshaderc/tools/brtshaderc"
 
 workspace "Engine"
 	location(BUILD_DIR)
@@ -63,12 +66,14 @@ project "Engine"
 	includedirs{
 		"%{prj.name}/src",
 		"%{IncludeDir.bgfx}",
+		"%{IncludeDir.bgfx_ext}",
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.fixAlloca}"
 	}
 
 	links { 
@@ -76,7 +81,7 @@ project "Engine"
 		"bimg", 
 		"bx", 
 		"glfw",
-		"imgui",
+		"imgui"
 	}
 
 	filter "system:windows"
@@ -101,12 +106,14 @@ project "Sandbox"
 	includedirs{
 		"Engine/src",
 		"%{IncludeDir.bgfx}",
+		"%{IncludeDir.bgfx_ext}",
 		"%{IncludeDir.bx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.fixAlloca}"
 	}
 
 	links{

@@ -16,7 +16,10 @@ namespace __XXECS
 		virtual ~Application();
 
 		virtual void Event(EventType* event) = 0;
+
+		virtual void Init() = 0;
 		virtual void Update() = 0;
+		virtual void Shutdown() = 0;
 
 		bool isRunning() { return m_Running; }
 		void Close() { m_Running = false; }
