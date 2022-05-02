@@ -15,3 +15,8 @@ obj/
 CMakeFiles
 *.cmake
 CMakeCache.txt
+
+x64
+*.dir
+
+Debug
