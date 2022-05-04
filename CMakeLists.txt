@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 add_subdirectory("Engine")
 
-file(GLOB SRC "Sandbox/src/**.c" "Sandbox/src/**.cc" "Sandbox/src/**.cpp" "Sandbox/src/**.h" "Sandbox/src/**.hpp" )
+file(GLOB SRC "Sandbox/src/**.c" "Sandbox/src/**.cc" "Sandbox/src/**.cpp" "Sandbox/src/**.h" "Sandbox/src/**.hpp" "Sandbox/src/**.sc" )
 add_executable(Sandbox ${SRC})
 
 target_link_libraries(Sandbox Engine)
@@ -20,8 +20,8 @@ add_custom_target(
 
 add_custom_target(
     build-shaders
-    COMMAND $<TARGET_FILE:shaderc> -f ${CMAKE_CURRENT_SOURCE_DIR}/Sandbox/src/v_simple.sc -o ${CMAKE_BINARY_DIR}/v_simple.bin --type v -i ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/bgfx.cmake/bgfx/src
-    COMMAND $<TARGET_FILE:shaderc> -f ${CMAKE_CURRENT_SOURCE_DIR}/Sandbox/src/f_simple.sc -o ${CMAKE_BINARY_DIR}/f_simple.bin --type f -i ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/bgfx.cmake/bgfx/src
+    COMMAND $<TARGET_FILE:shaderc> -f ${CMAKE_CURRENT_SOURCE_DIR}/Sandbox/src/v_simple.sc -o ${CMAKE_BINARY_DIR}/v_simple.bin --type vertex -i ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/bgfx.cmake/bgfx/src --varyingdef ${CMAKE_CURRENT_SOURCE_DIR}/Sandbox/src/varying.def.sc --disasm
+    COMMAND $<TARGET_FILE:shaderc> -f ${CMAKE_CURRENT_SOURCE_DIR}/Sandbox/src/f_simple.sc -o ${CMAKE_BINARY_DIR}/f_simple.bin --type fragment -i ${CMAKE_CURRENT_SOURCE_DIR}/Engine/vendor/bgfx.cmake/bgfx/src --varyingdef ${CMAKE_CURRENT_SOURCE_DIR}/Sandbox/src/varying.def.sc --disasm
   )
 
 if (MSVC)

@@ -19,16 +19,19 @@ __XXECS::Application::~Application()
 
 void __XXECS::Application::RunLoop()
 {
-	m_Renderer->Init();
 	m_Window->Init();
+	m_Renderer->Init();
 	m_Renderer->Bind(m_Window->GetRenderArgs());
+	Get().InitMain();
 
 	while (m_Running)
 	{
 		m_Window->Update();
+		Get().UpdateMain();
 		m_Renderer->Update();
 	}
 
+	Get().ShutdownMain();
 	m_Renderer->Exit();
 	m_Window->Close();
 }

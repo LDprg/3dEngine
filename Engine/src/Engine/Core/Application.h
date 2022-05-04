@@ -21,6 +21,10 @@ namespace __XXECS
 		virtual void Update() = 0;
 		virtual void Shutdown() = 0;
 
+		virtual void InitMain() {};
+		virtual void UpdateMain() {};
+		virtual void ShutdownMain() {};
+
 		bool isRunning() { return m_Running; }
 		void Close() { m_Running = false; }
 

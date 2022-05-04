@@ -4,6 +4,8 @@ project(Engine)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 add_subdirectory("vendor/bgfx.cmake")
 add_subdirectory("vendor/entt")
 #add_subdirectory("vendor/glfw")
@@ -49,3 +51,33 @@ target_link_libraries(Engine spirv-cross)
 target_link_libraries(Engine spirv-tools)
 target_link_libraries(Engine squish)
 target_link_libraries(Engine tinyexr)]]
+
+if(MSVC)
+    macro(GroupSources curdir)
+
+        file(GLOB children RELATIVE ${PROJECT_SOURCE_DIR}/${curdir} ${PROJECT_SOURCE_DIR}/${curdir}/*)
+
+        foreach(child ${children})
+
+            if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+
+                GroupSources(${curdir}/${child})
+
+            else()
+
+                string(REPLACE "/" "\\" groupname ${curdir})
+
+                # I would like to call the src root folder in a different name, only in visual studio (not mandatory requirement)
+
+                string(REPLACE "src" "Common" groupname ${groupname})
+
+                source_group(${groupname} FILES ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+
+            endif()
+
+        endforeach()
+
+    endmacro()
+
+    GroupSources(src)
+endif(MSVC)

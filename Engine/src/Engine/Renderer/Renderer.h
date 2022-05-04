@@ -32,6 +32,10 @@ namespace __XXECS
 		void Bind(RenderArguments renderArgs);
 
 	private:
+		static void ThreadInit();
+		static void ThreadUpdate();
+		static void ThreadExit();
+
 		static int32_t runThread(bx::Thread* self, void* userData);
 
 		bx::Thread m_renderThread;
