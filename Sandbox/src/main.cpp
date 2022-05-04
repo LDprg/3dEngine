@@ -7,26 +7,13 @@ using namespace __XXECS;
 
 struct PosColorVertex
 {
-	float m_x;
-	float m_y;
-	float m_z;
-	uint32_t m_abgr;
-
-	static void init()
-	{
-		ms_layout
-			.begin()
-			.add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
-			.add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Uint8, true)
-			.end();
-	};
-
-	static bgfx::VertexLayout ms_layout;
+	float x;
+	float y;
+	float z;
+	uint32_t abgr;
 };
 
-bgfx::VertexLayout PosColorVertex::ms_layout;
-
-static PosColorVertex s_cubeVertices[] =
+static PosColorVertex cubeVertices[] =
 {
 	{-1.0f,  1.0f,  1.0f, 0xff000000 },
 	{ 1.0f,  1.0f,  1.0f, 0xff0000ff },
@@ -38,19 +25,19 @@ static PosColorVertex s_cubeVertices[] =
 	{ 1.0f, -1.0f, -1.0f, 0xffffffff },
 };
 
-static const uint16_t s_cubeTriList[] =
+static const uint16_t cubeTriList[] =
 {
-	0, 1, 2, // 0
+	0, 1, 2,
 	1, 3, 2,
-	4, 6, 5, // 2
+	4, 6, 5,
 	5, 6, 7,
-	0, 2, 4, // 4
+	0, 2, 4,
 	4, 2, 6,
-	1, 5, 3, // 6
+	1, 5, 3,
 	5, 7, 3,
-	0, 4, 1, // 8
+	0, 4, 1,
 	4, 5, 1,
-	2, 3, 6, // 10
+	2, 3, 6,
 	6, 3, 7,
 };
 
@@ -96,9 +83,12 @@ class App : public Application
 private:
 	bgfx::ShaderHandle m_fsh;
 	bgfx::ShaderHandle m_vsh;
+	bgfx::ProgramHandle m_program;
+
 	bgfx::VertexBufferHandle m_vbh;
 	bgfx::IndexBufferHandle m_ibh;
-	bgfx::ProgramHandle m_program;
+	bgfx::VertexLayout m_layout;
+
 	int counter = 0;
 public:
 	App()
@@ -114,9 +104,14 @@ public:
 	{
 		
 		// Create vertex stream declaration.
-		PosColorVertex::init();
-		m_vbh = bgfx::createVertexBuffer(bgfx::makeRef(s_cubeVertices, sizeof(s_cubeVertices)), PosColorVertex::ms_layout);
-		m_ibh = bgfx::createIndexBuffer(bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList)));
+		m_layout
+			.begin()
+			.add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
+			.add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Uint8, true)
+			.end();
+
+		m_vbh = bgfx::createVertexBuffer(bgfx::makeRef(cubeVertices, sizeof(cubeVertices)), m_layout);
+		m_ibh = bgfx::createIndexBuffer(bgfx::makeRef(cubeTriList, sizeof(cubeTriList)));
 
 		// Create program from shaders.
 		m_vsh = loadShader("v_simple.bin");
@@ -132,26 +127,29 @@ public:
 		}
 	}
 
-	void Update() override
+	void UpdateImGui() override
 	{
-		counter++;
-
 		static bool toggle = false;
 		ImGui::Begin("nice");
 
 		if (ImGui::Button("Save"))
 			toggle = !toggle;
-		if(toggle)
+		if (toggle)
 			ImGui::Text("Hello, world");
 
 		ImGui::End();
+	}
+
+	void Update() override
+	{
+		counter++;
 		
 		const bx::Vec3 at = { 0.0f, 0.0f,  0.0f };
 		const bx::Vec3 eye = { 0.0f, 0.0f, -5.0f };
 		float view[16];
 		bx::mtxLookAt(view, eye, at);
 		float proj[16];
-		bx::mtxProj(proj, 60.0f, float(1024) / float(720), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
+		bx::mtxProj(proj, 60.0f, float(1024) / float(768), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 		bgfx::setViewTransform(0, view, proj);
 
 		float mtx[16];

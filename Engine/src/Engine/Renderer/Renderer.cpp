@@ -52,7 +52,7 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplGlfw_InitForOther(Application::Get().GetWindow().GetNativeWindow(), true);
-	ImGui_Implbgfx_Init(kClearView);
+	ImGui_Implbgfx_Init(255);
 
 	Application::Get().Init();
 
@@ -79,16 +79,20 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 			delete ev;
 		}
 
-		bgfx::touch(kClearView);
 
-		ImGui_ImplGlfw_NewFrame();
+
 		ImGui_Implbgfx_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		Application::Get().Update();
+		Application::Get().UpdateImGui();
 
 		ImGui::Render();
 		ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
+
+		bgfx::touch(kClearView);
+
+		Application::Get().Update();
 
 		bgfx::frame();
 	}
