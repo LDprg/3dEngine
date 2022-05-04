@@ -42,7 +42,6 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 	init.resolution.reset = BGFX_RESET_VSYNC;
 	LOG_CORE_ASSERT(bgfx::init(init), "BGFX INIT FAILED");
 	// Set view 0 to the same dimensions as the window and to clear the color buffer.
-	const bgfx::ViewId kClearView = 0;
 	bgfx::setViewClear(kClearView, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF);
 	setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 	uint32_t width = args->width;

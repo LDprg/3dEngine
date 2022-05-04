@@ -31,6 +31,8 @@ namespace __XXECS
 
 		void Bind(RenderArguments renderArgs);
 
+		int getView() { return kClearView; }
+
 	private:
 		static void ThreadInit();
 		static void ThreadUpdate();
@@ -40,5 +42,6 @@ namespace __XXECS
 
 		bx::Thread m_renderThread;
 		RenderArguments m_renderArgs;
+		static const bgfx::ViewId kClearView = 0;
 	};
 }

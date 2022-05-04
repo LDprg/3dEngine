@@ -11,6 +11,7 @@ add_subdirectory("vendor/entt")
 #add_subdirectory("vendor/glfw")
 add_subdirectory("vendor") #imgui
 add_subdirectory("vendor/spdlog")
+add_subdirectory("vendor/glm")
 
 
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.h" "src/*.hpp" )
@@ -23,6 +24,7 @@ target_include_directories(Engine PUBLIC "vendor/imgui")
 target_include_directories(Engine PUBLIC "vendor/entt/single_include")
 target_include_directories(Engine PUBLIC "vendor/spdlog/include")
 target_include_directories(Engine PUBLIC "vendor/glfw/include")
+target_include_directories(Engine PUBLIC "vendor/glm")
 
 set(BGFX_BUILD_TOOLS ON CACHE INTERNAL "" FORCE)
 
@@ -32,6 +34,7 @@ target_link_libraries(Engine bgfx)
 target_link_libraries(Engine bx)
 target_link_libraries(Engine bimg)
 target_link_libraries(Engine imgui_cmake)
+target_link_libraries(Engine glm)
 
 #[[target_link_libraries(Engine astc)
 target_link_libraries(Engine astc-codec)

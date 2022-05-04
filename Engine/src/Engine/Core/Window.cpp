@@ -89,3 +89,25 @@ __XXECS::RenderArguments __XXECS::Window::GetRenderArgs()
 
 	return renderArgs;
 }
+
+std::pair<float, float> __XXECS::Window::GetSize()
+{
+	auto window = Application::Get().GetWindow().GetNativeWindow();
+	int width, height;
+
+	glfwGetWindowSize(window, &width, &height);
+
+	return { static_cast<float>(width), static_cast<float>(height) };
+}
+
+float __XXECS::Window::GetWidth()
+{
+	auto [width, height] = GetSize();
+	return width;
+}
+
+float __XXECS::Window::GetHeight()
+{
+	auto [width, height] = GetSize();
+	return height;
+}

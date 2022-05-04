@@ -31,6 +31,10 @@ namespace __XXECS
 		RenderArguments GetRenderArgs();
 		GLFWwindow* GetNativeWindow() { return m_window; }
 
+		std::pair<float, float> GetSize();
+		float GetWidth();
+		float GetHeight();
+
 	private:
 		GLFWwindow* m_window;
 		bool hasBeenInit = false;
