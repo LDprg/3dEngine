@@ -12,6 +12,8 @@
 
 #include "Engine/Events/Event.h"
 
+bool __XXECS::Window::s_hasBeenInit = false;
+
 static void glfw_errorCallback(int error, const char* description)
 {
 	LOG_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -20,29 +22,37 @@ static void glfw_errorCallback(int error, const char* description)
 static void glfw_keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	auto keyEvent = new __XXECS::KeyEvent;
-	keyEvent->key = key;
-	keyEvent->action = action;
+	keyEvent->key = static_cast<Key>(key);
+	keyEvent->action = static_cast<Action>(action);
 	__XXECS::Application::Get().GetEventManager().push(keyEvent);
 }
 
-
 void __XXECS::Window::Init()
 {
-	if (!hasBeenInit)
+	if (!s_hasBeenInit)
 	{
 		glfwSetErrorCallback(glfw_errorCallback);
 
 		LOG_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!");
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		hasBeenInit = true;
+		s_hasBeenInit = true;
 	}
 
 	m_window = glfwCreateWindow(1024, 768, "helloworld multithreaded", nullptr, nullptr);
 
+	auto [width, height] = GetSize();
+	m_oldHeight = height;
+	m_oldWidth = width;
+
+	auto [posX, posY] = GetPos();
+	m_oldPosX = posX;
+	m_oldPosY = posY;
+
 	LOG_CORE_ASSERT(m_window, "Could not initialize Window!");
 
 	glfwSetKeyCallback(m_window, glfw_keyCallback);
+	//glfwSetWindowSizeCallback(m_window, glfw_ResizeCallback);
 }
 
 void __XXECS::Window::Close()
@@ -60,14 +70,41 @@ void __XXECS::Window::Update()
 	}
 
 	// Send window resize event to the API thread.
-	int oldWidth = width, oldHeight = height;
-	glfwGetWindowSize(m_window, &width, &height);
-	if (width != oldWidth || height != oldHeight)
+	int oldWidth = m_width, oldHeight = m_height;
+	glfwGetWindowSize(m_window, &m_width, &m_height);
+	if (m_width != oldWidth || m_height != oldHeight)
 	{
 		auto resize = new ResizeEvent;
-		resize->width = static_cast<uint32_t>(width);
-		resize->height = static_cast<uint32_t>(height);
+		resize->width = static_cast<uint32_t>(m_width);
+		resize->height = static_cast<uint32_t>(m_height);
 		Application::Get().GetEventManager().push(resize);
+	}
+}
+
+void __XXECS::Window::setFullscreen(bool fullscreen)
+{
+	if (fullscreen)
+	{
+		if (!m_isFullscreen)
+		{
+			auto [width, height] = GetSize();
+			m_oldHeight = height;
+			m_oldWidth = width;
+
+			auto [posX, posY] = GetPos();
+			m_oldPosX = posX;
+			m_oldPosY = posY;
+
+			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			glfwSetWindowMonitor(m_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+
+			m_isFullscreen = true;
+		}
+	}
+	else if(m_isFullscreen)
+	{
+		glfwSetWindowMonitor(m_window, NULL, m_oldPosX, m_oldPosY, m_oldWidth, m_oldHeight, 0);
+		m_isFullscreen = false;
 	}
 }
 
@@ -83,21 +120,23 @@ __XXECS::RenderArguments __XXECS::Window::GetRenderArgs()
 #elif BX_PLATFORM_WINDOWS
 	renderArgs.platformData.nwh = glfwGetWin32Window(m_window);
 #endif
-	glfwGetWindowSize(m_window, &width, &height);
-	renderArgs.width = static_cast<uint32_t>(width);
-	renderArgs.height = static_cast<uint32_t>(height);
+	glfwGetWindowSize(m_window, &m_width, &m_height);
+	renderArgs.width = static_cast<uint32_t>(m_width);
+	renderArgs.height = static_cast<uint32_t>(m_height);
 
 	return renderArgs;
 }
 
-std::pair<float, float> __XXECS::Window::GetSize()
+std::pair<int, int> __XXECS::Window::GetSize()
 {
-	auto window = Application::Get().GetWindow().GetNativeWindow();
 	int width, height;
 
-	glfwGetWindowSize(window, &width, &height);
+	glfwGetWindowSize(m_window, &width, &height);
 
-	return { static_cast<float>(width), static_cast<float>(height) };
+	m_width = width;
+	m_height = height;
+
+	return { width, height };
 }
 
 float __XXECS::Window::GetWidth()
@@ -110,4 +149,25 @@ float __XXECS::Window::GetHeight()
 {
 	auto [width, height] = GetSize();
 	return height;
+}
+
+std::pair<int, int> __XXECS::Window::GetPos()
+{
+	int x, y;
+
+	glfwGetWindowPos(m_window, &x, &y);
+	
+	return { x, y };
+}
+
+float __XXECS::Window::GetPosX()
+{
+	auto [x, y] = GetPos();
+	return x;
+}
+
+float __XXECS::Window::GetPosY()
+{
+	auto [x, y] = GetPos();
+	return y;
 }

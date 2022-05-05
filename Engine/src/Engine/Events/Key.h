@@ -1,5 +1,12 @@
 #pragma once
 
+enum class Action
+{
+	Release = 0,
+	Press = 1,
+	Repeat = 2,
+};
+
 enum class Key
 {
 	Space = 32,

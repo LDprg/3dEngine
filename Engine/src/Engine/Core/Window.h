@@ -28,17 +28,30 @@ namespace __XXECS
 
 		void Update();
 
+		void setFullscreen(bool fullscreen);
+		bool isFullscreen() { return m_isFullscreen; }
+
 		RenderArguments GetRenderArgs();
 		GLFWwindow* GetNativeWindow() { return m_window; }
 
-		std::pair<float, float> GetSize();
+		std::pair<int, int> GetSize();
 		float GetWidth();
 		float GetHeight();
 
+		std::pair<int, int> GetPos();
+		float GetPosX();
+		float GetPosY();
+
 	private:
 		GLFWwindow* m_window;
-		bool hasBeenInit = false;
-		int width;
-		int height;
+		static bool s_hasBeenInit;
+		bool m_isFullscreen = false;
+		int m_width;
+		int m_height;
+
+		int m_oldWidth;
+		int m_oldHeight;
+		int m_oldPosX;
+		int m_oldPosY;
 	};
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Key.h"
 
 #include <bx/allocator.h>
 #include <bx/spscqueue.h>
@@ -20,15 +21,15 @@ namespace __XXECS
 	struct KeyEvent
 	{
 		EventType type = EventType::Key;
-		int key;
-		int action;
+		Key key;
+		Action action;
 	};
 
 	struct ResizeEvent
 	{
 		EventType type = EventType::Resize;
-		uint32_t width;
-		uint32_t height;
+		int width;
+		int height;
 	};
 
 	class EventManager

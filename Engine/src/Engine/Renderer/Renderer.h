@@ -33,6 +33,7 @@ namespace __XXECS
 
 		int getView() { return kClearView; }
 
+		static bgfx::ShaderHandle __XXECS::Renderer::loadShader(const char* FILENAME);
 	private:
 		static void ThreadInit();
 		static void ThreadUpdate();

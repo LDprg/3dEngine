@@ -28,6 +28,7 @@ namespace __XXECS
 		static Application& Get() { return *s_Instance; }
 		Window& GetWindow() { return *m_Window; }
 		EventManager& GetEventManager() { return *m_EventManager; }
+		Renderer& GetRenderer() { return *m_Renderer; }
 
 	private:
 		void RunLoop();

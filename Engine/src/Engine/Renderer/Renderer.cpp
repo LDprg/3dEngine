@@ -8,34 +8,59 @@
 
 #include "bx/string.h"
 
-//#include <future>
+bgfx::ShaderHandle __XXECS::Renderer::loadShader(const char* FILENAME)
+{
+	const char* shaderPath = "???";
+
+	switch (bgfx::getRendererType())
+	{
+	case bgfx::RendererType::Noop:
+	case bgfx::RendererType::Direct3D9:  shaderPath = "shaders/dx9/";   break;
+	case bgfx::RendererType::Direct3D11:
+	case bgfx::RendererType::Direct3D12: shaderPath = "shaders/dx11/";  break;
+	case bgfx::RendererType::Gnm:        shaderPath = "shaders/pssl/";  break;
+	case bgfx::RendererType::Metal:      shaderPath = "shaders/metal/"; break;
+	case bgfx::RendererType::OpenGL:     shaderPath = "shaders/glsl/";  break;
+	case bgfx::RendererType::OpenGLES:   shaderPath = "shaders/essl/";  break;
+	case bgfx::RendererType::Vulkan:     shaderPath = "shaders/spirv/"; break;
+	}
+
+	size_t shaderLen = strlen(shaderPath);
+	size_t fileLen = strlen(FILENAME);
+	char* filePath = (char*)malloc(shaderLen + fileLen);
+	memcpy(filePath, shaderPath, shaderLen);
+	memcpy(&filePath[shaderLen], FILENAME, fileLen);
+
+	FILE* file = fopen(FILENAME, "rb");
+	fseek(file, 0, SEEK_END);
+	long fileSize = ftell(file);
+	fseek(file, 0, SEEK_SET);
+
+	const bgfx::Memory* mem = bgfx::alloc(fileSize + 1);
+	fread(mem->data, 1, fileSize, file);
+	mem->data[mem->size - 1] = '\0';
+	fclose(file);
+
+	return bgfx::createShader(mem);
+}
 
 void __XXECS::Renderer::Init()
 {
-	//bgfx::renderFrame();
 }
 
 void __XXECS::Renderer::Exit()
 {
-	//while (bgfx::RenderFrame::NoContext != bgfx::renderFrame());
 	m_renderThread.shutdown();
 }
 
 void __XXECS::Renderer::Update()
 {
-	//	bgfx::renderFrame();
 }
 
 void __XXECS::Renderer::Bind(RenderArguments renderArgs)
 {
 	m_renderArgs = renderArgs;
 	m_renderThread.init(runThread, &m_renderArgs);
-
-	/*std::async(std::launch::async, []
-	{
-		while(Application::Get().isRunning())
-			bgfx::renderFrame();
-	});*/
 }
 
 int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
@@ -47,13 +72,15 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 	init.type = bgfx::RendererType::Count;
 	init.resolution.width = args->width;
 	init.resolution.height = args->height;
-	init.resolution.reset = BGFX_RESET_VSYNC;
+	init.resolution.reset = BGFX_RESET_VSYNC | BGFX_RESET_MSAA_X2;
 	LOG_CORE_ASSERT(bgfx::init(init), "BGFX INIT FAILED");
+	bgfx::setState(BGFX_STATE_MSAA);
 	// Set view 0 to the same dimensions as the window and to clear the color buffer.
 	bgfx::setViewClear(kClearView, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF);
 	setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 	uint32_t width = args->width;
 	uint32_t height = args->height;
+
 
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
@@ -71,7 +98,7 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 			if (*ev == EventType::Resize)
 			{
 				auto resizeEvent = (ResizeEvent*)ev;
-				bgfx::reset(resizeEvent->width, resizeEvent->height, BGFX_RESET_VSYNC);
+				bgfx::reset(resizeEvent->width, resizeEvent->height, BGFX_RESET_VSYNC | BGFX_RESET_MSAA_X16);
 				setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 				width = resizeEvent->width;
 				height = resizeEvent->height;
@@ -85,8 +112,6 @@ int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)
 
 			delete ev;
 		}
-
-
 
 		ImGui_Implbgfx_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
