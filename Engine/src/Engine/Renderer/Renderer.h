@@ -1,7 +1,6 @@
 #pragma once
 
 #include <bgfx/bgfx.h>
-#include <bx/bx.h>
 #include <bx/thread.h>
 
 namespace __XXECS
@@ -13,36 +12,28 @@ namespace __XXECS
 		uint32_t height;
 	};
 
-	class Renderer
+	class Renderer final
 	{
 	public:
-		Renderer()
-		{
-		}
+		Renderer() = default;
+		virtual ~Renderer() = default;
 
-		virtual ~Renderer()
-		{
-		}
-
-		void Init();
 		void Exit();
-
-		void Update();
 
 		void Bind(RenderArguments renderArgs);
 
-		int getView() { return kClearView; }
+		static bgfx::ViewId GetView() { return kClearView; }
 
-		static bgfx::ShaderHandle __XXECS::Renderer::loadShader(const char* FILENAME);
+		static bgfx::ShaderHandle Renderer::LoadShader(const char* filename);
 	private:
-		static void ThreadInit();
+		static void ThreadInit(const RenderArguments* args);
 		static void ThreadUpdate();
 		static void ThreadExit();
 
-		static int32_t runThread(bx::Thread* self, void* userData);
+		static int32_t RunThread(bx::Thread* self, void* userData);
 
 		bx::Thread m_renderThread;
 		RenderArguments m_renderArgs;
-		static const bgfx::ViewId kClearView = 0;
+		static constexpr bgfx::ViewId kClearView = 0;
 	};
 }

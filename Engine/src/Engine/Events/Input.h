@@ -1,7 +1,6 @@
 #pragma once
 #include <utility>
-
-#include "Key.h"
+#include <Engine/Events/Key.h>
 
 namespace __XXECS
 {

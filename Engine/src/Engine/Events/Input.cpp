@@ -1,29 +1,28 @@
-#include "pch.hpp"
 #include "Input.h"
 
 #include "Engine/Core/Application.h"
 
 bool __XXECS::Input::IsKeyPressed(Key keycode)
 {
-	auto window = Application::Get().GetWindow().GetNativeWindow();
-	auto state = glfwGetKey(window, static_cast<int>(keycode));
+	const auto window = Application::Get().GetWindow().GetNativeWindow();
+	const auto state = glfwGetKey(window, static_cast<int>(keycode));
 	return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
 bool __XXECS::Input::IsMouseButtonPressed(Mouse button)
 {
-	auto window = Application::Get().GetWindow().GetNativeWindow();
-	auto state = glfwGetMouseButton(window, static_cast<int>(button));
+	const auto window = Application::Get().GetWindow().GetNativeWindow();
+	const auto state = glfwGetMouseButton(window, static_cast<int>(button));
 	return state == GLFW_PRESS;
 }
 
 std::pair<float, float> __XXECS::Input::GetMousePosition()
 {
-	auto window = Application::Get().GetWindow().GetNativeWindow();
-	double xpos, ypos;
-	glfwGetCursorPos(window, &xpos, &ypos);
+	const auto window = Application::Get().GetWindow().GetNativeWindow();
+	double xPos, yPos;
+	glfwGetCursorPos(window, &xPos, &yPos);
 
-	return {static_cast<float>(xpos), static_cast<float>(ypos)};
+	return {static_cast<float>(xPos), static_cast<float>(yPos)};
 }
 
 float __XXECS::Input::GetMouseX()

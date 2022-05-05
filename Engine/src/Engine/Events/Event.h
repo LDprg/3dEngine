@@ -32,7 +32,7 @@ namespace __XXECS
 		int height;
 	};
 
-	class EventManager
+	class EventManager final
 	{
 	public:
 		EventManager()
@@ -44,20 +44,11 @@ namespace __XXECS
 		{
 		}
 
-		void push(void* _ptr)
-		{
-			return m_apiThreadEvents.push(_ptr);
-		}
+		void Push(void* ptr) { return m_apiThreadEvents.push(ptr); }
 
-		void* pop()
-		{
-			return m_apiThreadEvents.pop();
-		}
+		void* Pop() { return m_apiThreadEvents.pop(); }
 
-		void* peek()
-		{
-			return m_apiThreadEvents.peek();
-		}
+		void* Peek() { return m_apiThreadEvents.peek(); }
 
 	private:
 		bx::DefaultAllocator m_allocator;

@@ -1,5 +1,5 @@
-#include "pch.hpp"
 #include "Window.h"
+#include "pch.hpp"
 
 #if BX_PLATFORM_LINUX
 #define GLFW_EXPOSE_NATIVE_X11
@@ -12,31 +12,31 @@
 
 #include "Engine/Events/Event.h"
 
-bool __XXECS::Window::s_hasBeenInit = false;
+bool __XXECS::Window::m_hasBeenInit = false;
 
-static void glfw_errorCallback(int error, const char* description)
+static void GlfwErrorCallback(int error, const char* description)
 {
 	LOG_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 }
 
-static void glfw_keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	auto keyEvent = new __XXECS::KeyEvent;
+	const auto keyEvent = new __XXECS::KeyEvent;
 	keyEvent->key = static_cast<Key>(key);
 	keyEvent->action = static_cast<Action>(action);
-	__XXECS::Application::Get().GetEventManager().push(keyEvent);
+	__XXECS::Application::Get().GetEventManager().Push(keyEvent);
 }
 
 void __XXECS::Window::Init()
 {
-	if (!s_hasBeenInit)
+	if (!m_hasBeenInit)
 	{
-		glfwSetErrorCallback(glfw_errorCallback);
+		glfwSetErrorCallback(GlfwErrorCallback);
 
 		LOG_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!");
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		s_hasBeenInit = true;
+		m_hasBeenInit = true;
 	}
 
 	m_window = glfwCreateWindow(1024, 768, "helloworld multithreaded", nullptr, nullptr);
@@ -51,37 +51,33 @@ void __XXECS::Window::Init()
 
 	LOG_CORE_ASSERT(m_window, "Could not initialize Window!");
 
-	glfwSetKeyCallback(m_window, glfw_keyCallback);
+	glfwSetKeyCallback(m_window, GlfwKeyCallback);
 	//glfwSetWindowSizeCallback(m_window, glfw_ResizeCallback);
 }
 
-void __XXECS::Window::Close()
-{
-	glfwTerminate();
-}
+void __XXECS::Window::Close() { glfwTerminate(); }
 
 void __XXECS::Window::Update()
 {
 	glfwWaitEvents();
 
 	if (glfwWindowShouldClose(m_window))
-	{
 		Application::Get().Close();
-	}
 
 	// Send window resize event to the API thread.
-	int oldWidth = m_width, oldHeight = m_height;
+	const int oldWidth = m_width;
+	const int oldHeight = m_height;
 	glfwGetWindowSize(m_window, &m_width, &m_height);
 	if (m_width != oldWidth || m_height != oldHeight)
 	{
-		auto resize = new ResizeEvent;
-		resize->width = static_cast<uint32_t>(m_width);
-		resize->height = static_cast<uint32_t>(m_height);
-		Application::Get().GetEventManager().push(resize);
+		const auto resize = new ResizeEvent;
+		resize->width = m_width;
+		resize->height = m_height;
+		Application::Get().GetEventManager().Push(resize);
 	}
 }
 
-void __XXECS::Window::setFullscreen(bool fullscreen)
+void __XXECS::Window::SetFullscreen(const bool fullscreen)
 {
 	if (fullscreen)
 	{
@@ -101,9 +97,9 @@ void __XXECS::Window::setFullscreen(bool fullscreen)
 			m_isFullscreen = true;
 		}
 	}
-	else if(m_isFullscreen)
+	else if (m_isFullscreen)
 	{
-		glfwSetWindowMonitor(m_window, NULL, m_oldPosX, m_oldPosY, m_oldWidth, m_oldHeight, 0);
+		glfwSetWindowMonitor(m_window, nullptr, m_oldPosX, m_oldPosY, m_oldWidth, m_oldHeight, 0);
 		m_isFullscreen = false;
 	}
 }
@@ -127,7 +123,7 @@ __XXECS::RenderArguments __XXECS::Window::GetRenderArgs()
 	return renderArgs;
 }
 
-std::pair<int, int> __XXECS::Window::GetSize()
+std::pair<float, float> __XXECS::Window::GetSize()
 {
 	int width, height;
 
@@ -136,7 +132,7 @@ std::pair<int, int> __XXECS::Window::GetSize()
 	m_width = width;
 	m_height = height;
 
-	return { width, height };
+	return {width, height};
 }
 
 float __XXECS::Window::GetWidth()
@@ -151,22 +147,22 @@ float __XXECS::Window::GetHeight()
 	return height;
 }
 
-std::pair<int, int> __XXECS::Window::GetPos()
+std::pair<float, float> __XXECS::Window::GetPos() const
 {
 	int x, y;
 
 	glfwGetWindowPos(m_window, &x, &y);
-	
-	return { x, y };
+
+	return {x, y};
 }
 
-float __XXECS::Window::GetPosX()
+float __XXECS::Window::GetPosX() const
 {
 	auto [x, y] = GetPos();
 	return x;
 }
 
-float __XXECS::Window::GetPosY()
+float __XXECS::Window::GetPosY() const
 {
 	auto [x, y] = GetPos();
 	return y;

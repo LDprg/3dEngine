@@ -29,7 +29,7 @@ target_include_directories(Engine PUBLIC "vendor/glm")
 set(BGFX_BUILD_TOOLS ON CACHE INTERNAL "" FORCE)
 
 target_link_libraries(Engine glfw)
-#target_link_libraries(Engine entt)
+target_link_libraries(Engine EnTT::EnTT)
 target_link_libraries(Engine bgfx)
 target_link_libraries(Engine bx)
 target_link_libraries(Engine bimg)

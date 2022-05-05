@@ -1,21 +1,19 @@
-#include "pch.hpp"
-
 #include "Log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace __XXECS
 {
-	std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
-	std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
+	std::shared_ptr<spdlog::logger> Log::m_coreLogger;
+	std::shared_ptr<spdlog::logger> Log::m_clientLogger;
 
 	void Log::Init()
 	{
 		spdlog::set_pattern("%^[%T] %n: %v%$");
 
-		s_CoreLogger = spdlog::stdout_color_mt("CORE");
-		s_CoreLogger->set_level(spdlog::level::trace);
+		m_coreLogger = spdlog::stdout_color_mt("CORE");
+		m_coreLogger->set_level(spdlog::level::trace);
 
-		s_ClientLogger = spdlog::stdout_color_mt("APP");
-		s_ClientLogger->set_level(spdlog::level::trace);
+		m_clientLogger = spdlog::stdout_color_mt("APP");
+		m_clientLogger->set_level(spdlog::level::trace);
 	}
 }

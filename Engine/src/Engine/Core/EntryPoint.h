@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Application.h"
-#include "Log.h"
+#include <Engine/Core/Application.h>
+#include <Engine/Core/Log.h>
 
 #define CREATE_APPLICATION(app) __XXECS::Application* __XXECS::CreateApplication() {return new app();}
 
@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 	__XXECS::Log::Init();
 
 	LOG_CORE_TRACE("CREATE APP");
-	auto app = __XXECS::CreateApplication();
+	const auto app = __XXECS::CreateApplication();
 
 	LOG_CORE_TRACE("RUN APP");
 	app->RunLoop();
