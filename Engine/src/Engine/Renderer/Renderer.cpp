@@ -8,26 +8,34 @@
 
 #include "bx/string.h"
 
+//#include <future>
+
 void __XXECS::Renderer::Init()
 {
-	bgfx::renderFrame();
+	//bgfx::renderFrame();
 }
 
 void __XXECS::Renderer::Exit()
 {
-	while (bgfx::RenderFrame::NoContext != bgfx::renderFrame());
+	//while (bgfx::RenderFrame::NoContext != bgfx::renderFrame());
 	m_renderThread.shutdown();
 }
 
 void __XXECS::Renderer::Update()
 {
-	bgfx::renderFrame();
+	//	bgfx::renderFrame();
 }
 
 void __XXECS::Renderer::Bind(RenderArguments renderArgs)
 {
 	m_renderArgs = renderArgs;
 	m_renderThread.init(runThread, &m_renderArgs);
+
+	/*std::async(std::launch::async, []
+	{
+		while(Application::Get().isRunning())
+			bgfx::renderFrame();
+	});*/
 }
 
 int32_t __XXECS::Renderer::runThread(bx::Thread* self, void* userData)

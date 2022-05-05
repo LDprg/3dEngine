@@ -23,7 +23,7 @@ void __XXECS::Application::RunLoop()
 	m_Renderer->Init();
 	m_Renderer->Bind(m_Window->GetRenderArgs());
 
-	while (m_Running)
+	while (isRunning())
 	{
 		m_Window->Update();
 		m_Renderer->Update();

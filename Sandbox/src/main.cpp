@@ -14,10 +14,10 @@ struct PosColorVertex
 
 static PosColorVertex cubeVertices[] =
 {
-	{-0.5f,  -0.5f, 0xff0000ff },
-	{ 0.5f,  -0.5f, 0xff0000ff },
-	{-0.5f, 0.5f, 0xff0000ff },
-	{ 0.5f, 0.5f, 0xff0000ff },
+	{-1.0f,  -1.0f, 0xff0000ff },
+	{ 1.0f,  -1.0f, 0xff0000ff },
+	{-1.0f, 1.0f, 0xff0000ff },
+	{ 1.0f, 1.0f, 0xff0000ff },
 };
 
 static const uint16_t cubeTriList[] =
@@ -123,6 +123,14 @@ public:
 		float mtx[16];
 		bx::mtxRotateZ(mtx, counter * 0.01f);
 		bgfx::setTransform(mtx);
+
+		const bx::Vec3 at = { 0.0f, 0.0f,  0.0f };
+		const bx::Vec3 eye = { 0.0f, 0.0f, -5.0f };
+		float view[16];
+		bx::mtxLookAt(view, eye, at);
+		float proj[16];
+		bx::mtxProj(proj, 60.0f, float(GetWindow().GetWidth()) / float(GetWindow().GetHeight()), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
+		bgfx::setViewTransform(0, view, proj);
 
 		bgfx::setVertexBuffer(0, m_vbh);
 		bgfx::setIndexBuffer(m_ibh);

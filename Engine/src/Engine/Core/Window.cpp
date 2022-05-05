@@ -52,7 +52,7 @@ void __XXECS::Window::Close()
 
 void __XXECS::Window::Update()
 {
-	glfwPollEvents();
+	glfwWaitEvents();
 
 	if (glfwWindowShouldClose(m_window))
 	{
