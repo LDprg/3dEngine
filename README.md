@@ -1,4 +1,4 @@
 # 3dEngine
-[![Build Status](https://github.com/LDprg/3dEngine/workflows/build/badge.svg)](https://github.com/LDprg/3dEngine/actions)
+[![CMake](https://github.com/LDprg/3dEngine/actions/workflows/cmake.yml/badge.svg?branch=main)](https://github.com/LDprg/3dEngine/actions/workflows/cmake.yml)
 
 A 3d Graphics Engine
