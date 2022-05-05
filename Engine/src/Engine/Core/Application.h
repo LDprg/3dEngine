@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Window.h"
-#include "Engine/Events/Event.h"
-#include "Engine/Events/Input.h"
+#include <Engine/Core/Window.h>
+#include <Engine/Events/Event.h>
 
 int main(int argc, char** argv);
 
@@ -18,25 +17,49 @@ namespace __XXECS
 		virtual void Event(EventType* event) = 0;
 
 		virtual void Init() = 0;
+		virtual void UpdateImGui() = 0;
 		virtual void Update() = 0;
 		virtual void Shutdown() = 0;
 
-		bool isRunning() { return m_Running; }
-		void Close() { m_Running = false; }
+		bool IsRunning() const
+		{
+			return m_running;
+		}
 
-		static Application& Get() { return *s_Instance; }
-		Window& GetWindow() { return *m_Window; }
-		EventManager& GetEventManager() { return *m_EventManager; }
+		void Close()
+		{
+			m_running = false;
+		}
+
+		static Application& Get()
+		{
+			return *m_instance;
+		}
+
+		Window& GetWindow() const
+		{
+			return *m_window;
+		}
+
+		EventManager& GetEventManager() const
+		{
+			return *m_eventManager;
+		}
+
+		Renderer& GetRenderer() const
+		{
+			return *m_renderer;
+		}
 
 	private:
 		void RunLoop();
 
-		bool m_Running = true;
-		Window* m_Window;
-		EventManager* m_EventManager;
-		Renderer* m_Renderer;
+		bool m_running = true;
+		Window* m_window;
+		EventManager* m_eventManager;
+		Renderer* m_renderer;
 
 	private:
-		static Application* s_Instance;
+		static Application* m_instance;
 	};
 }

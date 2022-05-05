@@ -1,5 +1,6 @@
 # Directories
 .vs/
+.vscode/
 build/
 bin/
 obj/
@@ -11,3 +12,12 @@ obj/
 *.filters
 *.vcxproj
 *.sln
+
+CMakeFiles
+*.cmake
+CMakeCache.txt
+
+x64
+*.dir
+
+Debug
