@@ -44,11 +44,20 @@ namespace __XXECS
 		{
 		}
 
-		void Push(void* ptr) { return m_apiThreadEvents.push(ptr); }
+		void Push(void* ptr)
+		{
+			return m_apiThreadEvents.push(ptr);
+		}
 
-		void* Pop() { return m_apiThreadEvents.pop(); }
+		void* Pop()
+		{
+			return m_apiThreadEvents.pop();
+		}
 
-		void* Peek() { return m_apiThreadEvents.peek(); }
+		void* Peek()
+		{
+			return m_apiThreadEvents.peek();
+		}
 
 	private:
 		bx::DefaultAllocator m_allocator;

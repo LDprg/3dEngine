@@ -21,13 +21,35 @@ namespace __XXECS
 		virtual void Update() = 0;
 		virtual void Shutdown() = 0;
 
-		bool IsRunning() const { return m_running; }
-		void Close() { m_running = false; }
+		bool IsRunning() const
+		{
+			return m_running;
+		}
 
-		static Application& Get() { return *m_instance; }
-		Window& GetWindow() const { return *m_window; }
-		EventManager& GetEventManager() const { return *m_eventManager; }
-		Renderer& GetRenderer() const { return *m_renderer; }
+		void Close()
+		{
+			m_running = false;
+		}
+
+		static Application& Get()
+		{
+			return *m_instance;
+		}
+
+		Window& GetWindow() const
+		{
+			return *m_window;
+		}
+
+		EventManager& GetEventManager() const
+		{
+			return *m_eventManager;
+		}
+
+		Renderer& GetRenderer() const
+		{
+			return *m_renderer;
+		}
 
 	private:
 		void RunLoop();

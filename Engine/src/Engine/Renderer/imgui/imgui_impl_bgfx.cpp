@@ -186,9 +186,15 @@ void ImGui_Implbgfx_InvalidateDeviceObjects()
 	}
 }
 
-void ImGui_Implbgfx_Init(int view) { g_View = static_cast<uint8_t>(view & 0xff); }
+void ImGui_Implbgfx_Init(int view)
+{
+	g_View = static_cast<uint8_t>(view & 0xff);
+}
 
-void ImGui_Implbgfx_Shutdown() { ImGui_Implbgfx_InvalidateDeviceObjects(); }
+void ImGui_Implbgfx_Shutdown()
+{
+	ImGui_Implbgfx_InvalidateDeviceObjects();
+}
 
 void ImGui_Implbgfx_NewFrame()
 {

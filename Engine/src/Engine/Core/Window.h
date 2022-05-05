@@ -19,10 +19,18 @@ namespace __XXECS
 		void Update();
 
 		void SetFullscreen(bool fullscreen);
-		bool IsFullscreen() const { return m_isFullscreen; }
+
+		bool IsFullscreen() const
+		{
+			return m_isFullscreen;
+		}
 
 		RenderArguments GetRenderArgs();
-		GLFWwindow* GetNativeWindow() const { return m_window; }
+
+		GLFWwindow* GetNativeWindow() const
+		{
+			return m_window;
+		}
 
 		std::pair<float, float> GetSize();
 		float GetWidth();
@@ -39,9 +47,9 @@ namespace __XXECS
 		int m_width = 0;
 		int m_height = 0;
 
-		int m_oldWidth = 0;
-		int m_oldHeight = 0;
-		int m_oldPosX = 0;
-		int m_oldPosY = 0;
+		float m_oldWidth = 0;
+		float m_oldHeight = 0;
+		float m_oldPosX = 0;
+		float m_oldPosY = 0;
 	};
 }

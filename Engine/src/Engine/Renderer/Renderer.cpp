@@ -56,7 +56,10 @@ bgfx::ShaderHandle __XXECS::Renderer::LoadShader(const char* filename)
 	return createShader(mem);
 }
 
-void __XXECS::Renderer::Exit() { m_renderThread.shutdown(); }
+void __XXECS::Renderer::Exit()
+{
+	m_renderThread.shutdown();
+}
 
 void __XXECS::Renderer::Bind(const RenderArguments renderArgs)
 {

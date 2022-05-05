@@ -22,7 +22,10 @@ namespace __XXECS
 
 		void Bind(RenderArguments renderArgs);
 
-		static bgfx::ViewId GetView() { return kClearView; }
+		static bgfx::ViewId GetView()
+		{
+			return kClearView;
+		}
 
 		static bgfx::ShaderHandle Renderer::LoadShader(const char* filename);
 	private:

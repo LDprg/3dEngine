@@ -55,7 +55,10 @@ void __XXECS::Window::Init()
 	//glfwSetWindowSizeCallback(m_window, glfw_ResizeCallback);
 }
 
-void __XXECS::Window::Close() { glfwTerminate(); }
+void __XXECS::Window::Close()
+{
+	glfwTerminate();
+}
 
 void __XXECS::Window::Update()
 {

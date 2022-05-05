@@ -9,9 +9,15 @@ namespace __XXECS
 	public:
 		static void Init();
 
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return m_coreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger()
+		{
+			return m_coreLogger;
+		}
 
-		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return m_clientLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger()
+		{
+			return m_clientLogger;
+		}
 
 	private:
 		static std::shared_ptr<spdlog::logger> m_coreLogger;
