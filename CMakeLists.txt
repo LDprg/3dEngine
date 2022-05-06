@@ -10,6 +10,16 @@ file(GLOB SRC "Sandbox/src/**.c" "Sandbox/src/**.cc" "Sandbox/src/**.cpp" "Sandb
 add_executable(Sandbox ${SRC})
 
 target_link_libraries(Sandbox Engine)
+target_link_libraries(Sandbox
+    Diligent-GraphicsEngineD3D11-shared
+    Diligent-GraphicsEngineOpenGL-shared
+    Diligent-GraphicsEngineD3D12-shared
+    Diligent-GraphicsEngineVk-shared
+
+    Diligent-Imgui
+)
+
+copy_required_dlls(Sandbox)
 
 #add_custom_target(
 #  get-data

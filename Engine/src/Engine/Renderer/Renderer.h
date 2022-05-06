@@ -1,6 +1,11 @@
 #pragma once
+#include <memory>
 
+#include <ImGuiDiligentRenderer.hpp>
 #include <Engine/Renderer/imgui.h>
+#include <ThirdParty/imgui/backends/imgui_impl_glfw.h>
+#include <TextureLoader/interface/Image.h>
+#include <ScreenCapture.hpp>
 
 namespace __XXECS
 {
@@ -14,21 +19,29 @@ namespace __XXECS
 	{
 	public:
 		Renderer() = default;
-		virtual ~Renderer() = default;
+		~Renderer() = default;
 
 		void Exit();
 
 		void Bind(RenderArguments renderArgs);
 
-		static void Renderer::LoadShader(const char* filename);
+		static void LoadShader(const char* filename);
 	private:
-		static void ThreadInit(const RenderArguments* args);
-		static void ThreadUpdate();
-		static void ThreadExit();
+		void ThreadInit(const RenderArguments* args);
+		void ThreadUpdate();
+		void ThreadExit();
 
-		static int32_t RunThread(const RenderArguments* userData);
+		int32_t RunThread(const RenderArguments* userData);
 
 		std::thread m_renderThread;
 		RenderArguments m_renderArgs;
+
+		Diligent::Uint32                                     m_NumImmediateContexts;
+		Diligent::RefCntAutoPtr<Diligent::IRenderDevice>  m_pDevice;
+		Diligent::RefCntAutoPtr<Diligent::IDeviceContext> m_pImmediateContext;
+		Diligent::RefCntAutoPtr<Diligent::ISwapChain> m_pSwapChain;
+		Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPSO;
+		Diligent::RENDER_DEVICE_TYPE m_DeviceType = Diligent::RENDER_DEVICE_TYPE_D3D11;
+		std::unique_ptr<Diligent::ImGuiDiligentRenderer> m_pImgui;
 	};
 }

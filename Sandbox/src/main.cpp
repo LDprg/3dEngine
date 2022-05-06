@@ -29,8 +29,7 @@ static const uint16_t cubeTriList[] =
 
 class App final : public Application
 {
-private:
-	int m_counter = 0;
+
 public:
 	App() = default;
 
@@ -56,11 +55,11 @@ public:
 
 	void UpdateImGui() override
 	{
+		ImGui::Button("TEST");
 	}
 
 	void Update() override
 	{
-		m_counter++;
 
 		
 	}

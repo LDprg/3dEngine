@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(Engine)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -39,10 +39,9 @@ target_link_libraries(Engine
     Diligent-Imgui
 )
 target_link_libraries(Engine glfw)
+target_link_libraries(Engine glfw)
 target_link_libraries(Engine EnTT::EnTT)
 target_link_libraries(Engine glm)
-
-copy_required_dlls(Engine)
 
 if(MSVC)
     macro(GroupSources curdir)
