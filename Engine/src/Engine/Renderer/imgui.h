@@ -1,3 +1,5 @@
 #pragma once
 
-#include <imgui.h>
+#include <Imgui/interface/ImGuiUtils.hpp>
+#include <Imgui/interface/ImGuiImplDiligent.hpp>
+#include <ThirdParty/imgui/imgui.h>

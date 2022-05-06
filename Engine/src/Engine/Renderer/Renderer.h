@@ -1,13 +1,11 @@
 #pragma once
 
-#include <bgfx/bgfx.h>
-#include <bx/thread.h>
+#include <Engine/Renderer/imgui.h>
 
 namespace __XXECS
 {
 	struct RenderArguments
 	{
-		bgfx::PlatformData platformData;
 		uint32_t width;
 		uint32_t height;
 	};
@@ -22,21 +20,15 @@ namespace __XXECS
 
 		void Bind(RenderArguments renderArgs);
 
-		static bgfx::ViewId GetView()
-		{
-			return kClearView;
-		}
-
-		static bgfx::ShaderHandle Renderer::LoadShader(const char* filename);
+		static void Renderer::LoadShader(const char* filename);
 	private:
 		static void ThreadInit(const RenderArguments* args);
 		static void ThreadUpdate();
 		static void ThreadExit();
 
-		static int32_t RunThread(bx::Thread* self, void* userData);
+		static int32_t RunThread(const RenderArguments* userData);
 
-		bx::Thread m_renderThread;
+		std::thread m_renderThread;
 		RenderArguments m_renderArgs;
-		static constexpr bgfx::ViewId kClearView = 0;
 	};
 }

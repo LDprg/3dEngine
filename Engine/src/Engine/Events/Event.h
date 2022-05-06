@@ -1,8 +1,7 @@
 #pragma once
-#include "Key.h"
+#include <queue>
 
-#include <bx/allocator.h>
-#include <bx/spscqueue.h>
+#include "Key.h"
 
 namespace __XXECS
 {
@@ -36,11 +35,10 @@ namespace __XXECS
 	{
 	public:
 		EventManager()
-			: m_apiThreadEvents(&m_allocator)
 		{
 		}
 
-		virtual ~EventManager()
+		~EventManager()
 		{
 		}
 
@@ -51,16 +49,15 @@ namespace __XXECS
 
 		void* Pop()
 		{
-			return m_apiThreadEvents.pop();
-		}
+			if (m_apiThreadEvents.empty())
+				return nullptr;
 
-		void* Peek()
-		{
-			return m_apiThreadEvents.peek();
+			void* ptr = m_apiThreadEvents.front();
+			m_apiThreadEvents.pop();
+			return ptr;
 		}
 
 	private:
-		bx::DefaultAllocator m_allocator;
-		bx::SpScUnboundedQueue m_apiThreadEvents;
+		std::queue<void *> m_apiThreadEvents;
 	};
 }

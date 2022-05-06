@@ -33,10 +33,10 @@ namespace __XXECS
 #define LOG_CORE_FATAL(...)	::__XXECS::Log::GetCoreLogger()->critical(__VA_ARGS__)
 #define LOG_CORE_ASSERT(x, ...) {if(!(x)){LOG_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
 
-#define LOG_DEBUG(...)		::__XXECS::Log::GetClientLogger()->debug(__VA_ARGS__)
-#define LOG_TRACE(...)		::__XXECS::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define LOG_INFO(...)		::__XXECS::Log::GetClientLogger()->info(__VA_ARGS__)
-#define LOG_WARN(...)		::__XXECS::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define LOG_ERROR(...)		::__XXECS::Log::GetClientLogger()->error(__VA_ARGS__)
-#define LOG_FATAL(...)		::__XXECS::Log::GetClientLogger()->critical(__VA_ARGS__)
-#define	LOG_ASSERT(x, ...)	{if(!(x)){LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
+#define LOG_CLIENT_DEBUG(...)		::__XXECS::Log::GetClientLogger()->debug(__VA_ARGS__)
+#define LOG_CLIENT_TRACE(...)		::__XXECS::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define LOG_CLIENT_INFO(...)		::__XXECS::Log::GetClientLogger()->info(__VA_ARGS__)
+#define LOG_CLIENT_WARN(...)		::__XXECS::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define LOG_CLIENT_ERROR(...)		::__XXECS::Log::GetClientLogger()->error(__VA_ARGS__)
+#define LOG_CLIENT_FATAL(...)		::__XXECS::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define	LOG_CLIENT_ASSERT(x, ...)	{if(!(x)){LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
