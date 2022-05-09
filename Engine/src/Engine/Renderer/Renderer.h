@@ -5,7 +5,6 @@
 #include <Engine/Renderer/imgui.h>
 #include <ThirdParty/imgui/backends/imgui_impl_glfw.h>
 #include <TextureLoader/interface/Image.h>
-#include <ScreenCapture.hpp>
 
 #include "Engine/Renderer/SwapChain.h"
 

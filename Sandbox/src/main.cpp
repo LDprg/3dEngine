@@ -37,7 +37,7 @@ public:
 
 	void Init() override
 	{
-		
+
 	}
 
 	void Event(EventType* event) override
