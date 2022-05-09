@@ -27,6 +27,22 @@ static void GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int actio
 	__XXECS::Application::Get().GetEventManager().Push(keyEvent);
 }
 
+static void GlfwCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	const auto movedEvent = new __XXECS::MouseMovedEvent;
+	movedEvent->x = static_cast<int>(xpos);
+	movedEvent->y = static_cast<int>(ypos);
+	__XXECS::Application::Get().GetEventManager().Push(movedEvent);
+}
+
+void GlfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	const auto keyEvent = new __XXECS::KeyEvent;
+	keyEvent->key = static_cast<Key>(button);
+	keyEvent->action = static_cast<Action>(action);
+	__XXECS::Application::Get().GetEventManager().Push(keyEvent);
+}
+
 void __XXECS::Window::Init()
 {
 	if (!m_hasBeenInit)
@@ -51,7 +67,9 @@ void __XXECS::Window::Init()
 
 	LOG_CORE_ASSERT(m_window, "Could not initialize Window!");
 
-	//glfwSetKeyCallback(m_window, GlfwKeyCallback);
+	glfwSetKeyCallback(m_window, GlfwKeyCallback);
+	glfwSetCursorPosCallback(m_window, GlfwCursorPositionCallback);
+	glfwSetMouseButtonCallback(m_window, GlfwMouseButtonCallback);
 	//glfwSetWindowSizeCallback(m_window, glfw_ResizeCallback);
 }
 
@@ -67,18 +85,6 @@ void __XXECS::Window::Update()
 
 	if (glfwWindowShouldClose(m_window))
 		Application::Get().Close();
-
-	// Send window resize event to the API thread.
-	const int oldWidth = m_width;
-	const int oldHeight = m_height;
-	glfwGetWindowSize(m_window, &m_width, &m_height);
-	if (m_width != oldWidth || m_height != oldHeight)
-	{
-		const auto resize = new ResizeEvent;
-		resize->width = m_width;
-		resize->height = m_height;
-		Application::Get().GetEventManager().Push(resize);
-	}
 }
 
 void __XXECS::Window::SetFullscreen(const bool fullscreen)

@@ -9,7 +9,8 @@ namespace __XXECS
 	{
 		Exit,
 		Key,
-		Resize
+		Resize,
+		MouseMoved
 	};
 
 	struct ExitEvent
@@ -29,6 +30,13 @@ namespace __XXECS
 		EventType type = EventType::Resize;
 		int width;
 		int height;
+	};
+
+	struct MouseMovedEvent
+	{
+		EventType type = EventType::MouseMoved;
+		int x;
+		int y;
 	};
 
 	class EventManager final

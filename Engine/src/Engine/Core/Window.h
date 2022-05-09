@@ -27,7 +27,7 @@ namespace __XXECS
 
 		RenderArguments GetRenderArgs();
 
-		GLFWwindow* GetNativeWindow() const
+		GLFWwindow* GetNative() const
 		{
 			return m_window;
 		}

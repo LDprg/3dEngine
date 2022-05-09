@@ -10,10 +10,11 @@ __XXECS::Application::Application()
 	m_eventManager = new EventManager();
 	m_window = new Window();
 	m_renderer = new Renderer();
+	m_SwapChain = new SwapChain();
+	m_ImmediateContext = new ImmediateContext();
+	m_device = new Device();
+	m_imgui = new ImguiManager();
 }
-
-__XXECS::Application::~Application()
-= default;
 
 void __XXECS::Application::RunLoop()
 {

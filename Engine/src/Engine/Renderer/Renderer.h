@@ -7,6 +7,8 @@
 #include <TextureLoader/interface/Image.h>
 #include <ScreenCapture.hpp>
 
+#include "Engine/Renderer/SwapChain.h"
+
 namespace __XXECS
 {
 	struct RenderArguments
@@ -30,18 +32,12 @@ namespace __XXECS
 		void ThreadInit(const RenderArguments* args);
 		void ThreadUpdate();
 		void ThreadExit();
-
 		int32_t RunThread(const RenderArguments* userData);
 
 		std::thread m_renderThread;
 		RenderArguments m_renderArgs;
-
-		Diligent::Uint32                                     m_NumImmediateContexts;
-		Diligent::RefCntAutoPtr<Diligent::IRenderDevice>  m_pDevice;
-		Diligent::RefCntAutoPtr<Diligent::IDeviceContext> m_pImmediateContext;
-		Diligent::RefCntAutoPtr<Diligent::ISwapChain> m_pSwapChain;
+		
 		Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPSO;
 		Diligent::RENDER_DEVICE_TYPE m_DeviceType = Diligent::RENDER_DEVICE_TYPE_D3D11;
-		std::unique_ptr<Diligent::ImGuiDiligentRenderer> m_pImgui;
 	};
 }

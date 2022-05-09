@@ -55,7 +55,12 @@ public:
 
 	void UpdateImGui() override
 	{
-		ImGui::Button("TEST");
+		static bool state;
+		if (ImGui::Button("TEST"))
+			state = !state;
+
+		if(state)
+			ImGui::Text("TEST");
 	}
 
 	void Update() override
