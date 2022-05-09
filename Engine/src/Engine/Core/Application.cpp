@@ -23,6 +23,6 @@ void __XXECS::Application::RunLoop()
 	while (IsRunning())
 		m_window->Update();
 
-	m_renderer->Exit();
 	m_window->Close();
+	m_renderer->Exit();
 }

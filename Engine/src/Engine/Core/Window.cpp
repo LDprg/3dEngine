@@ -39,7 +39,7 @@ void __XXECS::Window::Init()
 		m_hasBeenInit = true;
 	}
 
-	m_window = glfwCreateWindow(1024, 768, "helloworld multithreaded", nullptr, nullptr);
+	m_window = glfwCreateWindow(1024, 768, "helloworld", nullptr, nullptr);
 
 	auto [width, height] = GetSize();
 	m_oldHeight = height;
@@ -51,12 +51,13 @@ void __XXECS::Window::Init()
 
 	LOG_CORE_ASSERT(m_window, "Could not initialize Window!");
 
-	glfwSetKeyCallback(m_window, GlfwKeyCallback);
+	//glfwSetKeyCallback(m_window, GlfwKeyCallback);
 	//glfwSetWindowSizeCallback(m_window, glfw_ResizeCallback);
 }
 
 void __XXECS::Window::Close()
 {
+	glfwDestroyWindow(m_window);
 	glfwTerminate();
 }
 

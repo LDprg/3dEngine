@@ -1,6 +1,9 @@
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable:4189)
 #include <spdlog/spdlog.h>
+#pragma warning(pop)
 
 namespace __XXECS
 {
