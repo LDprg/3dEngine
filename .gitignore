@@ -1,9 +1,12 @@
 # Directories
 .vs/
 .vscode/
+.idea/
 build/
 bin/
 obj/
+
+cmake-*/
 
 !vendor/bin
 

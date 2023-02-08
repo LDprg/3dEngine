@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/SPIRV-Cross" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/SPIRV-Headers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/SPIRV-Tools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/Vulkan-Headers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/glslang" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/googletest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/volk" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentCore/ThirdParty/xxHash" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentFX" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentSamples" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentSamples/ThirdParty/glfw" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentSamples/ThirdParty/nuklear" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentTools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentTools/ThirdParty/args" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/DiligentEngine/DiligentTools/ThirdParty/imgui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/entt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/glfw" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/glm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/vendor/spdlog" vcs="Git" />
+  </component>
+</project>
