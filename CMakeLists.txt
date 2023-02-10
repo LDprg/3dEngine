@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.23)
 project(Sandbox)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 add_subdirectory("Engine")
+target_include_directories(Engine PUBLIC "Engine/vendor/DiligentEngine/DiligentCore")
+target_include_directories(Engine PUBLIC "Engine/vendor/DiligentEngine/DiligentFX")
+target_include_directories(Engine PUBLIC "Engine/vendor/DiligentEngine/DiligentTools")
 
 file(GLOB SRC "Sandbox/src/**.c" "Sandbox/src/**.cc" "Sandbox/src/**.cpp" "Sandbox/src/**.h" "Sandbox/src/**.hpp" "Sandbox/src/**.sc" )
 add_executable(Sandbox ${SRC})
+target_compile_options(Sandbox PRIVATE -DUNICODE -DENGINE_DLL)
 
 target_link_libraries(Sandbox Engine)
 target_link_libraries(Sandbox
