@@ -21,7 +21,6 @@ namespace __XXECS
 		virtual void Event(EventType* event) = 0;
 
 		virtual void Init() = 0;
-		virtual void UpdateImGui() = 0;
 		virtual void Update() = 0;
 		virtual void Shutdown() = 0;
 

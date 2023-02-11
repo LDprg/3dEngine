@@ -1,5 +1,4 @@
 #include <entt/entt.hpp>
-#include <glm/ext.hpp>
 #include <glm/glm.hpp>
 
 #include "Engine.h"
@@ -53,7 +52,7 @@ public:
 		}
 	}
 
-	void UpdateImGui() override
+	void Update() override
 	{
 		static bool state;
 		if (ImGui::Button("TEST"))
@@ -61,12 +60,6 @@ public:
 
 		if(state)
 			ImGui::Text("TEST");
-	}
-
-	void Update() override
-	{
-
-		
 	}
 
 	void Shutdown() override

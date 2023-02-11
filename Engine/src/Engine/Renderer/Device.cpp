@@ -11,22 +11,26 @@ void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
 
     switch (m_DeviceType)
     {
-#if D3D11_SUPPORTED
-    case Diligent::RENDER_DEVICE_TYPE_D3D11:
+#if VULKAN_SUPPORTED
+    case Diligent::RENDER_DEVICE_TYPE_VULKAN:
     {
-        Diligent::EngineD3D11CreateInfo EngineCI;
-#    if ENGINE_DLL
-        // Load the dll and import GetEngineFactoryD3D11() function
-        auto* GetEngineFactoryD3D11 = Diligent::LoadGraphicsEngineD3D11();
+#    if EXPLICITLY_LOAD_ENGINE_VK_DLL
+        // Load the dll and import GetEngineFactoryVk() function
+        auto GetEngineFactoryVk = Diligent::LoadGraphicsEngineVk();
 #    endif
-        auto* pFactoryD3D11 = GetEngineFactoryD3D11();
-        pFactoryD3D11->CreateDeviceAndContextsD3D11(EngineCI, &m_pDevice, &m_pImmediateContext);
-        Diligent::Win32NativeWindow Window{ hWnd };
-        pFactoryD3D11->CreateSwapChainD3D11(m_pDevice, m_pImmediateContext, SCDesc, Diligent::FullScreenModeDesc{}, Window, &m_pSwapChain);
+        Diligent::EngineVkCreateInfo EngineCI;
+
+        auto* pFactoryVk = GetEngineFactoryVk();
+        pFactoryVk->CreateDeviceAndContextsVk(EngineCI, &m_pDevice, &m_pImmediateContext);
+
+        if (!m_pSwapChain && hWnd != nullptr)
+        {
+            Diligent::Win32NativeWindow Window{ hWnd };
+            pFactoryVk->CreateSwapChainVk(m_pDevice, m_pImmediateContext, SCDesc, Window, &m_pSwapChain);
+        }
     }
     break;
 #endif
-
 
 #if D3D12_SUPPORTED
     case Diligent::RENDER_DEVICE_TYPE_D3D12:
@@ -45,7 +49,22 @@ void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
     break;
 #endif
 
-
+#if D3D11_SUPPORTED
+    case Diligent::RENDER_DEVICE_TYPE_D3D11:
+    {
+        Diligent::EngineD3D11CreateInfo EngineCI;
+#    if ENGINE_DLL
+        // Load the dll and import GetEngineFactoryD3D11() function
+        auto* GetEngineFactoryD3D11 = Diligent::LoadGraphicsEngineD3D11();
+#    endif
+        auto* pFactoryD3D11 = GetEngineFactoryD3D11();
+        pFactoryD3D11->CreateDeviceAndContextsD3D11(EngineCI, &m_pDevice, &m_pImmediateContext);
+        Diligent::Win32NativeWindow Window{ hWnd };
+        pFactoryD3D11->CreateSwapChainD3D11(m_pDevice, m_pImmediateContext, SCDesc, Diligent::FullScreenModeDesc{}, Window, &m_pSwapChain);
+    }
+    break;
+#endif
+    
 #if GL_SUPPORTED
     case Diligent::RENDER_DEVICE_TYPE_GL:
     {
@@ -59,28 +78,6 @@ void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
         EngineCI.Window.hWnd = hWnd;
 
         pFactoryOpenGL->CreateDeviceAndSwapChainGL(EngineCI, &m_pDevice, &m_pImmediateContext, SCDesc, &m_pSwapChain);
-    }
-    break;
-#endif
-
-
-#if VULKAN_SUPPORTED
-    case Diligent::RENDER_DEVICE_TYPE_VULKAN:
-    {
-#    if EXPLICITLY_LOAD_ENGINE_VK_DLL
-        // Load the dll and import GetEngineFactoryVk() function
-        auto GetEngineFactoryVk = Diligent::LoadGraphicsEngineVk();
-#    endif
-        Diligent::EngineVkCreateInfo EngineCI;
-
-        auto* pFactoryVk = GetEngineFactoryVk();
-        pFactoryVk->CreateDeviceAndContextsVk(EngineCI, &m_pDevice, &m_pImmediateContext);
-
-        if (!m_pSwapChain && hWnd != nullptr)
-        {
-            Diligent::Win32NativeWindow Window{ hWnd };
-            pFactoryVk->CreateSwapChainVk(m_pDevice, m_pImmediateContext, SCDesc, Window, &m_pSwapChain);
-        }
     }
     break;
 #endif

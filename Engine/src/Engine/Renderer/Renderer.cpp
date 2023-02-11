@@ -1,12 +1,7 @@
 #include "pch.hpp"
 #include <DeviceContext.h>
+#include <RenderDevice.h>
 
-//#include <Graphics/GraphicsEngine/include/RenderDeviceBase.hpp>
-
-#include "Graphics/GraphicsEngineD3D11/interface/EngineFactoryD3D11.h"
-#include "Graphics/GraphicsEngineD3D12/interface/EngineFactoryD3D12.h"
-#include "Graphics/GraphicsEngineOpenGL/interface/EngineFactoryOpenGL.h"
-#include "Graphics/GraphicsEngineVulkan/interface/EngineFactoryVk.h"
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
@@ -92,7 +87,7 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 
     // Pipeline state name is used by the engine to report issues.
     // It is always a good idea to give objects descriptive names.
-    PSOCreateInfo.PSODesc.Name = "Simple triangle PSO";
+    PSOCreateInfo.PSODesc.Name = "Main PSO";
 
     // This is a graphics pipeline
     PSOCreateInfo.PSODesc.PipelineType = Diligent::PIPELINE_TYPE_GRAPHICS;
@@ -117,9 +112,6 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
     // Tell the system that the shader source code is in HLSL.
     // For OpenGL, the engine will convert this into GLSL under the hood
     ShaderCI.SourceLanguage = Diligent::SHADER_SOURCE_LANGUAGE_HLSL;
-
-	// OpenGL backend requires emulated combined HLSL texture samplers (g_Texture + g_Texture_sampler combination)
-    //ShaderCI.UseCombinedTextureSamplers = true;
 
 	// Create a vertex shader
     Diligent::RefCntAutoPtr<Diligent::IShader> pVS;
@@ -183,8 +175,6 @@ void __XXECS::Renderer::ThreadUpdate()
 	}
 
     Application::Get().GetImguiManager().NewFrame();
-
-	Application::Get().UpdateImGui();
 
 	Application::Get().Update();
 

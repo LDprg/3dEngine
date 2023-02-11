@@ -64,7 +64,7 @@ if(MSVC)
 
                 # I would like to call the src root folder in a different name, only in visual studio (not mandatory requirement)
 
-                string(REPLACE "src" "Common" groupname ${groupname})
+                string(REPLACE "src" "Source Files" groupname ${groupname})
 
                 source_group(${groupname} FILES ${PROJECT_SOURCE_DIR}/${curdir}/${child})
 
