@@ -1,9 +1,7 @@
 name: Update Submodule
 
 on:
-  push:
-    branches: 
-      - main
+  workflow_dispatch:
 
 jobs:
   update:
