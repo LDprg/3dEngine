@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include <DeviceContext.h>
 
-#include <Graphics/GraphicsEngine/include/RenderDeviceBase.hpp>
+//#include <Graphics/GraphicsEngine/include/RenderDeviceBase.hpp>
 
 #include "Graphics/GraphicsEngineD3D11/interface/EngineFactoryD3D11.h"
 #include "Graphics/GraphicsEngineD3D12/interface/EngineFactoryD3D12.h"
@@ -117,9 +117,11 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
     // Tell the system that the shader source code is in HLSL.
     // For OpenGL, the engine will convert this into GLSL under the hood
     ShaderCI.SourceLanguage = Diligent::SHADER_SOURCE_LANGUAGE_HLSL;
-    // OpenGL backend requires emulated combined HLSL texture samplers (g_Texture + g_Texture_sampler combination)
-    ShaderCI.UseCombinedTextureSamplers = true;
-    // Create a vertex shader
+
+	// OpenGL backend requires emulated combined HLSL texture samplers (g_Texture + g_Texture_sampler combination)
+    //ShaderCI.UseCombinedTextureSamplers = true;
+
+	// Create a vertex shader
     Diligent::RefCntAutoPtr<Diligent::IShader> pVS;
     {
         ShaderCI.Desc.ShaderType = Diligent::SHADER_TYPE_VERTEX;

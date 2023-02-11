@@ -9,9 +9,9 @@ target_include_directories(Engine PUBLIC "Engine/vendor/DiligentEngine/DiligentC
 target_include_directories(Engine PUBLIC "Engine/vendor/DiligentEngine/DiligentFX")
 target_include_directories(Engine PUBLIC "Engine/vendor/DiligentEngine/DiligentTools")
 
-file(GLOB SRC "Sandbox/src/**.c" "Sandbox/src/**.cc" "Sandbox/src/**.cpp" "Sandbox/src/**.h" "Sandbox/src/**.hpp" "Sandbox/src/**.sc" )
+file(GLOB SRC "Sandbox/src/**.c" "Sandbox/src/**.cpp" "Sandbox/src/**.h" "Sandbox/src/**.hpp" )
 add_executable(Sandbox ${SRC})
-target_compile_options(Sandbox PRIVATE -DUNICODE -DENGINE_DLL)
+target_compile_options(Sandbox PUBLIC -DUNICODE -DENGINE_DLL)
 
 target_link_libraries(Sandbox Engine)
 target_link_libraries(Sandbox

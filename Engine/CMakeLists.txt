@@ -7,9 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 
-add_subdirectory("vendor/DiligentEngine")
+add_subdirectory("vendor/DiligentEngine/DiligentCore")
+add_subdirectory("vendor/DiligentEngine/DiligentFX")
+add_subdirectory("vendor/DiligentEngine/DiligentTools")
 add_subdirectory("vendor/entt")
-#add_subdirectory("vendor/glfw")
+add_subdirectory("vendor/glfw")
 add_subdirectory("vendor/spdlog")
 add_subdirectory("vendor/glm")
 
@@ -19,12 +21,9 @@ add_library(Engine ${SRC})
 
 target_precompile_headers(Engine PRIVATE "src/pch.hpp")
 
-target_compile_options(Engine PRIVATE -DUNICODE -DENGINE_DLL)
+target_compile_options(Engine PUBLIC -DUNICODE -DENGINE_DLL)
 
 target_include_directories(Engine PUBLIC "src")
-target_include_directories(Engine PUBLIC "vendor/DiligentEngine/DiligentCore")
-target_include_directories(Engine PUBLIC "vendor/DiligentEngine/DiligentFX")
-target_include_directories(Engine PUBLIC "vendor/DiligentEngine/DiligentTools")
 target_include_directories(Engine PUBLIC "vendor/entt/single_include")
 target_include_directories(Engine PUBLIC "vendor/spdlog/include")
 target_include_directories(Engine PUBLIC "vendor/glfw/include")
@@ -39,9 +38,11 @@ target_link_libraries(Engine
     Diligent-Imgui
 )
 target_link_libraries(Engine glfw)
-target_link_libraries(Engine glfw)
 target_link_libraries(Engine EnTT::EnTT)
 target_link_libraries(Engine glm)
+
+
+copy_required_dlls(Engine)
 
 if(MSVC)
     macro(GroupSources curdir)
