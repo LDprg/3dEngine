@@ -1,3 +1,5 @@
+#include <string>
+#include <numeric>
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
 
@@ -28,7 +30,6 @@ static const uint16_t cubeTriList[] =
 
 class App final : public Application
 {
-
 public:
 	App() = default;
 
@@ -36,13 +37,16 @@ public:
 
 	void Init() override
 	{
-
+		Color<float>& color = GetClearColor();
+		color.r = 0.5f;
+		color.g = 0.5f;
+		color.b = 0.5f;
 	}
 
 	void Event(EventType* event) override
 	{
 		if (Input::IsKeyPressed(Key::Escape))
-			Get().Close();
+			Close();
 
 		const auto key_event = reinterpret_cast<KeyEvent*>(event);
 		if (*event == EventType::Key)
@@ -54,17 +58,16 @@ public:
 
 	void Update() override
 	{
-		static bool state;
-		if (ImGui::Button("TEST"))
-			state = !state;
+		ImGui::ColorPicker4("Background Color", GetClearColor());
 
-		if(state)
-			ImGui::Text("TEST");
+		Diligent::DrawAttribs drawAttrs;
+		drawAttrs.NumVertices = 3;
+		GetImmediateContext().GetNative()->Draw(drawAttrs);
+
 	}
 
 	void Shutdown() override
 	{
-		
 	}
 };
 

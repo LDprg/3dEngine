@@ -7,6 +7,8 @@
 #include "Engine/Renderer/Device.h"
 #include "Engine/Renderer/ImmediateContext.h"
 
+#include "Engine/Math/Vector.hpp"
+
 int main(int argc, char** argv);
 
 namespace __XXECS
@@ -74,6 +76,13 @@ namespace __XXECS
 			return *m_imgui;
 		}
 
+		Color<float>& GetClearColor()
+		{
+			return m_clearColor;
+		}
+
+	protected:
+
 	private:
 		void RunLoop();
 
@@ -85,8 +94,8 @@ namespace __XXECS
 		Device* m_device;
 		ImmediateContext* m_ImmediateContext;
 		ImguiManager* m_imgui;
-
-	private:
+		Color<float> m_clearColor = {1.f, 1.f, 1.f, 1.f};
+		
 		static Application* m_instance;
 	};
 }

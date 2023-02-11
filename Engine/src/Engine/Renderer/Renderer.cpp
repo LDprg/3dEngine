@@ -176,8 +176,6 @@ void __XXECS::Renderer::ThreadUpdate()
 
     Application::Get().GetImguiManager().NewFrame();
 
-	Application::Get().Update();
-
     auto& m_pImmediateContext = Application::Get().GetImmediateContext().GetNative();
 
     // Set render targets before issuing any draw command.
@@ -186,21 +184,15 @@ void __XXECS::Renderer::ThreadUpdate()
     auto* pDSV = Application::Get().GetSwapChain().GetNative()->GetDepthBufferDSV();
     m_pImmediateContext->SetRenderTargets(1, &pRTV, pDSV, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-    // Clear the back buffer
-    const float ClearColor[] = { 0.350f, 0.350f, 0.350f, 1.0f };
     // Let the engine perform required state transitions
-    m_pImmediateContext->ClearRenderTarget(pRTV, ClearColor, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    m_pImmediateContext->ClearRenderTarget(pRTV, Application::Get().GetClearColor(), Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
     m_pImmediateContext->ClearDepthStencil(pDSV, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
     // Set the pipeline state in the immediate context
     m_pImmediateContext->SetPipelineState(m_pPSO);
 
-    // Typically we should now call CommitShaderResources(), however shaders in this example don't
-    // use any resources.
 
-	Diligent::DrawAttribs drawAttrs;
-    drawAttrs.NumVertices = 3; // Render 3 vertices
-    m_pImmediateContext->Draw(drawAttrs);
+    Application::Get().Update();
 
     Application::Get().GetImguiManager().Render();
 
