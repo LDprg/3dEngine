@@ -19,8 +19,8 @@ namespace __XXECS
 		{
 			return m_pSwapChain->Present(SyncInterval);
 		}
+
 	private:
 		Diligent::RefCntAutoPtr<Diligent::ISwapChain> m_pSwapChain;
 	};
 }
-

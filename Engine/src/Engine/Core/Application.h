@@ -16,6 +16,7 @@ namespace __XXECS
 	class Application
 	{
 		friend int ::main(int argc, char** argv);
+
 	public:
 		Application();
 		virtual ~Application() = default;
@@ -24,7 +25,13 @@ namespace __XXECS
 
 		virtual void Init() = 0;
 		virtual void Update() = 0;
+		virtual void Render() = 0;
 		virtual void Shutdown() = 0;
+
+		virtual void ImGui()
+		{
+		}
+
 
 		bool IsRunning() const
 		{
@@ -71,7 +78,7 @@ namespace __XXECS
 			return *m_ImmediateContext;
 		}
 
-		ImguiManager& GetImguiManager() const
+		ImguiManager& GetImGuiManager() const
 		{
 			return *m_imgui;
 		}
@@ -80,8 +87,6 @@ namespace __XXECS
 		{
 			return m_clearColor;
 		}
-
-	protected:
 
 	private:
 		void RunLoop();
@@ -95,7 +100,7 @@ namespace __XXECS
 		ImmediateContext* m_ImmediateContext;
 		ImguiManager* m_imgui;
 		Color<float> m_clearColor = {1.f, 1.f, 1.f, 1.f};
-		
+
 		static Application* m_instance;
 	};
 }

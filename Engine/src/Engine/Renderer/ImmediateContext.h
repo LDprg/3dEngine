@@ -4,14 +4,15 @@
 
 namespace __XXECS
 {
-    class ImmediateContext
+	class ImmediateContext
 	{
 	public:
-        Diligent::RefCntAutoPtr<Diligent::IDeviceContext>& GetNative()
-        {
-            return m_pImmediateContext;
-        }
+		Diligent::RefCntAutoPtr<Diligent::IDeviceContext>& GetNative()
+		{
+			return m_pImmediateContext;
+		}
+
 	private:
-        Diligent::RefCntAutoPtr<Diligent::IDeviceContext>  m_pImmediateContext;
+		Diligent::RefCntAutoPtr<Diligent::IDeviceContext> m_pImmediateContext;
 	};
 }

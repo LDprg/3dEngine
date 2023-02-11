@@ -31,14 +31,22 @@ void __XXECS::ImguiManager::Init()
 	io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
 	io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
 
-	m_pImgui = std::make_unique<Diligent::ImGuiDiligentRenderer>(Application::Get().GetDevice().GetNative(), Application::Get().GetSwapChain().GetDesc().ColorBufferFormat, Application::Get().GetSwapChain().GetDesc().DepthBufferFormat, Application::Get().GetSwapChain().GetDesc().BufferCount, Application::Get().GetSwapChain().GetDesc().BufferCount);
+	m_pImgui = std::make_unique<Diligent::ImGuiDiligentRenderer>(Application::Get().GetDevice().GetNative(),
+	                                                             Application::Get().GetSwapChain().GetDesc().
+	                                                             ColorBufferFormat,
+	                                                             Application::Get().GetSwapChain().GetDesc().
+	                                                             DepthBufferFormat,
+	                                                             Application::Get().GetSwapChain().GetDesc().
+	                                                             BufferCount,
+	                                                             Application::Get().GetSwapChain().GetDesc().
+	                                                             BufferCount);
 	m_pImgui->CreateFontsTexture();
 }
 
 void __XXECS::ImguiManager::Event(EventType* event) const
 {
 	ImGuiIO& io = ImGui::GetIO();
-	
+
 	if (*event == EventType::Key)
 	{
 		const auto key_event = reinterpret_cast<KeyEvent*>(event);
@@ -53,7 +61,7 @@ void __XXECS::ImguiManager::Event(EventType* event) const
 			io.KeysDown[static_cast<int>(key_event->key)] = false;
 		}
 	}
-	if(*event == EventType::MouseMoved)
+	if (*event == EventType::MouseMoved)
 	{
 		const auto moved_event = reinterpret_cast<MouseMovedEvent*>(event);
 		io.MousePos = ImVec2(static_cast<float>(moved_event->x), static_cast<float>(moved_event->y));

@@ -109,7 +109,8 @@ void __XXECS::Window::SetFullscreen(const bool fullscreen)
 	}
 	else if (m_isFullscreen)
 	{
-		glfwSetWindowMonitor(m_window, nullptr, static_cast<int>(m_oldPosX), static_cast<int>(m_oldPosY), static_cast<int>(m_oldWidth), static_cast<int>(m_oldHeight), 0);
+		glfwSetWindowMonitor(m_window, nullptr, static_cast<int>(m_oldPosX), static_cast<int>(m_oldPosY),
+		                     static_cast<int>(m_oldWidth), static_cast<int>(m_oldHeight), 0);
 		m_isFullscreen = false;
 	}
 }
@@ -163,7 +164,7 @@ std::pair<float, float> __XXECS::Window::GetPos() const
 
 	glfwGetWindowPos(m_window, &x, &y);
 
-	return { static_cast<float>(x), static_cast<float>(y)};
+	return {static_cast<float>(x), static_cast<float>(y)};
 }
 
 float __XXECS::Window::GetPosX() const

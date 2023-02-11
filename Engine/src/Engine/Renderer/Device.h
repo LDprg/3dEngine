@@ -14,17 +14,17 @@
 
 namespace __XXECS
 {
-
-    class Device
+	class Device
 	{
 	public:
-    	static void createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType);
+		static void createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType);
 
-        Diligent::RefCntAutoPtr<Diligent::IRenderDevice>& GetNative()
-        {
-            return m_pDevice;
-        }
+		Diligent::RefCntAutoPtr<Diligent::IRenderDevice>& GetNative()
+		{
+			return m_pDevice;
+		}
+
 	private:
-        Diligent::RefCntAutoPtr<Diligent::IRenderDevice>  m_pDevice;
+		Diligent::RefCntAutoPtr<Diligent::IRenderDevice> m_pDevice;
 	};
 }

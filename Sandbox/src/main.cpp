@@ -1,5 +1,5 @@
-#include <string>
 #include <numeric>
+#include <string>
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
 
@@ -7,25 +7,22 @@
 
 using namespace __XXECS;
 
-struct PosColorVertex
+struct Vertex
 {
-	float x;
-	float y;
-	uint32_t abgr;
+	glm::vec4 pos;
+	glm::vec3 color;
 };
 
-static PosColorVertex cubeVertices[] =
+Vertex TriVerts[3] =
 {
-	{-1.0f, -1.0f, 0xff0000ff},
-	{1.0f, -1.0f, 0xff0000ff},
-	{-1.0f, 1.0f, 0xff0000ff},
-	{1.0f, 1.0f, 0xff0000ff},
+	{glm::vec4(-0.5, -0.5, 0.0, 1.0), glm::vec3(1, 0, 0)},
+	{glm::vec4(0.0, +0.5, 0.0, 1.0), glm::vec3(0, 1, 0)},
+	{glm::vec4(+0.5, -0.5, 0.0, 1.0), glm::vec3(0, 0, 1)},
 };
 
-static const uint16_t cubeTriList[] =
+static Diligent::Uint32 TriIndices[] =
 {
-	0, 1, 2,
-	1, 3, 2,
+	0, 1, 2
 };
 
 class App final : public Application
@@ -41,6 +38,26 @@ public:
 		color.r = 0.5f;
 		color.g = 0.5f;
 		color.b = 0.5f;
+
+		Diligent::BufferDesc VertBuffDesc;
+		VertBuffDesc.Name = "Tri vertex buffer";
+		VertBuffDesc.Usage = Diligent::USAGE_IMMUTABLE;
+		VertBuffDesc.BindFlags = Diligent::BIND_VERTEX_BUFFER;
+		VertBuffDesc.Size = sizeof(TriVerts);
+		Diligent::BufferData VBData;
+		VBData.pData = TriVerts;
+		VBData.DataSize = sizeof(TriVerts);
+		GetDevice().GetNative()->CreateBuffer(VertBuffDesc, &VBData, &m_CubeVertexBuffer);
+
+		Diligent::BufferDesc IndBuffDesc;
+		IndBuffDesc.Name = "Tri index buffer";
+		IndBuffDesc.Usage = Diligent::USAGE_IMMUTABLE;
+		IndBuffDesc.BindFlags = Diligent::BIND_INDEX_BUFFER;
+		IndBuffDesc.Size = sizeof(TriIndices);
+		Diligent::BufferData IBData;
+		IBData.pData = TriIndices;
+		IBData.DataSize = sizeof(TriIndices);
+		GetDevice().GetNative()->CreateBuffer(IndBuffDesc, &IBData, &m_CubeIndexBuffer);
 	}
 
 	void Event(EventType* event) override
@@ -58,17 +75,41 @@ public:
 
 	void Update() override
 	{
+		const Diligent::Uint64 offset = 0;
+		Diligent::IBuffer* pBuffs[] = {m_CubeVertexBuffer};
+		GetImmediateContext().GetNative()->SetVertexBuffers(0, 1, pBuffs, &offset,
+		                                                    Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
+		                                                    Diligent::SET_VERTEX_BUFFERS_FLAG_RESET);
+		GetImmediateContext().GetNative()->SetIndexBuffer(m_CubeIndexBuffer, 0,
+		                                                  Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+	}
+
+	void ImGui() override
+	{
+		//if (ImGui::Button("Change"))
+		//	TriVerts[0].color = glm::vec3(0, 1, 0);
+		//else
+		//	TriVerts[0].color = glm::vec3(1, 0, 0);
+
 		ImGui::ColorPicker4("Background Color", GetClearColor());
+	}
 
-		Diligent::DrawAttribs drawAttrs;
-		drawAttrs.NumVertices = 3;
-		GetImmediateContext().GetNative()->Draw(drawAttrs);
-
+	void Render() override
+	{
+		Diligent::DrawIndexedAttribs drawAttrs;
+		drawAttrs.IndexType = Diligent::VT_UINT32;
+		drawAttrs.NumIndices = 3;
+		drawAttrs.Flags = Diligent::DRAW_FLAG_VERIFY_ALL;
+		GetImmediateContext().GetNative()->DrawIndexed(drawAttrs);
 	}
 
 	void Shutdown() override
 	{
 	}
+
+protected:
+	Diligent::RefCntAutoPtr<Diligent::IBuffer> m_CubeVertexBuffer;
+	Diligent::RefCntAutoPtr<Diligent::IBuffer> m_CubeIndexBuffer;
 };
 
 

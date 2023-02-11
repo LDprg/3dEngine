@@ -2,8 +2,8 @@
 
 #include <ImGuiDiligentRenderer.hpp>
 #include <SwapChain.h>
-#include <Imgui/interface/ImGuiUtils.hpp>
 #include <Imgui/interface/ImGuiImplDiligent.hpp>
+#include <Imgui/interface/ImGuiUtils.hpp>
 #include <ThirdParty/imgui/imgui.h>
 
 #include "backends/imgui_impl_glfw.h"
@@ -22,6 +22,7 @@ namespace __XXECS
 		void Render();
 
 		void Destory();
+
 	private:
 		std::unique_ptr<Diligent::ImGuiDiligentRenderer> m_pImgui;
 	};
