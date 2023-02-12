@@ -4,6 +4,7 @@
 #include <Engine/Events/Event.h>
 #include <Engine/Renderer/imgui.h>
 
+#include "Engine/Entity/EntityManager.h"
 #include "Engine/Renderer/Device.h"
 #include "Engine/Renderer/ImmediateContext.h"
 
@@ -83,6 +84,11 @@ namespace __XXECS
 			return *m_imgui;
 		}
 
+		EntityManager& GetEntityManager() const
+		{
+			return *m_entityManager;
+		}
+
 		Color<float>& GetClearColor()
 		{
 			return m_clearColor;
@@ -99,6 +105,7 @@ namespace __XXECS
 		Device* m_device;
 		ImmediateContext* m_ImmediateContext;
 		ImguiManager* m_imgui;
+		EntityManager* m_entityManager;
 		Color<float> m_clearColor = {1.f, 1.f, 1.f, 1.f};
 
 		static Application* m_instance;

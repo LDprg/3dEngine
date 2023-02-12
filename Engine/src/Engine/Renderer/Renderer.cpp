@@ -8,12 +8,12 @@ static const char* VSSource = R"(
 struct VSInput
 {
     float4 Pos   : ATTRIB0;
-    float3 Color : ATTRIB1;
+    float4 Color : ATTRIB1;
 };
 struct PSInput 
 { 
     float4 Pos   : SV_POSITION; 
-    float3 Color : COLOR; 
+    float4 Color : COLOR; 
 };
 void main(in  VSInput VSIn,
           out PSInput PSIn) 
@@ -27,7 +27,7 @@ static const char* PSSource = R"(
 struct PSInput 
 { 
     float4 Pos   : SV_POSITION; 
-    float3 Color : COLOR; 
+    float4 Color : COLOR; 
 };
 struct PSOutput
 { 
@@ -36,7 +36,7 @@ struct PSOutput
 void main(in  PSInput  PSIn,
           out PSOutput PSOut)
 {
-    PSOut.Color = float4(PSIn.Color.rgb, 1.0);
+    PSOut.Color = PSIn.Color;
 }
 )";
 
@@ -78,6 +78,11 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 
 	Application::Get().Init();
 
+	Diligent::BlendStateDesc BlendState;
+	BlendState.RenderTargets[0].BlendEnable = true;
+	BlendState.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
+	BlendState.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+
 	// Pipeline state object encompasses configuration of all GPU stages
 
 	Diligent::GraphicsPipelineStateCreateInfo PSOCreateInfo;
@@ -88,8 +93,7 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 
 	// This is a graphics pipeline
 	PSOCreateInfo.PSODesc.PipelineType = Diligent::PIPELINE_TYPE_GRAPHICS;
-
-	// clang-format off
+	
 	// This tutorial will render to a single render target
 	PSOCreateInfo.GraphicsPipeline.NumRenderTargets = 1;
 	// Set render target format which is the format of the swap chain's color buffer
@@ -99,21 +103,21 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	// Primitive topology defines what kind of primitives will be rendered by this pipeline state
 	PSOCreateInfo.GraphicsPipeline.PrimitiveTopology = Diligent::PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
 	// No back face culling for this tutorial
-	PSOCreateInfo.GraphicsPipeline.RasterizerDesc.CullMode = Diligent::CULL_MODE_BACK;
+	PSOCreateInfo.GraphicsPipeline.RasterizerDesc.CullMode = Diligent::CULL_MODE_NONE;
 	// Disable depth testing
 	PSOCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthEnable = false;
+
+	PSOCreateInfo.GraphicsPipeline.BlendDesc = BlendState;
 
 	Diligent::LayoutElement LayoutElems[] =
 	{
 		// Attribute 0 - vertex position
 		Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, Diligent::False},
 		// Attribute 1 - vertex color
-		Diligent::LayoutElement{1, 0, 3, Diligent::VT_FLOAT32, Diligent::False}
+		Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, Diligent::False}
 	};
 	PSOCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = LayoutElems;
 	PSOCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(LayoutElems);
-
-	// clang-format on
 
 	LOG_CORE_TRACE("Create Shaders");
 	Diligent::ShaderCreateInfo ShaderCI;

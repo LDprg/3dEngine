@@ -11,14 +11,14 @@ using namespace __XXECS;
 struct Vertex
 {
 	glm::vec4 pos;
-	glm::vec3 color;
+	glm::vec4 color;
 };
 
 Vertex TriVerts[3] =
 {
-	{glm::vec4(-0.5, -0.5, 0.0, 1.0), glm::vec3(1, 0, 0)},
-	{glm::vec4(0.0, +0.5, 0.0, 1.0), glm::vec3(0, 1, 0)},
-	{glm::vec4(+0.5, -0.5, 0.0, 1.0), glm::vec3(0, 0, 1)},
+	{glm::vec4(-0.5, -0.5, 0.0, 1.0), glm::vec4(1, 0, 0, 1)},
+	{glm::vec4(0.0, +0.5, 0.0, 1.0), glm::vec4(0, 1, 0, 1)},
+	{glm::vec4(+0.5, -0.5, 0.0, 1.0), glm::vec4(0, 0, 1, 1)},
 };
 
 static Diligent::Uint32 TriIndices[] =
@@ -39,6 +39,7 @@ public:
 		color.r = 0.5f;
 		color.g = 0.5f;
 		color.b = 0.5f;
+		color.a = 1.0f;
 
 		Diligent::BufferDesc VertBuffDesc;
 		VertBuffDesc.Name = "Tri vertex buffer";
@@ -97,9 +98,9 @@ public:
 		static bool state = false;
 
 		if (state)
-			TriVerts[0].color = glm::vec3(0, 1, 0);
+			TriVerts[0].color = glm::vec4(1, 0, 0, 1);
 		else
-			TriVerts[0].color = glm::vec3(1, 0, 0);
+			TriVerts[0].color = glm::vec4(1, 0, 0, 0);
 
 		if (ImGui::Button("Change"))
 			state = !state;
