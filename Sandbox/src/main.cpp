@@ -2,6 +2,7 @@
 #include <string>
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
+#include <Graphics/GraphicsTools/interface/MapHelper.hpp>
 
 #include "Engine.h"
 
@@ -41,13 +42,11 @@ public:
 
 		Diligent::BufferDesc VertBuffDesc;
 		VertBuffDesc.Name = "Tri vertex buffer";
-		VertBuffDesc.Usage = Diligent::USAGE_IMMUTABLE;
+		VertBuffDesc.Usage = Diligent::USAGE_DYNAMIC;
+		VertBuffDesc.CPUAccessFlags = Diligent::CPU_ACCESS_WRITE;
 		VertBuffDesc.BindFlags = Diligent::BIND_VERTEX_BUFFER;
 		VertBuffDesc.Size = sizeof(TriVerts);
-		Diligent::BufferData VBData;
-		VBData.pData = TriVerts;
-		VBData.DataSize = sizeof(TriVerts);
-		GetDevice().GetNative()->CreateBuffer(VertBuffDesc, &VBData, &m_CubeVertexBuffer);
+		GetDevice().GetNative()->CreateBuffer(VertBuffDesc, nullptr, &m_CubeVertexBuffer);
 
 		Diligent::BufferDesc IndBuffDesc;
 		IndBuffDesc.Name = "Tri index buffer";
@@ -82,14 +81,28 @@ public:
 		                                                    Diligent::SET_VERTEX_BUFFERS_FLAG_RESET);
 		GetImmediateContext().GetNative()->SetIndexBuffer(m_CubeIndexBuffer, 0,
 		                                                  Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+
 	}
 
 	void ImGui() override
 	{
-		//if (ImGui::Button("Change"))
-		//	TriVerts[0].color = glm::vec3(0, 1, 0);
-		//else
-		//	TriVerts[0].color = glm::vec3(1, 0, 0);
+		Diligent::MapHelper<Vertex> Vertices(GetImmediateContext().GetNative(), m_CubeVertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
+		for (Diligent::Uint32 v = 0; v < _countof(TriVerts); ++v)
+		{
+			const auto& SrcVert = TriVerts[v];
+			Vertices[v].color = SrcVert.color;
+			Vertices[v].pos = SrcVert.pos;
+		}
+
+		static bool state = false;
+
+		if (state)
+			TriVerts[0].color = glm::vec3(0, 1, 0);
+		else
+			TriVerts[0].color = glm::vec3(1, 0, 0);
+
+		if (ImGui::Button("Change"))
+			state = !state;
 
 		ImGui::ColorPicker4("Background Color", GetClearColor());
 	}
