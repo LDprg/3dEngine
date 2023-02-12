@@ -9,11 +9,12 @@ __XXECS::Application::Application()
 
 	m_EventManager = new EventManager();
 	m_Window = new Window();
-	m_Renderer = new Renderer();
 	m_SwapChain = new SwapChain();
-	m_ImmediateContext = new ImmediateContext();
 	m_Device = new Device();
+	m_ImmediateContext = new ImmediateContext();
 	m_ImGui = new ImguiManager();
+	m_Renderer = new Renderer();
+	m_EntityManager = new EntityManager();
 }
 
 void __XXECS::Application::RunLoop()

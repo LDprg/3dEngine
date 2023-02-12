@@ -47,6 +47,13 @@ void __XXECS::ImguiManager::Event(EventType* event) const
 {
 	ImGuiIO& io = ImGui::GetIO();
 
+	if (*event == EventType::Resize)
+	{
+		const auto resizeEvent = reinterpret_cast<ResizeEvent*>(event);
+
+		Application::Get().GetSwapChain().GetNative()->Resize(resizeEvent->width, resizeEvent->height);
+	}
+
 	if (*event == EventType::Key)
 	{
 		const auto key_event = reinterpret_cast<KeyEvent*>(event);
@@ -61,6 +68,7 @@ void __XXECS::ImguiManager::Event(EventType* event) const
 			io.KeysDown[static_cast<int>(key_event->key)] = false;
 		}
 	}
+
 	if (*event == EventType::MouseMoved)
 	{
 		const auto moved_event = reinterpret_cast<MouseMovedEvent*>(event);
@@ -87,6 +95,7 @@ void __XXECS::ImguiManager::Render()
 
 void __XXECS::ImguiManager::Destory()
 {
+	m_pImgui->InvalidateDeviceObjects();
 	m_pImgui.release();
 	ImGui::DestroyContext();
 }

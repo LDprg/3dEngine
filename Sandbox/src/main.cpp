@@ -12,12 +12,10 @@ using namespace __XXECS;
 class App final : public Application
 {
 protected:
-	Renderable m_Renderable;
+	bool state = false;
 
 public:
-	App() : Application(), m_Renderable(Vertices(3), Indices(3))
-	{
-	}
+	App() = default;
 
 	~App() override = default;
 
@@ -25,17 +23,37 @@ public:
 	{
 		GetClearColor() = {0.5f, 0.5f, 0.5f};
 
-		m_Renderable.Indices = {
-			0, 1, 2
-		};
+		{
+			const auto entity = GetEntityManager().create();
+			auto& item = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
+			item.Indices = {
+				0, 1, 2
+			};
 
-		m_Renderable.Vertices = {
-			{Position(-0.5, -0.5), Color(1, 0, 0)},
-			{Position(0.0, +0.5),  Color(0, 1, 0)},
-			{Position(+0.5, -0.5), Color(0, 0, 1)},
-		};
+			item.Vertices = {
+				{Position(-0.5, -0.5), Color(1, 0, 0)},
+				{Position(0.0, +0.5), Color(0, 1, 0)},
+				{Position(+0.5, -0.5), Color(0, 0, 1)},
+			};
 
-		Renderable::Create(m_Renderable);
+			Renderable::Create(item);
+		}
+
+		{
+			const auto entity = GetEntityManager().create();
+			auto& item = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
+			item.Indices = {
+				0, 1, 2
+			};
+
+			item.Vertices = {
+				{Position(+0.5, +0.5), Color(1, 0, 0)},
+				{Position(0.0, -0.5), Color(0, 1, 0)},
+				{Position(-0.5, +0.5), Color(0, 0, 1)},
+			};
+
+			Renderable::Create(item);
+		}
 	}
 
 	void Event(EventType* event) override
@@ -53,17 +71,17 @@ public:
 
 	void Update() override
 	{
+		auto view = GetEntityManager().view<Renderable>();
+
+		view.each([this](auto& render)
+		{
+			for (int i = 0; i < render.Vertices.size(); i++)
+				render.Vertices[i].color.a = this->state ? 0.5 : 1;
+		});
 	}
 
 	void ImGui() override
 	{
-		static bool state = false;
-
-		if (state)
-			m_Renderable.Vertices[0].color.a = 0;
-		else
-			m_Renderable.Vertices[0].color.a = 1;
-
 		if (ImGui::Button("Change"))
 			state = !state;
 
@@ -72,7 +90,12 @@ public:
 
 	void Render() override
 	{
-		Renderable::Draw(m_Renderable);
+		auto view = GetEntityManager().view<Renderable>();
+		for (auto entity : view)
+		{
+			auto& item = view.get<Renderable>(entity);
+			Renderable::Draw(item);
+		}
 	}
 
 	void Shutdown() override

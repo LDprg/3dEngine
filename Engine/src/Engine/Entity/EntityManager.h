@@ -3,18 +3,11 @@
 
 namespace __XXECS
 {
-	class EntityManager
+	class EntityManager : public entt::registry
 	{
 	public:
-		EntityManager() = default;
+		EntityManager() : entt::registry() {}
+
 		~EntityManager() = default;
-
-		entt::registry& GetNative()
-		{
-			return m_registry;
-		}
-
-	private:
-		entt::registry m_registry;
 	};
 }
