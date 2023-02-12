@@ -1,6 +1,6 @@
 #include <numeric>
 #include <string>
-#include <Engine/Entity/Components/RenderableComp.hpp>
+#include <Engine/Entity/Components/Renderable.hpp>
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
 #include <Graphics/GraphicsTools/interface/MapHelper.hpp>
@@ -15,13 +15,7 @@ protected:
 	Renderable m_Renderable;
 
 public:
-	App() : Application(), m_Renderable(Vertices{
-		                                    {Position(-0.5, -0.5), Color(1, 0, 0)},
-		                                    {Position(0.0, +0.5), Color(0, 1, 0)},
-		                                    {Position(+0.5, -0.5), Color(0, 0, 1)},
-	                                    }, Indices{
-		                                    0, 1, 2
-	                                    })
+	App() : Application(), m_Renderable(Vertices(3), Indices(3))
 	{
 	}
 
@@ -31,7 +25,7 @@ public:
 	{
 		GetClearColor() = {0.5f, 0.5f, 0.5f};
 
-		/*m_Renderable.Indices = {
+		m_Renderable.Indices = {
 			0, 1, 2
 		};
 
@@ -39,9 +33,9 @@ public:
 			{Position(-0.5, -0.5), Color(1, 0, 0)},
 			{Position(0.0, +0.5),  Color(0, 1, 0)},
 			{Position(+0.5, -0.5), Color(0, 0, 1)},
-		};*/
+		};
 
-		m_Renderable.Create();
+		Renderable::Create(m_Renderable);
 	}
 
 	void Event(EventType* event) override
@@ -78,7 +72,7 @@ public:
 
 	void Render() override
 	{
-		m_Renderable.Draw();
+		Renderable::Draw(m_Renderable);
 	}
 
 	void Shutdown() override
