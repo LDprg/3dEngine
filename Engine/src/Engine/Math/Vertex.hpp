@@ -6,66 +6,85 @@
 #include <BasicTypes.h>
 
 #include "Vector.hpp"
+#include "Engine/Core/Log.h"
 
 namespace __XXECS
 {
 	typedef Diligent::Uint32 Index;
-
-    template<typename T>
+	
 	struct Vertex
 	{
-		Position<T> pos;
-		Color<T> color;
+		Position pos;
+		Color color;
+	};
+	
+	struct Vertices
+	{
+		Vertex* data;
+
+		Vertices(size_t size)
+			:m_size(size)
+		{
+			data = new Vertex[size];
+		}
+
+		Vertices(std::initializer_list<Vertex> iList)
+			:Vertices(iList.size())
+		{
+			std::ranges::copy(iList.begin(), iList.end(), data);
+		}
+		
+		operator Vertex* () const
+		{
+			return data;
+		}
+
+		[[nodiscard]] size_t sizeInBytes() const
+		{
+			return sizeof(Vertex) * m_size;
+		}
+
+		[[nodiscard]] size_t size() const
+		{
+			return m_size;
+		}
+
+	private:
+		size_t m_size;
 	};
 
-
-	class Vertices : public std::vector<Vertex<float>>
+	struct Indices
 	{
-	public:
-		Vertices() : std::vector<Vertex<float>>() {}
-		Vertices(std::initializer_list<Vertex<float>> ilist) : std::vector<Vertex<float>>(ilist)
+		Index* data;
+
+		Indices(size_t size)
+			:m_size(size)
 		{
-			shrink_to_fit();
+			data = new Index[size];
 		}
 
-		operator void* () const
+		Indices(std::initializer_list<Index> iList)
+			:Indices(iList.size())
 		{
-			return const_cast<Vertex<float>*>(data());
+			std::copy(iList.begin(), iList.end(), data);
 		}
 
-		operator Vertex<float>* ()
+		operator Index* () const
 		{
-			return data();
+			return data;
 		}
 
-		size_t sizeInBytes() const
+		[[nodiscard]] size_t sizeInBytes() const
 		{
-			return sizeof(Vertex<float>) * size();
-		}
-	};
-
-	class Indices : public std::vector<Index>
-	{
-	public:
-		Indices() : std::vector<Index>() {}
-		Indices(std::initializer_list<Index> ilist) : std::vector<Index>(ilist)
-		{
-			shrink_to_fit();
+			return sizeof(Index) * m_size;
 		}
 
-		operator void* () const
+		[[nodiscard]]  size_t size() const
 		{
-			return const_cast<Index*>(data());
+			return m_size;
 		}
 
-		operator Index* ()
-		{
-			return data();
-		}
-
-		size_t sizeInBytes() const
-		{
-			return sizeof(Index) * size();
-		}
+	private:
+		size_t m_size;
 	};
 }

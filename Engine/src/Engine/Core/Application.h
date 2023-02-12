@@ -89,7 +89,7 @@ namespace __XXECS
 			return *m_EntityManager;
 		}
 
-		Color<float>& GetClearColor()
+		Color& GetClearColor()
 		{
 			return m_clearColor;
 		}
@@ -98,7 +98,7 @@ namespace __XXECS
 		void RunLoop();
 
 		bool m_running = true;
-		Color<float> m_clearColor = {1.f, 1.f, 1.f, 1.f};
+		Color m_clearColor = {1.f, 1.f, 1.f};
 
 		Window* m_Window;
 		EventManager* m_EventManager;

@@ -15,25 +15,33 @@ protected:
 	Renderable m_Renderable;
 
 public:
-	App() = default;
+	App() : Application(), m_Renderable(Vertices{
+		                                    {Position(-0.5, -0.5), Color(1, 0, 0)},
+		                                    {Position(0.0, +0.5), Color(0, 1, 0)},
+		                                    {Position(+0.5, -0.5), Color(0, 0, 1)},
+	                                    }, Indices{
+		                                    0, 1, 2
+	                                    })
+	{
+	}
 
 	~App() override = default;
 
 	void Init() override
 	{
-		GetClearColor() = {0.5f, 0.5f, 0.5f, 1.0f};
+		GetClearColor() = {0.5f, 0.5f, 0.5f};
 
-		m_Renderable.Indices = {
+		/*m_Renderable.Indices = {
 			0, 1, 2
 		};
 
-		m_Renderable.Create();
-
 		m_Renderable.Vertices = {
-			{Position<float>(-0.5, -0.5, 0.0), Color<float>(1, 0, 0)},
-			{Position<float>(0.0, +0.5, 0.0), Color<float>(0, 1, 0)},
-			{Position<float>(+0.5, -0.5, 0.0), Color<float>(0, 0, 1)},
-		};
+			{Position(-0.5, -0.5), Color(1, 0, 0)},
+			{Position(0.0, +0.5),  Color(0, 1, 0)},
+			{Position(+0.5, -0.5), Color(0, 0, 1)},
+		};*/
+
+		m_Renderable.Create();
 	}
 
 	void Event(EventType* event) override
@@ -51,26 +59,10 @@ public:
 
 	void Update() override
 	{
-		const Diligent::Uint64 offset = 0;
-		Diligent::IBuffer* pBuffs[] = {
-			m_Renderable.VertexBuffer	
-		};
-		GetImmediateContext().GetNative()->SetVertexBuffers(0, 1, pBuffs, &offset,
-		                                                    Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
-		                                                    Diligent::SET_VERTEX_BUFFERS_FLAG_RESET);
-		GetImmediateContext().GetNative()->SetIndexBuffer(m_Renderable.IndexBuffer, 0,
-		                                                  Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-
 	}
 
 	void ImGui() override
 	{
-		Diligent::MapHelper<Vertex<float>> Vertices(GetImmediateContext().GetNative(), m_Renderable.VertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
-		for (Diligent::Uint32 v = 0; v < m_Renderable.Vertices.size(); ++v)
-		{
-			Vertices[v] = m_Renderable.Vertices[v];
-		}
-
 		static bool state = false;
 
 		if (state)

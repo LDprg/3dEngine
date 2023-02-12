@@ -1,6 +1,7 @@
 #pragma once
 #include <Buffer.h>
 #include <Common/interface/RefCntAutoPtr.hpp>
+#include <Graphics/GraphicsTools/interface/MapHelper.hpp>
 
 #include "Engine/Core/Application.h"
 #include "Engine/Math/Vertex.hpp"
@@ -15,7 +16,7 @@ namespace __XXECS
 		Diligent::RefCntAutoPtr<Diligent::IBuffer> VertexBuffer;
 		Diligent::RefCntAutoPtr<Diligent::IBuffer> IndexBuffer;
 
-		void Create(Diligent::Uint64 VertexSize, Diligent::Uint64 IndexSize)
+		void Create()
 		{
 			Diligent::BufferDesc VertBuffDesc;
 			VertBuffDesc.Name = "Vertex buffer";
@@ -38,9 +39,24 @@ namespace __XXECS
 
 		void Draw()
 		{
+			Diligent::MapHelper<Vertex> verts(Application::Get().GetImmediateContext().GetNative(), VertexBuffer,
+				Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
+			for (Diligent::Uint32 v = 0; v < Vertices.size(); ++v)
+				verts[v] = Vertices[v];
+
+			const Diligent::Uint64 offset = 0;
+			Diligent::IBuffer* pBuffs[] = {
+				VertexBuffer
+			};
+			Application::Get().GetImmediateContext().GetNative()->SetVertexBuffers(0, 1, pBuffs, &offset,
+				Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
+				Diligent::SET_VERTEX_BUFFERS_FLAG_RESET);
+			Application::Get().GetImmediateContext().GetNative()->SetIndexBuffer(IndexBuffer, 0,
+				Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+
 			Diligent::DrawIndexedAttribs drawAttrs;
 			drawAttrs.IndexType = Diligent::VT_UINT32;
-			drawAttrs.NumIndices = Vertices.size();
+			drawAttrs.NumIndices = Indices.size();
 			drawAttrs.Flags = Diligent::DRAW_FLAG_VERIFY_ALL;
 			Application::Get().GetImmediateContext().GetNative()->DrawIndexed(drawAttrs);
 		}

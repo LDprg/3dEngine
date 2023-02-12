@@ -40,10 +40,6 @@ void main(in  PSInput  PSIn,
 }
 )";
 
-void __XXECS::Renderer::LoadShader(const char* filename)
-{
-}
-
 void __XXECS::Renderer::Exit()
 {
 	m_renderThread.detach();
@@ -218,11 +214,11 @@ void __XXECS::Renderer::ThreadUpdate()
 
 	Application::Get().Update();
 
+	Application::Get().ImGui();
+
 	// Set the pipeline state in the immediate context
 	m_pImmediateContext->SetPipelineState(m_pPSO);
 	m_pImmediateContext->CommitShaderResources(m_pSRB, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-
-	Application::Get().ImGui();
 
 	Application::Get().Render();
 

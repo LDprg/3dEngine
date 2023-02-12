@@ -26,8 +26,6 @@ namespace __XXECS
 
 		void Bind(RenderArguments renderArgs);
 
-		static void LoadShader(const char* filename);
-
 		Diligent::RefCntAutoPtr<Diligent::IPipelineState>& GetPipelineState()
 		{
 			return m_pPSO;
