@@ -1,29 +1,29 @@
 #include "Application.h"
 
-__XXECS::Application* __XXECS::Application::m_instance = nullptr;
+__XXECS::Application* __XXECS::Application::m_Instance = nullptr;
 
 __XXECS::Application::Application()
 {
-	LOG_CORE_ASSERT(!m_instance, "Application already exists!");
-	m_instance = this;
+	LOG_CORE_ASSERT(!m_Instance, "Application already exists!");
+	m_Instance = this;
 
-	m_eventManager = new EventManager();
-	m_window = new Window();
-	m_renderer = new Renderer();
+	m_EventManager = new EventManager();
+	m_Window = new Window();
+	m_Renderer = new Renderer();
 	m_SwapChain = new SwapChain();
 	m_ImmediateContext = new ImmediateContext();
-	m_device = new Device();
-	m_imgui = new ImguiManager();
+	m_Device = new Device();
+	m_ImGui = new ImguiManager();
 }
 
 void __XXECS::Application::RunLoop()
 {
-	m_window->Init();
-	m_renderer->Bind(m_window->GetRenderArgs());
+	m_Window->Init();
+	m_Renderer->Bind(m_Window->GetRenderArgs());
 
 	while (IsRunning())
-		m_window->Update();
+		m_Window->Update();
 
-	m_window->Close();
-	m_renderer->Exit();
+	m_Window->Close();
+	m_Renderer->Exit();
 }

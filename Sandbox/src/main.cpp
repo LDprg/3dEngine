@@ -1,5 +1,6 @@
 #include <numeric>
 #include <string>
+#include <Engine/Entity/Components/RenderableComp.hpp>
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
 #include <Graphics/GraphicsTools/interface/MapHelper.hpp>
@@ -8,23 +9,10 @@
 
 using namespace __XXECS;
 
-Vertices TriVerts =
-{
-	{Position<float>(-0.5, -0.5, 0.0), Color<float>(1, 0, 0)},
-	{Position<float>(0.0, +0.5, 0.0), Color<float>(0, 1, 0)},
-	{Position<float>(+0.5, -0.5, 0.0), Color<float>(0, 0, 1)},
-};
-
-const Indices TriIndices =
-{
-	0, 1, 2
-};
-
 class App final : public Application
 {
 protected:
-	Diligent::RefCntAutoPtr<Diligent::IBuffer> m_CubeVertexBuffer;
-	Diligent::RefCntAutoPtr<Diligent::IBuffer> m_CubeIndexBuffer;
+	Renderable m_Renderable;
 
 public:
 	App() = default;
@@ -34,24 +22,18 @@ public:
 	void Init() override
 	{
 		GetClearColor() = {0.5f, 0.5f, 0.5f, 1.0f};
-		
-		Diligent::BufferDesc VertBuffDesc;
-		VertBuffDesc.Name = "Vertex buffer";
-		VertBuffDesc.Usage = Diligent::USAGE_DYNAMIC;
-		VertBuffDesc.CPUAccessFlags = Diligent::CPU_ACCESS_WRITE;
-		VertBuffDesc.BindFlags = Diligent::BIND_VERTEX_BUFFER;
-		VertBuffDesc.Size = TriVerts.getSize();
-		GetDevice().GetNative()->CreateBuffer(VertBuffDesc, nullptr, &m_CubeVertexBuffer);
 
-		Diligent::BufferDesc IndBuffDesc;
-		IndBuffDesc.Name = "Index buffer";
-		IndBuffDesc.Usage = Diligent::USAGE_IMMUTABLE;
-		IndBuffDesc.BindFlags = Diligent::BIND_INDEX_BUFFER;
-		IndBuffDesc.Size = TriIndices.getSize();
-		Diligent::BufferData IBData;
-		IBData.pData = TriIndices;
-		IBData.DataSize = TriIndices.getSize();
-		GetDevice().GetNative()->CreateBuffer(IndBuffDesc, &IBData, &m_CubeIndexBuffer);
+		m_Renderable.Indices = {
+			0, 1, 2
+		};
+
+		m_Renderable.Create();
+
+		m_Renderable.Vertices = {
+			{Position<float>(-0.5, -0.5, 0.0), Color<float>(1, 0, 0)},
+			{Position<float>(0.0, +0.5, 0.0), Color<float>(0, 1, 0)},
+			{Position<float>(+0.5, -0.5, 0.0), Color<float>(0, 0, 1)},
+		};
 	}
 
 	void Event(EventType* event) override
@@ -70,29 +52,31 @@ public:
 	void Update() override
 	{
 		const Diligent::Uint64 offset = 0;
-		Diligent::IBuffer* pBuffs[] = {m_CubeVertexBuffer};
+		Diligent::IBuffer* pBuffs[] = {
+			m_Renderable.VertexBuffer	
+		};
 		GetImmediateContext().GetNative()->SetVertexBuffers(0, 1, pBuffs, &offset,
 		                                                    Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
 		                                                    Diligent::SET_VERTEX_BUFFERS_FLAG_RESET);
-		GetImmediateContext().GetNative()->SetIndexBuffer(m_CubeIndexBuffer, 0,
+		GetImmediateContext().GetNative()->SetIndexBuffer(m_Renderable.IndexBuffer, 0,
 		                                                  Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
 	}
 
 	void ImGui() override
 	{
-		Diligent::MapHelper<Vertex<float>> Vertices(GetImmediateContext().GetNative(), m_CubeVertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
-		for (Diligent::Uint32 v = 0; v < TriVerts.size; ++v)
+		Diligent::MapHelper<Vertex<float>> Vertices(GetImmediateContext().GetNative(), m_Renderable.VertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
+		for (Diligent::Uint32 v = 0; v < m_Renderable.Vertices.size(); ++v)
 		{
-			Vertices[v] = TriVerts[v];
+			Vertices[v] = m_Renderable.Vertices[v];
 		}
 
 		static bool state = false;
 
 		if (state)
-			TriVerts[0].color = Color<float>(1, 0, 0, 0);
+			m_Renderable.Vertices[0].color.a = 0;
 		else
-			TriVerts[0].color = Color<float>(1, 0, 0, 1);
+			m_Renderable.Vertices[0].color.a = 1;
 
 		if (ImGui::Button("Change"))
 			state = !state;
@@ -102,11 +86,7 @@ public:
 
 	void Render() override
 	{
-		Diligent::DrawIndexedAttribs drawAttrs;
-		drawAttrs.IndexType = Diligent::VT_UINT32;
-		drawAttrs.NumIndices = TriVerts.size;
-		drawAttrs.Flags = Diligent::DRAW_FLAG_VERIFY_ALL;
-		GetImmediateContext().GetNative()->DrawIndexed(drawAttrs);
+		m_Renderable.Draw();
 	}
 
 	void Shutdown() override

@@ -46,22 +46,22 @@ namespace __XXECS
 
 		static Application& Get()
 		{
-			return *m_instance;
+			return *m_Instance;
 		}
 
 		Window& GetWindow() const
 		{
-			return *m_window;
+			return *m_Window;
 		}
 
 		EventManager& GetEventManager() const
 		{
-			return *m_eventManager;
+			return *m_EventManager;
 		}
 
 		Renderer& GetRenderer() const
 		{
-			return *m_renderer;
+			return *m_Renderer;
 		}
 
 		SwapChain& GetSwapChain() const
@@ -71,7 +71,7 @@ namespace __XXECS
 
 		Device& GetDevice() const
 		{
-			return *m_device;
+			return *m_Device;
 		}
 
 		ImmediateContext& GetImmediateContext() const
@@ -81,12 +81,12 @@ namespace __XXECS
 
 		ImguiManager& GetImGuiManager() const
 		{
-			return *m_imgui;
+			return *m_ImGui;
 		}
 
 		EntityManager& GetEntityManager() const
 		{
-			return *m_entityManager;
+			return *m_EntityManager;
 		}
 
 		Color<float>& GetClearColor()
@@ -98,16 +98,17 @@ namespace __XXECS
 		void RunLoop();
 
 		bool m_running = true;
-		Window* m_window;
-		EventManager* m_eventManager;
-		Renderer* m_renderer;
-		SwapChain* m_SwapChain;
-		Device* m_device;
-		ImmediateContext* m_ImmediateContext;
-		ImguiManager* m_imgui;
-		EntityManager* m_entityManager;
 		Color<float> m_clearColor = {1.f, 1.f, 1.f, 1.f};
 
-		static Application* m_instance;
+		Window* m_Window;
+		EventManager* m_EventManager;
+		Renderer* m_Renderer;
+		SwapChain* m_SwapChain;
+		Device* m_Device;
+		ImmediateContext* m_ImmediateContext;
+		ImguiManager* m_ImGui;
+		EntityManager* m_EntityManager;
+
+		static Application* m_Instance;
 	};
 }

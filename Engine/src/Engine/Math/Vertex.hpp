@@ -1,9 +1,11 @@
 #pragma once
 
 #include <initializer_list>
-#include <memory>
+#include <vector>
 
 #include <BasicTypes.h>
+
+#include "Vector.hpp"
 
 namespace __XXECS
 {
@@ -16,51 +18,54 @@ namespace __XXECS
 		Color<T> color;
 	};
 
-	struct Vertices
+
+	class Vertices : public std::vector<Vertex<float>>
 	{
-		std::unique_ptr<Vertex<float>[]> data;
-		size_t size;
-
-		Vertices() = default;
-		Vertices(Vertex<float>* data, size_t size) : data(data), size(size) {}
-		Vertices(std::initializer_list<Vertex<float>> ilist) : size(ilist.size())
+	public:
+		Vertices() : std::vector<Vertex<float>>() {}
+		Vertices(std::initializer_list<Vertex<float>> ilist) : std::vector<Vertex<float>>(ilist)
 		{
-			data = std::make_unique<Vertex<float>[]>(size);
-			std::copy(ilist.begin(), ilist.end(), data.get());
+			shrink_to_fit();
 		}
 
-		size_t getSize() const
+		operator void* () const
 		{
-			return sizeof(*data.get()) * size;
+			return const_cast<Vertex<float>*>(data());
 		}
 
-		operator Vertex<float>* () const
+		operator Vertex<float>* ()
 		{
-			return data.get();
+			return data();
+		}
+
+		size_t sizeInBytes() const
+		{
+			return sizeof(Vertex<float>) * size();
 		}
 	};
-	
-    struct Indices
-    {
-		std::unique_ptr<Index[]> data;
-    	size_t size;
 
-		Indices() = default;
-		Indices(Index* data, size_t size) : data(data), size(size) {}
-		Indices(std::initializer_list<Index> ilist) : size(ilist.size())
+	class Indices : public std::vector<Index>
+	{
+	public:
+		Indices() : std::vector<Index>() {}
+		Indices(std::initializer_list<Index> ilist) : std::vector<Index>(ilist)
 		{
-			data = std::make_unique<Index[]>(size);
-			std::copy(ilist.begin(), ilist.end(), data.get());
+			shrink_to_fit();
 		}
 
-		size_t getSize() const
+		operator void* () const
 		{
-			return sizeof(*data.get()) * size;
+			return const_cast<Index*>(data());
 		}
 
-		operator Index* () const
+		operator Index* ()
 		{
-			return data.get();
+			return data();
 		}
-    };
+
+		size_t sizeInBytes() const
+		{
+			return sizeof(Index) * size();
+		}
+	};
 }
