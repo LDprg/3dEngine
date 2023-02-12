@@ -103,9 +103,9 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	// Primitive topology defines what kind of primitives will be rendered by this pipeline state
 	PSOCreateInfo.GraphicsPipeline.PrimitiveTopology = Diligent::PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
 	// No back face culling for this tutorial
-	PSOCreateInfo.GraphicsPipeline.RasterizerDesc.CullMode = Diligent::CULL_MODE_NONE;
+	PSOCreateInfo.GraphicsPipeline.RasterizerDesc.CullMode = Diligent::CULL_MODE_BACK;
 	// Disable depth testing
-	PSOCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthEnable = false;
+	PSOCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthEnable = true;
 
 	PSOCreateInfo.GraphicsPipeline.BlendDesc = BlendState;
 

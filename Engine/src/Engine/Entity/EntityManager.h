@@ -1,4 +1,5 @@
 #pragma once
+#include <entt/entt.hpp>
 
 namespace __XXECS
 {
@@ -8,5 +9,12 @@ namespace __XXECS
 		EntityManager() = default;
 		~EntityManager() = default;
 
+		entt::registry& GetNative()
+		{
+			return m_registry;
+		}
+
+	private:
+		entt::registry m_registry;
 	};
 }
