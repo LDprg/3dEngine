@@ -13,43 +13,43 @@ namespace __XXECS
 
 		~Window() = default;
 
-		void Init();
-		void Close();
+		auto Init() -> void;
+		auto Close() const -> void;
 
-		void Update();
+		auto Update() const -> void;
 
-		void SetFullscreen(bool fullscreen);
+		auto SetFullscreen(bool fullscreen) -> void;
 
-		bool IsFullscreen() const
+		auto IsFullscreen() const -> bool
 		{
 			return m_isFullscreen;
 		}
 
-		RenderArguments GetRenderArgs();
+		auto GetRenderArgs() -> RenderArguments;
 
-		GLFWwindow* GetNative() const
+		auto GetNative() const -> GLFWwindow*
 		{
 			return m_window;
 		}
 
-		std::pair<float, float> GetSize();
-		float GetWidth();
-		float GetHeight();
+		auto GetSize() -> std::pair<float, float>;
+		auto GetWidth() -> float;
+		auto GetHeight() -> float;
 
-		std::pair<float, float> GetPos() const;
-		float GetPosX() const;
-		float GetPosY() const;
+		auto GetPos() const -> std::pair<float, float>;
+		auto GetPosX() const -> float;
+		auto GetPosY() const -> float;
 
 	private:
 		GLFWwindow* m_window = nullptr;
 		static bool m_hasBeenInit;
-		bool m_isFullscreen = false;
-		int m_width = 0;
-		int m_height = 0;
+		bool        m_isFullscreen = false;
+		int         m_width        = 0;
+		int         m_height       = 0;
 
-		float m_oldWidth = 0;
+		float m_oldWidth  = 0;
 		float m_oldHeight = 0;
-		float m_oldPosX = 0;
-		float m_oldPosY = 0;
+		float m_oldPosX   = 0;
+		float m_oldPosY   = 0;
 	};
 }

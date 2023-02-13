@@ -1,33 +1,24 @@
 #include "Window.hpp"
 #include "pch.hpp"
 
-#if BX_PLATFORM_LINUX
-#define GLFW_EXPOSE_NATIVE_X11
-#elif BX_PLATFORM_WINDOWS
-#define GLFW_EXPOSE_NATIVE_WIN32
-#elif BX_PLATFORM_OSX
-#define GLFW_EXPOSE_NATIVE_COCOA
-#endif
-#include <GLFW/glfw3native.h>
-
 #include "Engine/Events/Event.hpp"
 
 bool __XXECS::Window::m_hasBeenInit = false;
 
-static void GlfwErrorCallback(int error, const char* description)
+static auto GlfwErrorCallback(int error, const char* description) -> void
 {
 	LOG_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 }
 
-static void GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static auto GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) -> void
 {
 	__XXECS::KeyEvent keyEvent;
-	keyEvent.key = static_cast<Key>(key);
+	keyEvent.key    = static_cast<Key>(key);
 	keyEvent.action = static_cast<Action>(action);
 	__XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
 
-static void GlfwCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+static auto GlfwCursorPositionCallback(GLFWwindow* window, double xpos, double ypos) -> void
 {
 	__XXECS::MouseMovedEvent movedEvent;
 	movedEvent.x = static_cast<int>(xpos);
@@ -35,21 +26,21 @@ static void GlfwCursorPositionCallback(GLFWwindow* window, double xpos, double y
 	__XXECS::Application::Get()->GetEventManager().Push(movedEvent);
 }
 
-void GlfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+auto GlfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods) -> void
 {
 	__XXECS::KeyEvent keyEvent;
-	keyEvent.key = static_cast<Key>(button);
+	keyEvent.key    = static_cast<Key>(button);
 	keyEvent.action = static_cast<Action>(action);
 	__XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
 
-void __XXECS::Window::Init()
+auto __XXECS::Window::Init() -> void
 {
 	if (!m_hasBeenInit)
 	{
 		glfwSetErrorCallback(GlfwErrorCallback);
 
-		LOG_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!");
+		LOG_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!")
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		m_hasBeenInit = true;
@@ -58,14 +49,14 @@ void __XXECS::Window::Init()
 	m_window = glfwCreateWindow(1024, 768, "helloworld", nullptr, nullptr);
 
 	auto [width, height] = GetSize();
-	m_oldHeight = height;
-	m_oldWidth = width;
+	m_oldHeight          = height;
+	m_oldWidth           = width;
 
 	auto [posX, posY] = GetPos();
-	m_oldPosX = posX;
-	m_oldPosY = posY;
+	m_oldPosX         = posX;
+	m_oldPosY         = posY;
 
-	LOG_CORE_ASSERT(m_window, "Could not initialize Window!");
+	LOG_CORE_ASSERT(m_window, "Could not initialize Window!")
 
 	glfwSetKeyCallback(m_window, GlfwKeyCallback);
 	glfwSetCursorPosCallback(m_window, GlfwCursorPositionCallback);
@@ -73,13 +64,13 @@ void __XXECS::Window::Init()
 	//glfwSetWindowSizeCallback(m_window, glfw_ResizeCallback);
 }
 
-void __XXECS::Window::Close()
+auto __XXECS::Window::Close() const -> void
 {
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
 }
 
-void __XXECS::Window::Update()
+auto __XXECS::Window::Update() const -> void
 {
 	glfwWaitEvents();
 
@@ -87,19 +78,19 @@ void __XXECS::Window::Update()
 		Application::Get()->Close();
 }
 
-void __XXECS::Window::SetFullscreen(const bool fullscreen)
+auto __XXECS::Window::SetFullscreen(const bool fullscreen) -> void
 {
 	if (fullscreen)
 	{
 		if (!m_isFullscreen)
 		{
 			auto [width, height] = GetSize();
-			m_oldHeight = height;
-			m_oldWidth = width;
+			m_oldHeight          = height;
+			m_oldWidth           = width;
 
 			auto [posX, posY] = GetPos();
-			m_oldPosX = posX;
-			m_oldPosY = posY;
+			m_oldPosX         = posX;
+			m_oldPosY         = posY;
 
 			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 			glfwSetWindowMonitor(m_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
@@ -115,7 +106,7 @@ void __XXECS::Window::SetFullscreen(const bool fullscreen)
 	}
 }
 
-__XXECS::RenderArguments __XXECS::Window::GetRenderArgs()
+auto __XXECS::Window::GetRenderArgs() -> RenderArguments
 {
 	RenderArguments renderArgs;
 
@@ -128,37 +119,37 @@ __XXECS::RenderArguments __XXECS::Window::GetRenderArgs()
 	renderArgs.platformData.nwh = glfwGetWin32Window(m_window);
 #endif
 	glfwGetWindowSize(m_window, &m_width, &m_height);
-	renderArgs.width = static_cast<uint32_t>(m_width);
+	renderArgs.width  = static_cast<uint32_t>(m_width);
 	renderArgs.height = static_cast<uint32_t>(m_height);
 
 	return renderArgs;
 }
 
-std::pair<float, float> __XXECS::Window::GetSize()
+auto __XXECS::Window::GetSize() -> std::pair<float, float>
 {
 	int width, height;
 
 	glfwGetWindowSize(m_window, &width, &height);
 
-	m_width = width;
+	m_width  = width;
 	m_height = height;
 
 	return {static_cast<float>(width), static_cast<float>(height)};
 }
 
-float __XXECS::Window::GetWidth()
+auto __XXECS::Window::GetWidth() -> float
 {
 	auto [width, height] = GetSize();
 	return width;
 }
 
-float __XXECS::Window::GetHeight()
+auto __XXECS::Window::GetHeight() -> float
 {
 	auto [width, height] = GetSize();
 	return height;
 }
 
-std::pair<float, float> __XXECS::Window::GetPos() const
+auto __XXECS::Window::GetPos() const -> std::pair<float, float>
 {
 	int x, y;
 
@@ -167,13 +158,13 @@ std::pair<float, float> __XXECS::Window::GetPos() const
 	return {static_cast<float>(x), static_cast<float>(y)};
 }
 
-float __XXECS::Window::GetPosX() const
+auto __XXECS::Window::GetPosX() const -> float
 {
 	auto [x, y] = GetPos();
 	return x;
 }
 
-float __XXECS::Window::GetPosY() const
+auto __XXECS::Window::GetPosY() const -> float
 {
 	auto [x, y] = GetPos();
 	return y;

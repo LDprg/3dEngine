@@ -2,36 +2,36 @@
 
 #include "Engine/Core/Application.hpp"
 
-bool __XXECS::Input::IsKeyPressed(Key keycode)
+auto __XXECS::Input::IsKeyPressed(Key keycode) -> bool
 {
 	const auto window = Application::Get()->GetWindow().GetNative();
-	const auto state = glfwGetKey(window, static_cast<int>(keycode));
+	const auto state  = glfwGetKey(window, static_cast<int>(keycode));
 	return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
-bool __XXECS::Input::IsMouseButtonPressed(Mouse button)
+auto __XXECS::Input::IsMouseButtonPressed(Mouse button) -> bool
 {
 	const auto window = Application::Get()->GetWindow().GetNative();
-	const auto state = glfwGetMouseButton(window, static_cast<int>(button));
+	const auto state  = glfwGetMouseButton(window, static_cast<int>(button));
 	return state == GLFW_PRESS;
 }
 
-std::pair<float, float> __XXECS::Input::GetMousePosition()
+auto __XXECS::Input::GetMousePosition() -> std::pair<float, float>
 {
 	const auto window = Application::Get()->GetWindow().GetNative();
-	double xPos, yPos;
+	double     xPos, yPos;
 	glfwGetCursorPos(window, &xPos, &yPos);
 
 	return {static_cast<float>(xPos), static_cast<float>(yPos)};
 }
 
-float __XXECS::Input::GetMouseX()
+auto __XXECS::Input::GetMouseX() -> float
 {
 	auto [x, y] = GetMousePosition();
 	return x;
 }
 
-float __XXECS::Input::GetMouseY()
+auto __XXECS::Input::GetMouseY() -> float
 {
 	auto [x, y] = GetMousePosition();
 	return y;

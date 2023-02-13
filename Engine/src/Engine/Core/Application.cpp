@@ -1,30 +1,30 @@
 #include "Application.hpp"
 
-__XXECS::Application* __XXECS::Application::m_Instance;
+__XXECS::Application* __XXECS::Application::m_instance;
 
 __XXECS::Application::Application()
 {
-	LOG_CORE_ASSERT(!m_Instance, "Application already exists!");
-	m_Instance = this;
+	LOG_CORE_ASSERT(!m_instance, "Application already exists!")
+	m_instance = this;
 
-	m_EventManager = std::make_unique<EventManager>();
-	m_Window = std::make_unique<Window>();
-	m_SwapChain = std::make_unique<SwapChain>();
-	m_Device = std::make_unique<Device>();
-	m_ImmediateContext = std::make_unique<ImmediateContext>();
-	m_ImGui = std::make_unique<ImGuiManager>();
-	m_Renderer = std::make_unique<Renderer>();
-	m_EntityManager = std::make_unique<EntityManager>();
+	m_eventManager     = std::make_unique<EventManager>();
+	m_window           = std::make_unique<Window>();
+	m_swapChain        = std::make_unique<SwapChain>();
+	m_device           = std::make_unique<Device>();
+	m_immediateContext = std::make_unique<ImmediateContext>();
+	m_imGui            = std::make_unique<ImGuiManager>();
+	m_renderer         = std::make_unique<Renderer>();
+	m_entityManager    = std::make_unique<EntityManager>();
 }
 
-void __XXECS::Application::RunLoop() const
+auto __XXECS::Application::RunLoop() const -> void
 {
-	m_Window->Init();
-	m_Renderer->Bind(m_Window->GetRenderArgs());
+	m_window->Init();
+	m_renderer->Bind(m_window->GetRenderArgs());
 
 	while (IsRunning())
-		m_Window->Update();
+		m_window->Update();
 
-	m_Window->Close();
-	m_Renderer->Exit();
+	m_window->Close();
+	m_renderer->Exit();
 }

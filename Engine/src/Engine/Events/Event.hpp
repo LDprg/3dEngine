@@ -12,7 +12,7 @@ namespace __XXECS
 
 	struct KeyEvent
 	{
-		Key key;
+		Key    key;
 		Action action;
 	};
 
@@ -31,15 +31,15 @@ namespace __XXECS
 	class EventManager final
 	{
 	public:
-		EventManager() = default;
+		EventManager()  = default;
 		~EventManager() = default;
 
-		void Push(const std::any& ptr)
+		auto Push(const std::any& ptr) -> void
 		{
 			m_apiThreadEvents.push(ptr);
 		}
 
-		std::any Pop()
+		auto Pop() -> std::any
 		{
 			std::any val;
 

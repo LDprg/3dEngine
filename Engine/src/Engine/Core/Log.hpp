@@ -10,14 +10,14 @@ namespace __XXECS
 	class Log
 	{
 	public:
-		static void Init();
+		static auto Init() -> void;
 
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger()
+		static auto GetCoreLogger() -> std::shared_ptr<spdlog::logger>&
 		{
 			return m_coreLogger;
 		}
 
-		static std::shared_ptr<spdlog::logger>& GetClientLogger()
+		static auto GetClientLogger() -> std::shared_ptr<spdlog::logger>&
 		{
 			return m_clientLogger;
 		}

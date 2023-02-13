@@ -12,6 +12,15 @@
 #include <Engine/Core/Application.hpp>
 
 #include <GLFW/glfw3.h>
+
+//#if LINUX
+//#define GLFW_EXPOSE_NATIVE_X11
+//#elif WINDOWS
+//#define GLFW_EXPOSE_NATIVE_WIN32
+//#elif OSX
+//#define GLFW_EXPOSE_NATIVE_COCOA
+//#endif
+
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 

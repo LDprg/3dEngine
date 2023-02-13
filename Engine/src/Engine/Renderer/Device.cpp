@@ -1,18 +1,17 @@
 #include "Engine/Renderer/Device.hpp"
 
-void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
+auto __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType) -> void
 {
 	Diligent::SwapChainDesc SCDesc;
-	HWND hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
+	HWND                    hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
 
-	Diligent::RefCntAutoPtr<Diligent::IRenderDevice>& m_pDevice = Application::Get()->GetDevice().GetNative();
-	Diligent::RefCntAutoPtr<Diligent::ISwapChain>& m_pSwapChain = Application::Get()->GetSwapChain().GetNative();
+	Diligent::RefCntAutoPtr<Diligent::IRenderDevice>&  m_pDevice = Application::Get()->GetDevice().GetNative();
+	Diligent::RefCntAutoPtr<Diligent::ISwapChain>&     m_pSwapChain = Application::Get()->GetSwapChain().GetNative();
 	Diligent::RefCntAutoPtr<Diligent::IDeviceContext>& m_pImmediateContext = Application::Get()->GetImmediateContext().
 		GetNative();
 
 	switch (m_DeviceType)
 	{
-#if VULKAN_SUPPORTED
 	case Diligent::RENDER_DEVICE_TYPE_VULKAN:
 		{
 #    if EXPLICITLY_LOAD_ENGINE_VK_DLL
@@ -31,9 +30,7 @@ void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
 			}
 		}
 		break;
-#endif
 
-#if D3D12_SUPPORTED
 	case Diligent::RENDER_DEVICE_TYPE_D3D12:
 		{
 #    if ENGINE_DLL
@@ -49,9 +46,7 @@ void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
 			                                    Window, &m_pSwapChain);
 		}
 		break;
-#endif
 
-#if D3D11_SUPPORTED
 	case Diligent::RENDER_DEVICE_TYPE_D3D11:
 		{
 			Diligent::EngineD3D11CreateInfo EngineCI;
@@ -66,9 +61,7 @@ void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
 			                                    Window, &m_pSwapChain);
 		}
 		break;
-#endif
 
-#if GL_SUPPORTED
 	case Diligent::RENDER_DEVICE_TYPE_GL:
 		{
 #    if EXPLICITLY_LOAD_ENGINE_GL_DLL
@@ -84,10 +77,8 @@ void __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType)
 			                                           &m_pSwapChain);
 		}
 		break;
-#endif
 
-	default:
-		LOG_CORE_FATAL("Unknown/unsupported device type");
+	default: LOG_CORE_FATAL("Unknown/unsupported device type");
 		__debugbreak();
 	}
 }

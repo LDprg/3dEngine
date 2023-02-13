@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Engine/Core/Application.hpp"
-
 namespace __XXECS
 {
 	class ImmediateContext
@@ -14,7 +12,7 @@ namespace __XXECS
 			m_pImmediateContext.Release();
 		}
 
-		Diligent::RefCntAutoPtr<Diligent::IDeviceContext>& GetNative()
+		auto GetNative() -> Diligent::RefCntAutoPtr<Diligent::IDeviceContext>&
 		{
 			return m_pImmediateContext;
 		}

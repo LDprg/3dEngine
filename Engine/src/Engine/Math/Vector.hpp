@@ -8,11 +8,13 @@ namespace __XXECS
 
 		Color() = default;
 
-		Color(const float r, const float g, const float b, const float a) : r(r), g(g), b(b), a(a)
+		Color(const float r, const float g, const float b, const float a)
+			: r(r), g(g), b(b), a(a)
 		{
 		}
 
-		Color(const float r, const float g, const float b) : r(r), g(g), b(b), a(1.f)
+		Color(const float r, const float g, const float b)
+			: r(r), g(g), b(b), a(1.f)
 		{
 		}
 
@@ -28,15 +30,18 @@ namespace __XXECS
 
 		Position() = default;
 
-		Position(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w)
+		Position(const float x, const float y, const float z, const float w)
+			: x(x), y(y), z(z), w(w)
 		{
 		}
 
-		Position(const float x, const float y, const float z) : x(x), y(y), z(z), w(1.f)
+		Position(const float x, const float y, const float z)
+			: x(x), y(y), z(z), w(1.f)
 		{
 		}
 
-		Position(const float x, const float y) : x(x), y(y), z(0.f), w(1.f)
+		Position(const float x, const float y)
+			: x(x), y(y), z(0.f), w(1.f)
 		{
 		}
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Engine/Math/Vector.hpp"
 #include "Engine/Math/General.hpp"
+#include "Engine/Math/Vector.hpp"
 
 namespace __XXECS
 {
@@ -10,7 +10,7 @@ namespace __XXECS
 	struct Vertex
 	{
 		Position pos;
-		Color color;
+		Color    color;
 	};
 
 	struct Vertices
@@ -34,12 +34,12 @@ namespace __XXECS
 			return data.get();
 		}
 
-		[[nodiscard]] Size SizeInBytes() const
+		[[nodiscard]] auto SizeInBytes() const -> Size
 		{
 			return sizeof(Vertex) * m_size;
 		}
 
-		[[nodiscard]] Size size() const
+		[[nodiscard]] auto size() const -> Size
 		{
 			return m_size;
 		}
@@ -69,12 +69,12 @@ namespace __XXECS
 			return data.get();
 		}
 
-		[[nodiscard]] Size SizeInBytes() const
+		[[nodiscard]] auto SizeInBytes() const -> Size
 		{
 			return sizeof(Index) * m_size;
 		}
 
-		[[nodiscard]] Size size() const
+		[[nodiscard]] auto size() const -> Size
 		{
 			return m_size;
 		}

@@ -10,108 +10,108 @@
 
 #include "Engine/Math/Vector.hpp"
 
-int main(int argc, char** argv);
+auto main(int argc, char** argv) -> int;
 
 namespace __XXECS
 {
 	class Application
 	{
-		friend int ::main(int argc, char** argv);
+		friend auto ::main(int argc, char** argv) -> int;
 
 	public:
 		Application();
-		virtual ~Application() = default;
-		Application(const Application&) = delete;
-		void operator=(const Application&) = delete;
-		Application(const Application&&) = delete;
-		void operator=(const Application&&) = delete;
+		virtual ~Application()                      = default;
+		Application(const Application&)             = delete;
+		Application(const Application&&)            = delete;
+		auto operator=(const Application&) -> void  = delete;
+		auto operator=(const Application&&) -> void = delete;
 
-		virtual void Event(const std::any& event) = 0;
+		virtual auto Event(const std::any& event) -> void = 0;
 
-		virtual void Init() = 0;
-		virtual void Update() = 0;
-		virtual void Render() = 0;
-		virtual void Shutdown() = 0;
+		virtual auto Init() -> void = 0;
+		virtual auto Update() -> void = 0;
+		virtual auto Render() -> void = 0;
+		virtual auto Shutdown() -> void = 0;
 
-		virtual void ImGui()
+		virtual auto ImGui() -> void
 		{
 		}
 
-		[[nodiscard]] bool IsRunning() const
+		[[nodiscard]] auto IsRunning() const -> bool
 		{
 			return m_running;
 		}
 
-		void Close()
+		auto Close() -> void
 		{
 			m_running = false;
 		}
 
-		static Application* Get()
+		static auto Get() -> Application*
 		{
-			return m_Instance;
+			return m_instance;
 		}
 
-		[[nodiscard]] Window& GetWindow() const
+		[[nodiscard]] auto GetWindow() const -> Window&
 		{
-			return *m_Window;
+			return *m_window;
 		}
 
-		[[nodiscard]] EventManager& GetEventManager() const
+		[[nodiscard]] auto GetEventManager() const -> EventManager&
 		{
-			return *m_EventManager;
+			return *m_eventManager;
 		}
 
-		[[nodiscard]] Renderer& GetRenderer() const
+		[[nodiscard]] auto GetRenderer() const -> Renderer&
 		{
-			return *m_Renderer;
+			return *m_renderer;
 		}
 
-		[[nodiscard]] SwapChain& GetSwapChain() const
+		[[nodiscard]] auto GetSwapChain() const -> SwapChain&
 		{
-			return *m_SwapChain;
+			return *m_swapChain;
 		}
 
-		[[nodiscard]] Device& GetDevice() const
+		[[nodiscard]] auto GetDevice() const -> Device&
 		{
-			return *m_Device;
+			return *m_device;
 		}
 
-		[[nodiscard]] ImmediateContext& GetImmediateContext() const
+		[[nodiscard]] auto GetImmediateContext() const -> ImmediateContext&
 		{
-			return *m_ImmediateContext;
+			return *m_immediateContext;
 		}
 
-		[[nodiscard]] ImGuiManager& GetImGuiManager() const
+		[[nodiscard]] auto GetImGuiManager() const -> ImGuiManager&
 		{
-			return *m_ImGui;
+			return *m_imGui;
 		}
 
-		[[nodiscard]] EntityManager& GetEntityManager() const
+		[[nodiscard]] auto GetEntityManager() const -> EntityManager&
 		{
-			return *m_EntityManager;
+			return *m_entityManager;
 		}
 
-		Color& GetClearColor()
+		auto GetClearColor() -> Color&
 		{
 			return m_clearColor;
 		}
 
 	private:
-		void RunLoop() const;
+		auto RunLoop() const -> void;
 
-		bool m_running = true;
+		bool  m_running    = true;
 		Color m_clearColor = {1.f, 1.f, 1.f};
 
-		std::unique_ptr<Window> m_Window;
-		std::unique_ptr<EventManager> m_EventManager;
-		std::unique_ptr<Renderer> m_Renderer;
-		std::unique_ptr<SwapChain> m_SwapChain;
-		std::unique_ptr<Device> m_Device;
-		std::unique_ptr<ImmediateContext> m_ImmediateContext;
-		std::unique_ptr<ImGuiManager> m_ImGui;
-		std::unique_ptr<EntityManager> m_EntityManager;
+		std::unique_ptr<Window>           m_window;
+		std::unique_ptr<EventManager>     m_eventManager;
+		std::unique_ptr<Renderer>         m_renderer;
+		std::unique_ptr<SwapChain>        m_swapChain;
+		std::unique_ptr<Device>           m_device;
+		std::unique_ptr<ImmediateContext> m_immediateContext;
+		std::unique_ptr<ImGuiManager>     m_imGui;
+		std::unique_ptr<EntityManager>    m_entityManager;
 
-		static Application* m_Instance;
+		static Application* m_instance;
 	};
 }

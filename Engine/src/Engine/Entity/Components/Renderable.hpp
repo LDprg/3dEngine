@@ -9,12 +9,12 @@ namespace __XXECS
 	struct Renderable
 	{
 		Vertices Vertices;
-		Indices Indices;
+		Indices  Indices;
 
 		Diligent::RefCntAutoPtr<Diligent::IBuffer> VertexBuffer;
 		Diligent::RefCntAutoPtr<Diligent::IBuffer> IndexBuffer;
 
-		static void Create(Renderable& target);
-		static void Draw(Renderable& target);
+		static auto Create(Renderable& target) -> void;
+		static auto Draw(Renderable& target) -> void;
 	};
 }

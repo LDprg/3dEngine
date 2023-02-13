@@ -15,20 +15,17 @@ public:
 
 	~App() override = default;
 
-	void Init() override
+	auto Init() -> void override
 	{
 		GetClearColor() = {0.5f, 0.5f, 0.5f};
 
 		{
 			const auto entity = GetEntityManager().create();
-			auto& item = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
-			item.Indices = {
-				0, 1, 2
-			};
+			auto&      item   = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
+			item.Indices      = {0, 1, 2};
 
 			item.Vertices = {
-				{Position(-0.5, -0.5), Color(1, 0, 0)},
-				{Position(0.0, +0.5), Color(0, 1, 0)},
+				{Position(-0.5, -0.5), Color(1, 0, 0)}, {Position(0.0, +0.5), Color(0, 1, 0)},
 				{Position(+0.5, -0.5), Color(0, 0, 1)},
 			};
 
@@ -37,14 +34,11 @@ public:
 
 		{
 			const auto entity = GetEntityManager().create();
-			auto& item = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
-			item.Indices = {
-				0, 1, 2
-			};
+			auto&      item   = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
+			item.Indices      = {0, 1, 2};
 
 			item.Vertices = {
-				{Position(+0.5, +0.5), Color(1, 0, 0)},
-				{Position(0.0, -0.5), Color(0, 1, 0)},
+				{Position(+0.5, +0.5), Color(1, 0, 0)}, {Position(0.0, -0.5), Color(0, 1, 0)},
 				{Position(-0.5, +0.5), Color(0, 0, 1)},
 			};
 
@@ -52,7 +46,7 @@ public:
 		}
 	}
 
-	void Event(const std::any& event) override
+	auto Event(const std::any& event) -> void override
 	{
 		if (Input::IsKeyPressed(Key::Escape))
 			Close();
@@ -65,18 +59,18 @@ public:
 		}
 	}
 
-	void Update() override
+	auto Update() -> void override
 	{
-		const auto view = GetEntityManager().view < Renderable > ();
+		const auto view = GetEntityManager().view<Renderable>();
 
 		view.each([this](auto& render)
 		{
-			for (int i = 0; i < render.Vertices.size(); i++)
+			for (int i                     = 0; i < render.Vertices.size(); i++)
 				render.Vertices[i].color.a = m_state ? 0.5 : 1;
 		});
 	}
 
-	void ImGui() override
+	auto ImGui() -> void override
 	{
 		if (ImGui::Button("Change"))
 			m_state = !m_state;
@@ -84,9 +78,9 @@ public:
 		ImGui::ColorPicker4("Background Color", GetClearColor());
 	}
 
-	void Render() override
+	auto Render() -> void override
 	{
-		const auto view = GetEntityManager().view < Renderable > ();
+		const auto view = GetEntityManager().view<Renderable>();
 		for (const auto entity : view)
 		{
 			auto& item = view.get<Renderable>(entity);
@@ -94,7 +88,7 @@ public:
 		}
 	}
 
-	void Shutdown() override
+	auto Shutdown() -> void override
 	{
 	}
 };

@@ -1,11 +1,11 @@
 #pragma once
 
+// clang off
 #include <EngineFactoryD3D11.h>
 #include <EngineFactoryD3D12.h>
 #include <EngineFactoryOpenGL.h>
 #include <EngineFactoryVk.h>
-
-#include "Engine/Core/Application.hpp"
+// clang on
 
 namespace __XXECS
 {
@@ -20,9 +20,9 @@ namespace __XXECS
 		}
 
 
-		static void createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType);
+		static auto createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType) -> void;
 
-		Diligent::RefCntAutoPtr<Diligent::IRenderDevice>& GetNative()
+		auto GetNative() -> Diligent::RefCntAutoPtr<Diligent::IRenderDevice>&
 		{
 			return m_pDevice;
 		}

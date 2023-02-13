@@ -7,10 +7,10 @@
 
 namespace __XXECS
 {
-	extern Application* CreateApplication();
+	extern auto CreateApplication() -> Application*;
 }
 
-int main(int argc, char** argv)
+inline auto main(int argc, char** argv) -> int
 {
 	__XXECS::Log::Init();
 

@@ -16,39 +16,34 @@ namespace __XXECS
 	public:
 		Renderer() = default;
 
-		~Renderer()
+		~Renderer() = default;
+
+		auto Exit() -> void;
+
+		auto Bind(RenderArguments renderArgs) -> void;
+
+		auto GetPipelineState() -> Diligent::RefCntAutoPtr<Diligent::IPipelineState>&
 		{
-			m_pPSO.Release();
-			m_pSRB.Release();
-			m_VSConstants.Release();
+			return m_pPso;
 		}
 
-		void Exit();
-
-		void Bind(RenderArguments renderArgs);
-
-		Diligent::RefCntAutoPtr<Diligent::IPipelineState>& GetPipelineState()
+		auto GetShaderResourceBinding() -> Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding>&
 		{
-			return m_pPSO;
-		}
-
-		Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding>& GetShaderResourceBinding()
-		{
-			return m_pSRB;
+			return m_pSrb;
 		}
 
 	private:
-		void ThreadInit(const RenderArguments* args);
-		void ThreadUpdate();
-		void ThreadExit();
-		int32_t RunThread(const RenderArguments* userData);
+		auto        ThreadInit(const RenderArguments* args) -> void;
+		auto        ThreadUpdate() -> void;
+		static auto ThreadExit() -> void;
+		auto        RunThread(const RenderArguments* userData) -> int32_t;
 
-		std::thread m_renderThread;
+		std::thread     m_renderThread;
 		RenderArguments m_renderArgs;
 
-		Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPSO;
-		Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSRB;
-		Diligent::RefCntAutoPtr<Diligent::IBuffer> m_VSConstants;
-		Diligent::RENDER_DEVICE_TYPE m_DeviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
+		Diligent::RefCntAutoPtr<Diligent::IPipelineState>         m_pPso;
+		Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSrb;
+		Diligent::RefCntAutoPtr<Diligent::IBuffer>                m_vsConstants;
+		Diligent::RENDER_DEVICE_TYPE                              m_deviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
 	};
 }

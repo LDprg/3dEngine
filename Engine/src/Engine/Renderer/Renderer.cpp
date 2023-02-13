@@ -42,21 +42,21 @@ void main(in  PSInput  PSIn,
 }
 )";
 
-void __XXECS::Renderer::Exit()
+auto __XXECS::Renderer::Exit() -> void
 {
 	m_renderThread.detach();
 }
 
-void __XXECS::Renderer::Bind(const RenderArguments renderArgs)
+auto __XXECS::Renderer::Bind(const RenderArguments renderArgs) -> void
 {
-	m_renderArgs = renderArgs;
+	m_renderArgs   = renderArgs;
 	m_renderThread = std::thread([this]
 	{
 		RunThread(&m_renderArgs);
 	});
 }
 
-int32_t __XXECS::Renderer::RunThread(const RenderArguments* userData)
+auto __XXECS::Renderer::RunThread(const RenderArguments* userData) -> int32_t
 {
 	ThreadInit(userData);
 
@@ -68,9 +68,9 @@ int32_t __XXECS::Renderer::RunThread(const RenderArguments* userData)
 }
 
 
-void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
+auto __XXECS::Renderer::ThreadInit(const RenderArguments* args) -> void
 {
-	Device::createDevice(m_DeviceType);
+	Device::createDevice(m_deviceType);
 
 	Application::Get()->GetImGuiManager().Init();
 
@@ -78,8 +78,8 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 
 	Diligent::BlendStateDesc BlendState;
 	BlendState.RenderTargets[0].BlendEnable = true;
-	BlendState.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
-	BlendState.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+	BlendState.RenderTargets[0].SrcBlend    = Diligent::BLEND_FACTOR_SRC_ALPHA;
+	BlendState.RenderTargets[0].DestBlend   = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
 
 	// Pipeline state object encompasses configuration of all GPU stages
 
@@ -107,15 +107,14 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 
 	PSOCreateInfo.GraphicsPipeline.BlendDesc = BlendState;
 
-	Diligent::LayoutElement LayoutElems[] =
-	{
+	Diligent::LayoutElement LayoutElems[] = {
 		// Attribute 0 - vertex position
 		Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, Diligent::False},
 		// Attribute 1 - vertex color
 		Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, Diligent::False}
 	};
 	PSOCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = LayoutElems;
-	PSOCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(LayoutElems);
+	PSOCreateInfo.GraphicsPipeline.InputLayout.NumElements    = _countof(LayoutElems);
 
 	LOG_CORE_TRACE("Create Shaders");
 	Diligent::ShaderCreateInfo ShaderCI;
@@ -127,9 +126,9 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	Diligent::RefCntAutoPtr<Diligent::IShader> pVS;
 	{
 		ShaderCI.Desc.ShaderType = Diligent::SHADER_TYPE_VERTEX;
-		ShaderCI.EntryPoint = "main";
-		ShaderCI.Desc.Name = "Triangle vertex shader";
-		ShaderCI.Source = VSSource;
+		ShaderCI.EntryPoint      = "main";
+		ShaderCI.Desc.Name       = "Triangle vertex shader";
+		ShaderCI.Source          = VSSource;
 		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pVS);
 	}
 
@@ -137,9 +136,9 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	Diligent::RefCntAutoPtr<Diligent::IShader> pPS;
 	{
 		ShaderCI.Desc.ShaderType = Diligent::SHADER_TYPE_PIXEL;
-		ShaderCI.EntryPoint = "main";
-		ShaderCI.Desc.Name = "Triangle pixel shader";
-		ShaderCI.Source = PSSource;
+		ShaderCI.EntryPoint      = "main";
+		ShaderCI.Desc.Name       = "Triangle pixel shader";
+		ShaderCI.Source          = PSSource;
 		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pPS);
 	}
 
@@ -150,35 +149,35 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	// Define variable type that will be used by default
 	PSOCreateInfo.PSODesc.ResourceLayout.DefaultVariableType = Diligent::SHADER_RESOURCE_VARIABLE_TYPE_STATIC;
 
-	Application::Get()->GetDevice().GetNative()->CreateGraphicsPipelineState(PSOCreateInfo, &m_pPSO);
+	Application::Get()->GetDevice().GetNative()->CreateGraphicsPipelineState(PSOCreateInfo, &m_pPso);
 
 	// Since we did not explcitly specify the type for 'Constants' variable, default
 	// type (SHADER_RESOURCE_VARIABLE_TYPE_STATIC) will be used. Static variables never
 	// change and are bound directly through the pipeline state object.
-	auto* temp = m_pPSO->GetStaticVariableByName(Diligent::SHADER_TYPE_VERTEX, "Constants");
-	if (temp)
-		temp->Set(m_VSConstants);
+	if (auto* temp = m_pPso->GetStaticVariableByName(Diligent::SHADER_TYPE_VERTEX, "Constants"))
+		temp->Set(m_vsConstants);
 
 	// Create a shader resource binding object and bind all static resources in it
-	m_pPSO->CreateShaderResourceBinding(&m_pSRB, true);
+	m_pPso->CreateShaderResourceBinding(&m_pSrb, true);
 }
 
-void __XXECS::Renderer::ThreadUpdate()
+auto __XXECS::Renderer::ThreadUpdate() -> void
 {
 	static int oldWidth;
 	static int oldHeight;
-	int m_width;
-	int m_height;
-	glfwGetWindowSize(Application::Get()->GetWindow().GetNative(), &m_width, &m_height);
-	if (m_width != oldWidth || m_height != oldHeight)
+	int        width;
+	int        height;
+	glfwGetWindowSize(Application::Get()->GetWindow().GetNative(), &width, &height);
+	if (width != oldWidth || height != oldHeight)
 	{
-		ResizeEvent resize = ResizeEvent();
-		resize.width = m_width;
-		resize.height = m_height;
+		auto resize   = ResizeEvent();
+		resize.width  = width;
+		resize.height = height;
 		Application::Get()->GetEventManager().Push(resize);
+
+		oldWidth  = width;
+		oldHeight = height;
 	}
-	oldWidth = m_width;
-	oldHeight = m_height;
 
 	// Handle events from the main thread.
 	while (true)
@@ -194,7 +193,9 @@ void __XXECS::Renderer::ThreadUpdate()
 			Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
 		}
 		else if (ev.type() == typeid(ExitEvent))
+		{
 			Application::Get()->Close();
+		}
 
 		Application::Get()->GetImGuiManager().Event(ev);
 		Application::Get()->Event(ev);
@@ -221,8 +222,8 @@ void __XXECS::Renderer::ThreadUpdate()
 	Application::Get()->ImGui();
 
 	// Set the pipeline state in the immediate context
-	m_pImmediateContext->SetPipelineState(m_pPSO);
-	m_pImmediateContext->CommitShaderResources(m_pSRB, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+	m_pImmediateContext->SetPipelineState(m_pPso);
+	m_pImmediateContext->CommitShaderResources(m_pSrb, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
 	Application::Get()->Render();
 
@@ -231,7 +232,7 @@ void __XXECS::Renderer::ThreadUpdate()
 	Application::Get()->GetSwapChain().Present();
 }
 
-void __XXECS::Renderer::ThreadExit()
+auto __XXECS::Renderer::ThreadExit() -> void
 {
 	Application::Get()->Shutdown();
 

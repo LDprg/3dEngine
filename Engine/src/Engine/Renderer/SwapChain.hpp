@@ -2,8 +2,6 @@
 #include <SwapChain.h>
 #include <Common/interface/RefCntAutoPtr.hpp>
 
-#include "Engine/Core/Application.hpp"
-
 namespace __XXECS
 {
 	class SwapChain
@@ -16,17 +14,17 @@ namespace __XXECS
 			m_pSwapChain.Release();
 		}
 
-		Diligent::RefCntAutoPtr<Diligent::ISwapChain>& GetNative()
+		auto GetNative() -> Diligent::RefCntAutoPtr<Diligent::ISwapChain>&
 		{
 			return m_pSwapChain;
 		}
 
-		const Diligent::SwapChainDesc& GetDesc()
+		auto GetDesc() -> const Diligent::SwapChainDesc&
 		{
 			return m_pSwapChain->GetDesc();
 		}
 
-		void Present(UINT32 SyncInterval = 1)
+		auto Present(UINT32 SyncInterval = 1) -> void
 		{
 			return m_pSwapChain->Present(SyncInterval);
 		}

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Imgui/interface/ImGuiImplDiligent.hpp>
-#include <Imgui/interface/ImGuiUtils.hpp>
 
 #include <ImGuiDiligentRenderer.hpp>
 #include <ThirdParty/imgui/imgui.h>
@@ -11,13 +10,13 @@ namespace __XXECS
 	class ImGuiManager
 	{
 	public:
-		void Init();
+		auto Init() -> void;
 
-		void Event(const std::any& ev) const;
-		void NewFrame();
-		void Render();
+		auto Event(const std::any& ev) const -> void;
+		auto NewFrame() const -> void;
+		auto Render() const -> void;
 
-		void Destroy();
+		auto Destroy() const -> void;
 
 	private:
 		std::unique_ptr<Diligent::ImGuiDiligentRenderer> m_pImGui;
