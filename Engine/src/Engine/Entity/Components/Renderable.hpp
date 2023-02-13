@@ -9,7 +9,7 @@ namespace __XXECS
 	struct Renderable
 	{
 		Vertices Vertices;
-		Indices  Indices;
+		Indices Indices;
 
 		Diligent::RefCntAutoPtr<Diligent::IBuffer> VertexBuffer;
 		Diligent::RefCntAutoPtr<Diligent::IBuffer> IndexBuffer;

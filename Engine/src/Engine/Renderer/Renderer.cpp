@@ -49,7 +49,7 @@ auto __XXECS::Renderer::Exit() -> void
 
 auto __XXECS::Renderer::Bind(const RenderArguments renderArgs) -> void
 {
-	m_renderArgs   = renderArgs;
+	m_renderArgs = renderArgs;
 	m_renderThread = std::thread([this]
 	{
 		RunThread(&m_renderArgs);
@@ -78,8 +78,8 @@ auto __XXECS::Renderer::ThreadInit(const RenderArguments* args) -> void
 
 	Diligent::BlendStateDesc BlendState;
 	BlendState.RenderTargets[0].BlendEnable = true;
-	BlendState.RenderTargets[0].SrcBlend    = Diligent::BLEND_FACTOR_SRC_ALPHA;
-	BlendState.RenderTargets[0].DestBlend   = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+	BlendState.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
+	BlendState.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
 
 	// Pipeline state object encompasses configuration of all GPU stages
 
@@ -114,7 +114,7 @@ auto __XXECS::Renderer::ThreadInit(const RenderArguments* args) -> void
 		Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, Diligent::False}
 	};
 	PSOCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = LayoutElems;
-	PSOCreateInfo.GraphicsPipeline.InputLayout.NumElements    = _countof(LayoutElems);
+	PSOCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(LayoutElems);
 
 	LOG_CORE_TRACE("Create Shaders");
 	Diligent::ShaderCreateInfo ShaderCI;
@@ -126,9 +126,9 @@ auto __XXECS::Renderer::ThreadInit(const RenderArguments* args) -> void
 	Diligent::RefCntAutoPtr<Diligent::IShader> pVS;
 	{
 		ShaderCI.Desc.ShaderType = Diligent::SHADER_TYPE_VERTEX;
-		ShaderCI.EntryPoint      = "main";
-		ShaderCI.Desc.Name       = "Triangle vertex shader";
-		ShaderCI.Source          = VSSource;
+		ShaderCI.EntryPoint = "main";
+		ShaderCI.Desc.Name = "Triangle vertex shader";
+		ShaderCI.Source = VSSource;
 		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pVS);
 	}
 
@@ -136,9 +136,9 @@ auto __XXECS::Renderer::ThreadInit(const RenderArguments* args) -> void
 	Diligent::RefCntAutoPtr<Diligent::IShader> pPS;
 	{
 		ShaderCI.Desc.ShaderType = Diligent::SHADER_TYPE_PIXEL;
-		ShaderCI.EntryPoint      = "main";
-		ShaderCI.Desc.Name       = "Triangle pixel shader";
-		ShaderCI.Source          = PSSource;
+		ShaderCI.EntryPoint = "main";
+		ShaderCI.Desc.Name = "Triangle pixel shader";
+		ShaderCI.Source = PSSource;
 		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pPS);
 	}
 
@@ -165,17 +165,17 @@ auto __XXECS::Renderer::ThreadUpdate() -> void
 {
 	static int oldWidth;
 	static int oldHeight;
-	int        width;
-	int        height;
+	int width;
+	int height;
 	glfwGetWindowSize(Application::Get()->GetWindow().GetNative(), &width, &height);
 	if (width != oldWidth || height != oldHeight)
 	{
-		auto resize   = ResizeEvent();
-		resize.width  = width;
+		auto resize = ResizeEvent();
+		resize.width = width;
 		resize.height = height;
 		Application::Get()->GetEventManager().Push(resize);
 
-		oldWidth  = width;
+		oldWidth = width;
 		oldHeight = height;
 	}
 

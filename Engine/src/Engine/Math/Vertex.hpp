@@ -10,7 +10,7 @@ namespace __XXECS
 	struct Vertex
 	{
 		Position pos;
-		Color    color;
+		Color color;
 	};
 
 	struct Vertices

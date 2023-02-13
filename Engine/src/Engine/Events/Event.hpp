@@ -12,7 +12,7 @@ namespace __XXECS
 
 	struct KeyEvent
 	{
-		Key    key;
+		Key key;
 		Action action;
 	};
 
@@ -31,7 +31,7 @@ namespace __XXECS
 	class EventManager final
 	{
 	public:
-		EventManager()  = default;
+		EventManager() = default;
 		~EventManager() = default;
 
 		auto Push(const std::any& ptr) -> void

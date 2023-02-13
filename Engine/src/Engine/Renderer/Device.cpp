@@ -3,10 +3,10 @@
 auto __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType) -> void
 {
 	Diligent::SwapChainDesc SCDesc;
-	HWND                    hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
+	HWND hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
 
-	Diligent::RefCntAutoPtr<Diligent::IRenderDevice>&  m_pDevice = Application::Get()->GetDevice().GetNative();
-	Diligent::RefCntAutoPtr<Diligent::ISwapChain>&     m_pSwapChain = Application::Get()->GetSwapChain().GetNative();
+	Diligent::RefCntAutoPtr<Diligent::IRenderDevice>& m_pDevice = Application::Get()->GetDevice().GetNative();
+	Diligent::RefCntAutoPtr<Diligent::ISwapChain>& m_pSwapChain = Application::Get()->GetSwapChain().GetNative();
 	Diligent::RefCntAutoPtr<Diligent::IDeviceContext>& m_pImmediateContext = Application::Get()->GetImmediateContext().
 		GetNative();
 

@@ -13,7 +13,7 @@ static auto GlfwErrorCallback(int error, const char* description) -> void
 static auto GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) -> void
 {
 	__XXECS::KeyEvent keyEvent;
-	keyEvent.key    = static_cast<Key>(key);
+	keyEvent.key = static_cast<Key>(key);
 	keyEvent.action = static_cast<Action>(action);
 	__XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
@@ -29,7 +29,7 @@ static auto GlfwCursorPositionCallback(GLFWwindow* window, double xpos, double y
 auto GlfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods) -> void
 {
 	__XXECS::KeyEvent keyEvent;
-	keyEvent.key    = static_cast<Key>(button);
+	keyEvent.key = static_cast<Key>(button);
 	keyEvent.action = static_cast<Action>(action);
 	__XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
@@ -49,12 +49,12 @@ auto __XXECS::Window::Init() -> void
 	m_window = glfwCreateWindow(1024, 768, "helloworld", nullptr, nullptr);
 
 	auto [width, height] = GetSize();
-	m_oldHeight          = height;
-	m_oldWidth           = width;
+	m_oldHeight = height;
+	m_oldWidth = width;
 
 	auto [posX, posY] = GetPos();
-	m_oldPosX         = posX;
-	m_oldPosY         = posY;
+	m_oldPosX = posX;
+	m_oldPosY = posY;
 
 	LOG_CORE_ASSERT(m_window, "Could not initialize Window!")
 
@@ -85,12 +85,12 @@ auto __XXECS::Window::SetFullscreen(const bool fullscreen) -> void
 		if (!m_isFullscreen)
 		{
 			auto [width, height] = GetSize();
-			m_oldHeight          = height;
-			m_oldWidth           = width;
+			m_oldHeight = height;
+			m_oldWidth = width;
 
 			auto [posX, posY] = GetPos();
-			m_oldPosX         = posX;
-			m_oldPosY         = posY;
+			m_oldPosX = posX;
+			m_oldPosY = posY;
 
 			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 			glfwSetWindowMonitor(m_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
@@ -119,7 +119,7 @@ auto __XXECS::Window::GetRenderArgs() -> RenderArguments
 	renderArgs.platformData.nwh = glfwGetWin32Window(m_window);
 #endif
 	glfwGetWindowSize(m_window, &m_width, &m_height);
-	renderArgs.width  = static_cast<uint32_t>(m_width);
+	renderArgs.width = static_cast<uint32_t>(m_width);
 	renderArgs.height = static_cast<uint32_t>(m_height);
 
 	return renderArgs;
@@ -131,7 +131,7 @@ auto __XXECS::Window::GetSize() -> std::pair<float, float>
 
 	glfwGetWindowSize(m_window, &width, &height);
 
-	m_width  = width;
+	m_width = width;
 	m_height = height;
 
 	return {static_cast<float>(width), static_cast<float>(height)};

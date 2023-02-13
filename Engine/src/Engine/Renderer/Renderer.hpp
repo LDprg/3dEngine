@@ -33,17 +33,17 @@ namespace __XXECS
 		}
 
 	private:
-		auto        ThreadInit(const RenderArguments* args) -> void;
-		auto        ThreadUpdate() -> void;
+		auto ThreadInit(const RenderArguments* args) -> void;
+		auto ThreadUpdate() -> void;
 		static auto ThreadExit() -> void;
-		auto        RunThread(const RenderArguments* userData) -> int32_t;
+		auto RunThread(const RenderArguments* userData) -> int32_t;
 
-		std::thread     m_renderThread;
+		std::thread m_renderThread;
 		RenderArguments m_renderArgs;
 
-		Diligent::RefCntAutoPtr<Diligent::IPipelineState>         m_pPso;
+		Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPso;
 		Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSrb;
-		Diligent::RefCntAutoPtr<Diligent::IBuffer>                m_vsConstants;
-		Diligent::RENDER_DEVICE_TYPE                              m_deviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
+		Diligent::RefCntAutoPtr<Diligent::IBuffer> m_vsConstants;
+		Diligent::RENDER_DEVICE_TYPE m_deviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
 	};
 }

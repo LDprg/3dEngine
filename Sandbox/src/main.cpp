@@ -11,18 +11,14 @@ protected:
 	bool m_state = false;
 
 public:
-	App() = default;
-
-	~App() override = default;
-
 	auto Init() -> void override
 	{
 		GetClearColor() = {0.5f, 0.5f, 0.5f};
 
 		{
 			const auto entity = GetEntityManager().create();
-			auto&      item   = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
-			item.Indices      = {0, 1, 2};
+			auto& item = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
+			item.Indices = {0, 1, 2};
 
 			item.Vertices = {
 				{Position(-0.5, -0.5), Color(1, 0, 0)}, {Position(0.0, +0.5), Color(0, 1, 0)},
@@ -34,8 +30,8 @@ public:
 
 		{
 			const auto entity = GetEntityManager().create();
-			auto&      item   = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
-			item.Indices      = {0, 1, 2};
+			auto& item = GetEntityManager().emplace<Renderable>(entity, Renderable(Vertices(3), Indices(3)));
+			item.Indices = {0, 1, 2};
 
 			item.Vertices = {
 				{Position(+0.5, +0.5), Color(1, 0, 0)}, {Position(0.0, -0.5), Color(0, 1, 0)},
@@ -53,8 +49,8 @@ public:
 
 		if (event.type() == typeid(KeyEvent))
 		{
-			const auto key_event = any_cast<KeyEvent>(event);
-			if (key_event.key == Key::F11 && key_event.action == Action::Press)
+			const auto [key, action] = any_cast<KeyEvent>(event);
+			if (key == Key::F11 && action == Action::Press)
 				GetWindow().SetFullscreen(!GetWindow().IsFullscreen());
 		}
 	}
@@ -65,7 +61,7 @@ public:
 
 		view.each([this](auto& render)
 		{
-			for (int i                     = 0; i < render.Vertices.size(); i++)
+			for (unsigned int i = 0; i < render.Vertices.size(); i++)
 				render.Vertices[i].color.a = m_state ? 0.5 : 1;
 		});
 	}

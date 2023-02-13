@@ -20,10 +20,10 @@ namespace __XXECS
 
 	public:
 		Application();
-		virtual ~Application()                      = default;
-		Application(const Application&)             = delete;
-		Application(const Application&&)            = delete;
-		auto operator=(const Application&) -> void  = delete;
+		virtual ~Application() = default;
+		Application(const Application&) = delete;
+		Application(const Application&&) = delete;
+		auto operator=(const Application&) -> void = delete;
 		auto operator=(const Application&&) -> void = delete;
 
 		virtual auto Event(const std::any& event) -> void = 0;
@@ -100,17 +100,17 @@ namespace __XXECS
 	private:
 		auto RunLoop() const -> void;
 
-		bool  m_running    = true;
+		bool m_running = true;
 		Color m_clearColor = {1.f, 1.f, 1.f};
 
-		std::unique_ptr<Window>           m_window;
-		std::unique_ptr<EventManager>     m_eventManager;
-		std::unique_ptr<Renderer>         m_renderer;
-		std::unique_ptr<SwapChain>        m_swapChain;
-		std::unique_ptr<Device>           m_device;
+		std::unique_ptr<Window> m_window;
+		std::unique_ptr<EventManager> m_eventManager;
+		std::unique_ptr<Renderer> m_renderer;
+		std::unique_ptr<SwapChain> m_swapChain;
+		std::unique_ptr<Device> m_device;
 		std::unique_ptr<ImmediateContext> m_immediateContext;
-		std::unique_ptr<ImGuiManager>     m_imGui;
-		std::unique_ptr<EntityManager>    m_entityManager;
+		std::unique_ptr<ImGuiManager> m_imGui;
+		std::unique_ptr<EntityManager> m_entityManager;
 
 		static Application* m_instance;
 	};

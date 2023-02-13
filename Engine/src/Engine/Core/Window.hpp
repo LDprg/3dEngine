@@ -43,13 +43,13 @@ namespace __XXECS
 	private:
 		GLFWwindow* m_window = nullptr;
 		static bool m_hasBeenInit;
-		bool        m_isFullscreen = false;
-		int         m_width        = 0;
-		int         m_height       = 0;
+		bool m_isFullscreen = false;
+		int m_width = 0;
+		int m_height = 0;
 
-		float m_oldWidth  = 0;
+		float m_oldWidth = 0;
 		float m_oldHeight = 0;
-		float m_oldPosX   = 0;
-		float m_oldPosY   = 0;
+		float m_oldPosX = 0;
+		float m_oldPosY = 0;
 	};
 }
