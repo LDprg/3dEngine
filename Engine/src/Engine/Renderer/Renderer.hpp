@@ -1,7 +1,7 @@
 #pragma once
+#include <Engine/Core/Window.hpp>
 
 #include <ImGuiDiligentRenderer.hpp>
-#include <TextureLoader/interface/Image.h>
 
 namespace __XXECS
 {
@@ -20,7 +20,7 @@ namespace __XXECS
 
         auto Exit() -> void;
 
-        auto Bind(RenderArguments renderArgs) -> void;
+        auto Init() -> void;
 
         auto GetPipelineState() -> Diligent::RefCntAutoPtr<Diligent::IPipelineState>&
         {
@@ -39,7 +39,6 @@ namespace __XXECS
         auto RunThread() -> int32_t;
 
         std::thread m_renderThread;
-        RenderArguments m_renderArgs;
 
         Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPso;
         Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSrb;

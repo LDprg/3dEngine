@@ -7,12 +7,12 @@
 
 bool __XXECS::Window::m_hasBeenInit = false;
 
-static auto GlfwErrorCallback(int error, const char *description) -> void
+auto GlfwErrorCallback(int error, const char *description) -> void
 {
     LOG_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 }
 
-static auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void
+auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void
 {
     __XXECS::KeyEvent keyEvent;
     keyEvent.key = static_cast<Key>(key);
@@ -20,7 +20,7 @@ static auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int actio
     __XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
 
-static auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) -> void
+auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) -> void
 {
     __XXECS::MouseMovedEvent movedEvent;
     movedEvent.x = static_cast<int>(xpos);
@@ -34,6 +34,14 @@ auto GlfwMouseButtonCallback(GLFWwindow *window, int button, int action, int mod
     keyEvent.key = static_cast<Key>(button);
     keyEvent.action = static_cast<Action>(action);
     __XXECS::Application::Get()->GetEventManager().Push(keyEvent);
+}
+
+auto GlfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height) -> void
+{
+    __XXECS::ResizeEvent resizeEvent;
+    resizeEvent.width = width;
+	resizeEvent.height = height;
+    __XXECS::Application::Get()->GetEventManager().Push(resizeEvent);
 }
 
 auto __XXECS::Window::Init() -> void
@@ -63,7 +71,7 @@ auto __XXECS::Window::Init() -> void
     glfwSetKeyCallback(m_window, GlfwKeyCallback);
     glfwSetCursorPosCallback(m_window, GlfwCursorPositionCallback);
     glfwSetMouseButtonCallback(m_window, GlfwMouseButtonCallback);
-    //glfwSetWindowSizeCallback(m_window, glfw_ResizeCallback);
+    glfwSetFramebufferSizeCallback(m_window, GlfwSetFramebufferSizeCallback);
 }
 
 auto __XXECS::Window::Close() const -> void
@@ -106,17 +114,6 @@ auto __XXECS::Window::SetFullscreen(const bool fullscreen) -> void
                              static_cast<int>(m_oldWidth), static_cast<int>(m_oldHeight), 0);
         m_isFullscreen = false;
     }
-}
-
-auto __XXECS::Window::GetRenderArgs() -> RenderArguments
-{
-    RenderArguments renderArgs;
-	
-    glfwGetWindowSize(m_window, &m_width, &m_height);
-    renderArgs.width = static_cast<uint32_t>(m_width);
-    renderArgs.height = static_cast<uint32_t>(m_height);
-
-    return renderArgs;
 }
 
 auto __XXECS::Window::GetSize() -> std::pair<float, float>

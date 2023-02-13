@@ -46,9 +46,8 @@ auto __XXECS::Renderer::Exit() -> void
     m_renderThread.detach();
 }
 
-auto __XXECS::Renderer::Bind(const RenderArguments renderArgs) -> void
+auto __XXECS::Renderer::Init() -> void
 {
-    m_renderArgs = renderArgs;
     m_renderThread = std::thread([this]
     {
         RunThread();
@@ -161,19 +160,6 @@ auto __XXECS::Renderer::ThreadInit() -> void
 
 auto __XXECS::Renderer::ThreadUpdate() -> void
 {
-    static int oldWidth;
-    static int oldHeight;
-    int width;
-    int height;
-    glfwGetWindowSize(Application::Get()->GetWindow().GetNative(), &width, &height);
-    if (width != oldWidth || height != oldHeight)
-    {
-        Application::Get()->GetEventManager().Push(ResizeEvent(width, height));
-
-        oldWidth = width;
-        oldHeight = height;
-    }
-
     // Handle events from the main thread.
     while (true)
     {
@@ -230,10 +216,4 @@ auto __XXECS::Renderer::ThreadUpdate() -> void
 auto __XXECS::Renderer::ThreadExit() -> void
 {
     Application::Get()->Shutdown();
-
-    Application::Get()->GetImGuiManager().Destroy();
-
-    Application::Get()->GetImmediateContext().GetNative()->Flush();
-    Application::Get()->GetSwapChain().GetNative().Release();
-    Application::Get()->GetDevice().GetNative().Release();
 }

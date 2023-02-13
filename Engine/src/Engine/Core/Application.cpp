@@ -20,7 +20,7 @@ __XXECS::Application::Application()
 auto __XXECS::Application::RunLoop() const -> void
 {
     m_window->Init();
-    m_renderer->Bind(m_window->GetRenderArgs());
+    m_renderer->Init();
 
     while (IsRunning())
         m_window->Update();

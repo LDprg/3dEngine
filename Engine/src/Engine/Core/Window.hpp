@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Engine/Core/Log.hpp>
-#include <Engine/Renderer/Renderer.hpp>
 #include <GLFW/glfw3.h>
 
 namespace __XXECS
@@ -24,8 +23,6 @@ namespace __XXECS
         {
             return m_isFullscreen;
         }
-
-        auto GetRenderArgs() -> RenderArguments;
 
         auto GetNative() const -> GLFWwindow*
         {

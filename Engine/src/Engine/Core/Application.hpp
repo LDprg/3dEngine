@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Engine/Renderer/Renderer.hpp"
 #include "Engine/Core/Window.hpp"
 #include "Engine/Entity/EntityManager.hpp"
 #include "Engine/Events/Event.hpp"
