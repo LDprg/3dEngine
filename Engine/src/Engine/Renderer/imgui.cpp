@@ -1,6 +1,6 @@
 #include "imgui.h"
 
-void __XXECS::ImguiManager::Init()
+void __XXECS::ImGuiManager::Init()
 {
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
@@ -31,55 +31,55 @@ void __XXECS::ImguiManager::Init()
 	io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
 	io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
 
-	m_pImgui = std::make_unique<Diligent::ImGuiDiligentRenderer>(Application::Get().GetDevice().GetNative(),
-	                                                             Application::Get().GetSwapChain().GetDesc().
+	m_pImGui = std::make_unique<Diligent::ImGuiDiligentRenderer>(Application::Get()->GetDevice().GetNative(),
+	                                                             Application::Get()->GetSwapChain().GetDesc().
 	                                                             ColorBufferFormat,
-	                                                             Application::Get().GetSwapChain().GetDesc().
+	                                                             Application::Get()->GetSwapChain().GetDesc().
 	                                                             DepthBufferFormat,
-	                                                             Application::Get().GetSwapChain().GetDesc().
+	                                                             Application::Get()->GetSwapChain().GetDesc().
 	                                                             BufferCount,
-	                                                             Application::Get().GetSwapChain().GetDesc().
+	                                                             Application::Get()->GetSwapChain().GetDesc().
 	                                                             BufferCount);
-	m_pImgui->CreateFontsTexture();
+	m_pImGui->CreateFontsTexture();
 }
 
-void __XXECS::ImguiManager::Event(EventType* event) const
+void __XXECS::ImGuiManager::Event(const std::any& ev) const
 {
 	ImGuiIO& io = ImGui::GetIO();
 
-	if (*event == EventType::Resize)
+	if (ev.type() == typeid(ResizeEvent))
 	{
-		const auto resizeEvent = reinterpret_cast<ResizeEvent*>(event);
+		const auto resizeEvent = any_cast<ResizeEvent>(ev);
 
-		Application::Get().GetSwapChain().GetNative()->Resize(resizeEvent->width, resizeEvent->height);
+		Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
 	}
 
-	if (*event == EventType::Key)
+	if (ev.type() == typeid(KeyEvent))
 	{
-		const auto key_event = reinterpret_cast<KeyEvent*>(event);
-		if (key_event->action == Action::Press)
+		const auto key_event = any_cast<KeyEvent>(ev);
+		if (key_event.action == Action::Press)
 		{
-			io.MouseDown[static_cast<int>(key_event->key)] = true;
-			io.KeysDown[static_cast<int>(key_event->key)] = true;
+			io.MouseDown[static_cast<int>(key_event.key)] = true;
+			io.KeysDown[static_cast<int>(key_event.key)] = true;
 		}
-		if (key_event->action == Action::Release)
+		if (key_event.action == Action::Release)
 		{
-			io.MouseDown[static_cast<int>(key_event->key)] = false;
-			io.KeysDown[static_cast<int>(key_event->key)] = false;
+			io.MouseDown[static_cast<int>(key_event.key)] = false;
+			io.KeysDown[static_cast<int>(key_event.key)] = false;
 		}
 	}
 
-	if (*event == EventType::MouseMoved)
+	if (ev.type() == typeid(MouseMovedEvent))
 	{
-		const auto moved_event = reinterpret_cast<MouseMovedEvent*>(event);
-		io.MousePos = ImVec2(static_cast<float>(moved_event->x), static_cast<float>(moved_event->y));
+		const auto moved_event = any_cast<MouseMovedEvent>(ev);
+		io.MousePos = ImVec2(static_cast<float>(moved_event.x), static_cast<float>(moved_event.y));
 	}
 }
 
-void __XXECS::ImguiManager::NewFrame()
+void __XXECS::ImGuiManager::NewFrame()
 {
-	const auto& SCDesc = Application::Get().GetSwapChain().GetDesc();
-	m_pImgui->NewFrame(SCDesc.Width, SCDesc.Height, SCDesc.PreTransform);
+	const auto& SCDesc = Application::Get()->GetSwapChain().GetDesc();
+	m_pImGui->NewFrame(SCDesc.Width, SCDesc.Height, SCDesc.PreTransform);
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.DisplaySize = ImVec2(static_cast<float>(SCDesc.Width), static_cast<float>(SCDesc.Height));
@@ -87,15 +87,15 @@ void __XXECS::ImguiManager::NewFrame()
 	ImGui::NewFrame();
 }
 
-void __XXECS::ImguiManager::Render()
+void __XXECS::ImGuiManager::Render()
 {
 	ImGui::Render();
-	m_pImgui->RenderDrawData(Application::Get().GetImmediateContext().GetNative(), ImGui::GetDrawData());
+	m_pImGui->RenderDrawData(Application::Get()->GetImmediateContext().GetNative(), ImGui::GetDrawData());
 }
 
-void __XXECS::ImguiManager::Destory()
+void __XXECS::ImGuiManager::Destroy()
 {
-	m_pImgui->InvalidateDeviceObjects();
-	m_pImgui.release();
+	m_pImGui->InvalidateDeviceObjects();
+	m_pImGui.release();
 	ImGui::DestroyContext();
 }

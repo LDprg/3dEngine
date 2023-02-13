@@ -21,26 +21,26 @@ static void GlfwErrorCallback(int error, const char* description)
 
 static void GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	const auto keyEvent = new __XXECS::KeyEvent;
-	keyEvent->key = static_cast<Key>(key);
-	keyEvent->action = static_cast<Action>(action);
-	__XXECS::Application::Get().GetEventManager().Push(keyEvent);
+	__XXECS::KeyEvent keyEvent;
+	keyEvent.key = static_cast<Key>(key);
+	keyEvent.action = static_cast<Action>(action);
+	__XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
 
 static void GlfwCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	const auto movedEvent = new __XXECS::MouseMovedEvent;
-	movedEvent->x = static_cast<int>(xpos);
-	movedEvent->y = static_cast<int>(ypos);
-	__XXECS::Application::Get().GetEventManager().Push(movedEvent);
+	__XXECS::MouseMovedEvent movedEvent;
+	movedEvent.x = static_cast<int>(xpos);
+	movedEvent.y = static_cast<int>(ypos);
+	__XXECS::Application::Get()->GetEventManager().Push(movedEvent);
 }
 
 void GlfwMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-	const auto keyEvent = new __XXECS::KeyEvent;
-	keyEvent->key = static_cast<Key>(button);
-	keyEvent->action = static_cast<Action>(action);
-	__XXECS::Application::Get().GetEventManager().Push(keyEvent);
+	__XXECS::KeyEvent keyEvent;
+	keyEvent.key = static_cast<Key>(button);
+	keyEvent.action = static_cast<Action>(action);
+	__XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
 
 void __XXECS::Window::Init()
@@ -84,7 +84,7 @@ void __XXECS::Window::Update()
 	glfwWaitEvents();
 
 	if (glfwWindowShouldClose(m_window))
-		Application::Get().Close();
+		Application::Get()->Close();
 }
 
 void __XXECS::Window::SetFullscreen(const bool fullscreen)

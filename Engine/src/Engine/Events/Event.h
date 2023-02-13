@@ -1,5 +1,6 @@
 #pragma once
 #include <queue>
+#include <any>
 
 #include "Key.h"
 
@@ -50,22 +51,25 @@ namespace __XXECS
 		{
 		}
 
-		void Push(void* ptr)
+		void Push(const std::any& ptr)
 		{
-			return m_apiThreadEvents.push(ptr);
+			m_apiThreadEvents.push(ptr);
 		}
 
-		void* Pop()
+		std::any Pop()
 		{
-			if (m_apiThreadEvents.empty())
-				return nullptr;
+			std::any val;
 
-			void* ptr = m_apiThreadEvents.front();
-			m_apiThreadEvents.pop();
-			return ptr;
+			if (!m_apiThreadEvents.empty())
+			{
+				val = m_apiThreadEvents.front();
+				m_apiThreadEvents.pop();
+			}
+
+			return std::move(val);
 		}
 
 	private:
-		std::queue<void *> m_apiThreadEvents;
+		std::queue<std::any> m_apiThreadEvents;
 	};
 }

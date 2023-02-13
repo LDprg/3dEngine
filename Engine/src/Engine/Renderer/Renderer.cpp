@@ -58,7 +58,7 @@ int32_t __XXECS::Renderer::RunThread(const RenderArguments* userData)
 {
 	ThreadInit(userData);
 
-	while (Application::Get().IsRunning())
+	while (Application::Get()->IsRunning())
 		ThreadUpdate();
 
 	ThreadExit();
@@ -70,9 +70,9 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 {
 	Device::createDevice(m_DeviceType);
 
-	Application::Get().GetImGuiManager().Init();
+	Application::Get()->GetImGuiManager().Init();
 
-	Application::Get().Init();
+	Application::Get()->Init();
 
 	Diligent::BlendStateDesc BlendState;
 	BlendState.RenderTargets[0].BlendEnable = true;
@@ -93,9 +93,9 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	// This tutorial will render to a single render target
 	PSOCreateInfo.GraphicsPipeline.NumRenderTargets = 1;
 	// Set render target format which is the format of the swap chain's color buffer
-	PSOCreateInfo.GraphicsPipeline.RTVFormats[0] = Application::Get().GetSwapChain().GetDesc().ColorBufferFormat;
+	PSOCreateInfo.GraphicsPipeline.RTVFormats[0] = Application::Get()->GetSwapChain().GetDesc().ColorBufferFormat;
 	// Use the depth buffer format from the swap chain
-	PSOCreateInfo.GraphicsPipeline.DSVFormat = Application::Get().GetSwapChain().GetDesc().DepthBufferFormat;
+	PSOCreateInfo.GraphicsPipeline.DSVFormat = Application::Get()->GetSwapChain().GetDesc().DepthBufferFormat;
 	// Primitive topology defines what kind of primitives will be rendered by this pipeline state
 	PSOCreateInfo.GraphicsPipeline.PrimitiveTopology = Diligent::PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
 	// No back face culling for this tutorial
@@ -128,7 +128,7 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 		ShaderCI.EntryPoint = "main";
 		ShaderCI.Desc.Name = "Triangle vertex shader";
 		ShaderCI.Source = VSSource;
-		Application::Get().GetDevice().GetNative()->CreateShader(ShaderCI, &pVS);
+		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pVS);
 	}
 
 	// Create a pixel shader
@@ -138,7 +138,7 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 		ShaderCI.EntryPoint = "main";
 		ShaderCI.Desc.Name = "Triangle pixel shader";
 		ShaderCI.Source = PSSource;
-		Application::Get().GetDevice().GetNative()->CreateShader(ShaderCI, &pPS);
+		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pPS);
 	}
 
 	// Finally, create the pipeline state
@@ -148,7 +148,7 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	// Define variable type that will be used by default
 	PSOCreateInfo.PSODesc.ResourceLayout.DefaultVariableType = Diligent::SHADER_RESOURCE_VARIABLE_TYPE_STATIC;
 
-	Application::Get().GetDevice().GetNative()->CreateGraphicsPipelineState(PSOCreateInfo, &m_pPSO);
+	Application::Get()->GetDevice().GetNative()->CreateGraphicsPipelineState(PSOCreateInfo, &m_pPSO);
 
 	// Since we did not explcitly specify the type for 'Constants' variable, default
    // type (SHADER_RESOURCE_VARIABLE_TYPE_STATIC) will be used. Static variables never
@@ -167,73 +167,75 @@ void __XXECS::Renderer::ThreadUpdate()
 	static int oldHeight;
 	int m_width;
 	int m_height;
-	glfwGetWindowSize(Application::Get().GetWindow().GetNative(), &m_width, &m_height);
+	glfwGetWindowSize(Application::Get()->GetWindow().GetNative(), &m_width, &m_height);
 	if (m_width != oldWidth || m_height != oldHeight)
 	{
-		const auto resize = new ResizeEvent;
-		resize->width = m_width;
-		resize->height = m_height;
-		Application::Get().GetEventManager().Push(resize);
+		ResizeEvent resize = ResizeEvent();
+		resize.width = m_width;
+		resize.height = m_height;
+		Application::Get()->GetEventManager().Push(resize);
 	}
 	oldWidth = m_width;
 	oldHeight = m_height;
 
 	// Handle events from the main thread.
-	while (const auto ev = static_cast<EventType*>(Application::Get().GetEventManager().Pop()))
+	while (true)
 	{
-		if (*ev == EventType::Resize)
+		const std::any ev = Application::Get()->GetEventManager().Pop();
+		if (!ev.has_value())
+			break;
+
+		if (ev.type() == typeid(ResizeEvent))
 		{
-			const auto resizeEvent = reinterpret_cast<ResizeEvent*>(ev);
+			const auto resizeEvent = any_cast<ResizeEvent>(ev);
 
-			Application::Get().GetSwapChain().GetNative()->Resize(resizeEvent->width, resizeEvent->height);
+			Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
 		}
-		else if (*ev == EventType::Exit)
-			Application::Get().Close();
+		else if (ev.type() == typeid(ExitEvent))
+			Application::Get()->Close();
 
-		Application::Get().GetImGuiManager().Event(ev);
-		Application::Get().Event(ev);
-
-		delete ev;
+		Application::Get()->GetImGuiManager().Event(ev);
+		Application::Get()->Event(ev);
 	}
 
-	Application::Get().GetImGuiManager().NewFrame();
+	Application::Get()->GetImGuiManager().NewFrame();
 
-	auto& m_pImmediateContext = Application::Get().GetImmediateContext().GetNative();
+	auto& m_pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
 
 	// Set render targets before issuing any draw command.
 	// Note that Present() unbinds the back buffer if it is set as render target.
-	auto* pRTV = Application::Get().GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
-	auto* pDSV = Application::Get().GetSwapChain().GetNative()->GetDepthBufferDSV();
+	auto* pRTV = Application::Get()->GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
+	auto* pDSV = Application::Get()->GetSwapChain().GetNative()->GetDepthBufferDSV();
 	m_pImmediateContext->SetRenderTargets(1, &pRTV, pDSV, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
 	// Let the engine perform required state transitions
-	m_pImmediateContext->ClearRenderTarget(pRTV, Application::Get().GetClearColor(),
+	m_pImmediateContext->ClearRenderTarget(pRTV, Application::Get()->GetClearColor(),
 	                                       Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 	m_pImmediateContext->ClearDepthStencil(pDSV, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0,
 	                                       Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-	Application::Get().Update();
+	Application::Get()->Update();
 
-	Application::Get().ImGui();
+	Application::Get()->ImGui();
 
 	// Set the pipeline state in the immediate context
 	m_pImmediateContext->SetPipelineState(m_pPSO);
 	m_pImmediateContext->CommitShaderResources(m_pSRB, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-	Application::Get().Render();
+	Application::Get()->Render();
 
-	Application::Get().GetImGuiManager().Render();
+	Application::Get()->GetImGuiManager().Render();
 
-	Application::Get().GetSwapChain().Present();
+	Application::Get()->GetSwapChain().Present();
 }
 
 void __XXECS::Renderer::ThreadExit()
 {
-	Application::Get().Shutdown();
+	Application::Get()->Shutdown();
 
-	Application::Get().GetImGuiManager().Destory();
+	Application::Get()->GetImGuiManager().Destroy();
 
-	Application::Get().GetImmediateContext().GetNative()->Flush();
-	Application::Get().GetSwapChain().GetNative().Release();
-	Application::Get().GetDevice().GetNative().Release();
+	Application::Get()->GetImmediateContext().GetNative()->Flush();
+	Application::Get()->GetSwapChain().GetNative().Release();
+	Application::Get()->GetDevice().GetNative().Release();
 }

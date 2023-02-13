@@ -56,22 +56,22 @@ public:
 		}
 	}
 
-	void Event(EventType* event) override
+	void Event(const std::any& event) override
 	{
 		if (Input::IsKeyPressed(Key::Escape))
 			Close();
 
-		const auto key_event = reinterpret_cast<KeyEvent*>(event);
-		if (*event == EventType::Key)
+		if (event.type() == typeid(KeyEvent))
 		{
-			if (key_event->key == Key::F11 && key_event->action == Action::Press)
+			const auto key_event = any_cast<KeyEvent>(event);
+			if (key_event.key == Key::F11 && key_event.action == Action::Press)
 				GetWindow().SetFullscreen(!GetWindow().IsFullscreen());
 		}
 	}
 
 	void Update() override
 	{
-		auto view = GetEntityManager().view<Renderable>();
+		const auto view = GetEntityManager().view<Renderable>();
 
 		view.each([this](auto& render)
 		{
@@ -90,8 +90,8 @@ public:
 
 	void Render() override
 	{
-		auto view = GetEntityManager().view<Renderable>();
-		for (auto entity : view)
+		const auto view = GetEntityManager().view<Renderable>();
+		for (const auto entity : view)
 		{
 			auto& item = view.get<Renderable>(entity);
 			Renderable::Draw(item);

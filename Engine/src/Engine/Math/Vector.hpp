@@ -7,8 +7,8 @@ namespace __XXECS
         float r, g, b, a;
 
         Color() = default;
-        Color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
-        Color(float r, float g, float b) : r(r), g(g), b(b), a(1.f) {}
+        Color(const float r, const float g, const float b, const float a) : r(r), g(g), b(b), a(a) {}
+        Color(const float r, const float g, const float b) : r(r), g(g), b(b), a(1.f) {}
 
         operator float*() const
         {
@@ -21,9 +21,9 @@ namespace __XXECS
         float x, y, z, w;
 
         Position() = default;
-        Position(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-        Position(float x, float y, float z) : x(x), y(y), z(z), w(1.f) {}
-        Position(float x, float y) : x(x), y(y), z(0.f), w(1.f) {}
+        Position(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
+        Position(const float x, const float y, const float z) : x(x), y(y), z(z), w(1.f) {}
+        Position(const float x, const float y) : x(x), y(y), z(0.f), w(1.f) {}
 
         operator float*() const
         {

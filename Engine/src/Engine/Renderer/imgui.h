@@ -12,18 +12,18 @@
 
 namespace __XXECS
 {
-	class ImguiManager
+	class ImGuiManager
 	{
 	public:
 		void Init();
 
-		void Event(EventType* event) const;
+		void Event(const std::any& ev) const;
 		void NewFrame();
 		void Render();
 
-		void Destory();
+		void Destroy();
 
 	private:
-		std::unique_ptr<Diligent::ImGuiDiligentRenderer> m_pImgui;
+		std::unique_ptr<Diligent::ImGuiDiligentRenderer> m_pImGui;
 	};
 }

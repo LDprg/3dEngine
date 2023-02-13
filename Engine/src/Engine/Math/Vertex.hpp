@@ -1,90 +1,91 @@
 #pragma once
 
 #include <initializer_list>
-#include <vector>
+#include <memory>
 
 #include <BasicTypes.h>
 
 #include "Vector.hpp"
 #include "Engine/Core/Log.h"
+#include "Engine/Math/General.hpp"
 
 namespace __XXECS
 {
 	typedef Diligent::Uint32 Index;
-	
+
 	struct Vertex
 	{
 		Position pos;
 		Color color;
 	};
-	
+
 	struct Vertices
 	{
-		Vertex* data;
+		std::shared_ptr<Vertex[]> data;
 
-		Vertices(size_t size)
-			:m_size(size)
+		explicit Vertices(const Size size)
+			: m_size(size)
 		{
-			data = new Vertex[size];
+			data = std::make_shared<Vertex[]>(size);
 		}
 
-		Vertices(std::initializer_list<Vertex> iList)
-			:Vertices(iList.size())
+		Vertices(const std::initializer_list<Vertex> iList)
+			: Vertices(static_cast<Size>(iList.size()))
 		{
-			std::ranges::copy(iList.begin(), iList.end(), data);
-		}
-		
-		operator Vertex* () const
-		{
-			return data;
+			std::ranges::copy(iList.begin(), iList.end(), data.get());
 		}
 
-		[[nodiscard]] size_t sizeInBytes() const
+		operator Vertex*() const
+		{
+			return data.get();
+		}
+
+		[[nodiscard]] Size SizeInBytes() const
 		{
 			return sizeof(Vertex) * m_size;
 		}
 
-		[[nodiscard]] size_t size() const
+		[[nodiscard]] Size size() const
 		{
 			return m_size;
 		}
 
 	private:
-		size_t m_size;
+		Size m_size;
 	};
 
 	struct Indices
 	{
-		Index* data;
+		std::shared_ptr<Index[]> data;
 
-		Indices(size_t size)
-			:m_size(size)
+		explicit Indices(const Size size)
+			: m_size(size)
 		{
-			data = new Index[size];
+			data = std::make_shared<Index[]>(size);
 		}
 
-		Indices(std::initializer_list<Index> iList)
-			:Indices(iList.size())
+		Indices(const std::initializer_list<Index> iList)
+			: Indices(static_cast<Size>(iList.size()))
 		{
-			std::copy(iList.begin(), iList.end(), data);
+			std::ranges::copy(iList.begin(), iList.end(), data.get());
 		}
 
-		operator Index* () const
+		operator Index*() const
 		{
-			return data;
+			return data.get();
 		}
 
-		[[nodiscard]] size_t sizeInBytes() const
+		[[nodiscard]] Size SizeInBytes() const
 		{
 			return sizeof(Index) * m_size;
 		}
 
-		[[nodiscard]]  size_t size() const
+		[[nodiscard]] Size size() const
 		{
 			return m_size;
 		}
 
 	private:
-		size_t m_size;
+		Size m_size;
 	};
 }

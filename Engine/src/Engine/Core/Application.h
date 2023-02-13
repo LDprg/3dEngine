@@ -22,7 +22,7 @@ namespace __XXECS
 		Application();
 		virtual ~Application() = default;
 
-		virtual void Event(EventType* event) = 0;
+		virtual void Event(const std::any& event) = 0;
 
 		virtual void Init() = 0;
 		virtual void Update() = 0;
@@ -32,7 +32,6 @@ namespace __XXECS
 		virtual void ImGui()
 		{
 		}
-
 
 		bool IsRunning() const
 		{
@@ -44,9 +43,9 @@ namespace __XXECS
 			m_running = false;
 		}
 
-		static Application& Get()
+		static Application* Get()
 		{
-			return *m_Instance;
+			return m_Instance;
 		}
 
 		Window& GetWindow() const
@@ -79,7 +78,7 @@ namespace __XXECS
 			return *m_ImmediateContext;
 		}
 
-		ImguiManager& GetImGuiManager() const
+		ImGuiManager& GetImGuiManager() const
 		{
 			return *m_ImGui;
 		}
@@ -95,19 +94,19 @@ namespace __XXECS
 		}
 
 	private:
-		void RunLoop();
+		void RunLoop() const;
 
 		bool m_running = true;
 		Color m_clearColor = {1.f, 1.f, 1.f};
 
-		Window* m_Window;
-		EventManager* m_EventManager;
-		Renderer* m_Renderer;
-		SwapChain* m_SwapChain;
-		Device* m_Device;
-		ImmediateContext* m_ImmediateContext;
-		ImguiManager* m_ImGui;
-		EntityManager* m_EntityManager;
+		std::unique_ptr<Window> m_Window;
+		std::unique_ptr<EventManager> m_EventManager;
+		std::unique_ptr<Renderer> m_Renderer;
+		std::unique_ptr<SwapChain> m_SwapChain;
+		std::unique_ptr<Device> m_Device;
+		std::unique_ptr<ImmediateContext> m_ImmediateContext;
+		std::unique_ptr<ImGuiManager> m_ImGui;
+		std::unique_ptr<EntityManager> m_EntityManager;
 
 		static Application* m_Instance;
 	};
