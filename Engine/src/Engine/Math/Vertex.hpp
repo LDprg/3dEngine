@@ -1,12 +1,6 @@
 #pragma once
 
-#include <initializer_list>
-#include <memory>
-
-#include <BasicTypes.h>
-
-#include "Vector.hpp"
-#include "Engine/Core/Log.h"
+#include "Engine/Math/Vector.hpp"
 #include "Engine/Math/General.hpp"
 
 namespace __XXECS

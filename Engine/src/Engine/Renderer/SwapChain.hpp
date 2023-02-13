@@ -1,10 +1,21 @@
 #pragma once
+#include <SwapChain.h>
+#include <Common/interface/RefCntAutoPtr.hpp>
+
+#include "Engine/Core/Application.hpp"
 
 namespace __XXECS
 {
 	class SwapChain
 	{
 	public:
+		SwapChain() = default;
+
+		~SwapChain()
+		{
+			m_pSwapChain.Release();
+		}
+
 		Diligent::RefCntAutoPtr<Diligent::ISwapChain>& GetNative()
 		{
 			return m_pSwapChain;

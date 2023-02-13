@@ -1,5 +1,7 @@
 #include "Renderable.hpp"
 
+#include <Graphics/GraphicsTools/interface/MapHelper.hpp>
+
 void __XXECS::Renderable::Create(Renderable& target)
 {
 	Diligent::BufferDesc VertBuffDesc;
@@ -24,7 +26,7 @@ void __XXECS::Renderable::Create(Renderable& target)
 void __XXECS::Renderable::Draw(Renderable& target)
 {
 	Diligent::MapHelper<Vertex> verts(Application::Get()->GetImmediateContext().GetNative(), target.VertexBuffer,
-		Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
+	                                  Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
 	for (Diligent::Uint32 v = 0; v < target.Vertices.size(); ++v)
 		verts[v] = target.Vertices[v];
 
@@ -33,10 +35,10 @@ void __XXECS::Renderable::Draw(Renderable& target)
 		target.VertexBuffer
 	};
 	Application::Get()->GetImmediateContext().GetNative()->SetVertexBuffers(0, 1, pBuffs, &offset,
-		Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
-		Diligent::SET_VERTEX_BUFFERS_FLAG_RESET);
+	                                                                        Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
+	                                                                        Diligent::SET_VERTEX_BUFFERS_FLAG_RESET);
 	Application::Get()->GetImmediateContext().GetNative()->SetIndexBuffer(target.IndexBuffer, 0,
-		Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+	                                                                      Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
 	Diligent::DrawIndexedAttribs drawAttrs;
 	drawAttrs.IndexType = Diligent::VT_UINT32;

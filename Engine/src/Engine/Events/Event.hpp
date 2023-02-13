@@ -1,41 +1,29 @@
 #pragma once
-#include <queue>
 #include <any>
+#include <queue>
 
-#include "Key.h"
+#include "Key.hpp"
 
 namespace __XXECS
 {
-	enum class EventType
-	{
-		Exit,
-		Key,
-		Resize,
-		MouseMoved
-	};
-
 	struct ExitEvent
 	{
-		EventType type = EventType::Exit;
 	};
 
 	struct KeyEvent
 	{
-		EventType type = EventType::Key;
 		Key key;
 		Action action;
 	};
 
 	struct ResizeEvent
 	{
-		EventType type = EventType::Resize;
 		int width;
 		int height;
 	};
 
 	struct MouseMovedEvent
 	{
-		EventType type = EventType::MouseMoved;
 		int x;
 		int y;
 	};
@@ -43,13 +31,8 @@ namespace __XXECS
 	class EventManager final
 	{
 	public:
-		EventManager()
-		{
-		}
-
-		~EventManager()
-		{
-		}
+		EventManager() = default;
+		~EventManager() = default;
 
 		void Push(const std::any& ptr)
 		{
@@ -66,7 +49,7 @@ namespace __XXECS
 				m_apiThreadEvents.pop();
 			}
 
-			return std::move(val);
+			return val;
 		}
 
 	private:

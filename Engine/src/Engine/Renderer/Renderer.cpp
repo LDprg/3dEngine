@@ -4,6 +4,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "Engine/Core/Application.hpp"
+
 static const char* VSSource = R"(
 struct VSInput
 {
@@ -89,7 +91,7 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 
 	// This is a graphics pipeline
 	PSOCreateInfo.PSODesc.PipelineType = Diligent::PIPELINE_TYPE_GRAPHICS;
-	
+
 	// This tutorial will render to a single render target
 	PSOCreateInfo.GraphicsPipeline.NumRenderTargets = 1;
 	// Set render target format which is the format of the swap chain's color buffer
@@ -151,8 +153,8 @@ void __XXECS::Renderer::ThreadInit(const RenderArguments* args)
 	Application::Get()->GetDevice().GetNative()->CreateGraphicsPipelineState(PSOCreateInfo, &m_pPSO);
 
 	// Since we did not explcitly specify the type for 'Constants' variable, default
-   // type (SHADER_RESOURCE_VARIABLE_TYPE_STATIC) will be used. Static variables never
-   // change and are bound directly through the pipeline state object.
+	// type (SHADER_RESOURCE_VARIABLE_TYPE_STATIC) will be used. Static variables never
+	// change and are bound directly through the pipeline state object.
 	auto* temp = m_pPSO->GetStaticVariableByName(Diligent::SHADER_TYPE_VERTEX, "Constants");
 	if (temp)
 		temp->Set(m_VSConstants);

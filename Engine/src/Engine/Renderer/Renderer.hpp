@@ -1,12 +1,7 @@
 #pragma once
-#include <memory>
 
 #include <ImGuiDiligentRenderer.hpp>
-#include <Engine/Renderer/imgui.h>
 #include <TextureLoader/interface/Image.h>
-#include <ThirdParty/imgui/backends/imgui_impl_glfw.h>
-
-#include "Engine/Renderer/SwapChain.h"
 
 namespace __XXECS
 {
@@ -20,7 +15,13 @@ namespace __XXECS
 	{
 	public:
 		Renderer() = default;
-		~Renderer() = default;
+
+		~Renderer()
+		{
+			m_pPSO.Release();
+			m_pSRB.Release();
+			m_VSConstants.Release();
+		}
 
 		void Exit();
 
@@ -47,7 +48,7 @@ namespace __XXECS
 
 		Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPSO;
 		Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSRB;
-		Diligent::RefCntAutoPtr<Diligent::IBuffer>                m_VSConstants;
-		Diligent::RENDER_DEVICE_TYPE m_DeviceType = Diligent::RENDER_DEVICE_TYPE_D3D11;
+		Diligent::RefCntAutoPtr<Diligent::IBuffer> m_VSConstants;
+		Diligent::RENDER_DEVICE_TYPE m_DeviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
 	};
 }

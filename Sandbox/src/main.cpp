@@ -1,18 +1,14 @@
+#include <any>
 #include <numeric>
-#include <string>
-#include <Engine/Entity/Components/Renderable.hpp>
-#include <entt/entt.hpp>
-#include <glm/glm.hpp>
-#include <Graphics/GraphicsTools/interface/MapHelper.hpp>
 
-#include "Engine.h"
+#include "Engine.hpp"
 
 using namespace __XXECS;
 
 class App final : public Application
 {
 protected:
-	bool state = false;
+	bool m_state = false;
 
 public:
 	App() = default;
@@ -71,26 +67,26 @@ public:
 
 	void Update() override
 	{
-		const auto view = GetEntityManager().view<Renderable>();
+		const auto view = GetEntityManager().view < Renderable > ();
 
 		view.each([this](auto& render)
 		{
 			for (int i = 0; i < render.Vertices.size(); i++)
-				render.Vertices[i].color.a = this->state ? 0.5 : 1;
+				render.Vertices[i].color.a = m_state ? 0.5 : 1;
 		});
 	}
 
 	void ImGui() override
 	{
 		if (ImGui::Button("Change"))
-			state = !state;
+			m_state = !m_state;
 
 		ImGui::ColorPicker4("Background Color", GetClearColor());
 	}
 
 	void Render() override
 	{
-		const auto view = GetEntityManager().view<Renderable>();
+		const auto view = GetEntityManager().view < Renderable > ();
 		for (const auto entity : view)
 		{
 			auto& item = view.get<Renderable>(entity);

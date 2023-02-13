@@ -1,6 +1,6 @@
-#include "Input.h"
+#include "Input.hpp"
 
-#include "Engine/Core/Application.h"
+#include "Engine/Core/Application.hpp"
 
 bool __XXECS::Input::IsKeyPressed(Key keycode)
 {

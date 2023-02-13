@@ -1,5 +1,9 @@
 #include "imgui.h"
 
+#include <GLFW/glfw3.h>
+
+#include "Engine/Core/Application.hpp"
+
 void __XXECS::ImGuiManager::Init()
 {
 	ImGui::CreateContext();

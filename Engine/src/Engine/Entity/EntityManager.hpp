@@ -6,8 +6,7 @@ namespace __XXECS
 	class EntityManager : public entt::registry
 	{
 	public:
-		EntityManager() : entt::registry() {}
-
-		~EntityManager() = default;
+		EntityManager() = default;
+		virtual ~EntityManager() = default;
 	};
 }

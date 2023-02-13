@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Engine/Core/Window.h>
-#include <Engine/Events/Event.h>
-#include <Engine/Renderer/imgui.h>
-
-#include "Engine/Entity/EntityManager.h"
-#include "Engine/Renderer/Device.h"
-#include "Engine/Renderer/ImmediateContext.h"
+#include "Engine/Core/Window.hpp"
+#include "Engine/Entity/EntityManager.hpp"
+#include "Engine/Events/Event.hpp"
+#include "Engine/Renderer/Device.hpp"
+#include "Engine/Renderer/imgui.hpp"
+#include "Engine/Renderer/ImmediateContext.hpp"
+#include "Engine/Renderer/SwapChain.hpp"
 
 #include "Engine/Math/Vector.hpp"
 
@@ -21,6 +21,10 @@ namespace __XXECS
 	public:
 		Application();
 		virtual ~Application() = default;
+		Application(const Application&) = delete;
+		void operator=(const Application&) = delete;
+		Application(const Application&&) = delete;
+		void operator=(const Application&&) = delete;
 
 		virtual void Event(const std::any& event) = 0;
 
@@ -33,7 +37,7 @@ namespace __XXECS
 		{
 		}
 
-		bool IsRunning() const
+		[[nodiscard]] bool IsRunning() const
 		{
 			return m_running;
 		}
@@ -48,42 +52,42 @@ namespace __XXECS
 			return m_Instance;
 		}
 
-		Window& GetWindow() const
+		[[nodiscard]] Window& GetWindow() const
 		{
 			return *m_Window;
 		}
 
-		EventManager& GetEventManager() const
+		[[nodiscard]] EventManager& GetEventManager() const
 		{
 			return *m_EventManager;
 		}
 
-		Renderer& GetRenderer() const
+		[[nodiscard]] Renderer& GetRenderer() const
 		{
 			return *m_Renderer;
 		}
 
-		SwapChain& GetSwapChain() const
+		[[nodiscard]] SwapChain& GetSwapChain() const
 		{
 			return *m_SwapChain;
 		}
 
-		Device& GetDevice() const
+		[[nodiscard]] Device& GetDevice() const
 		{
 			return *m_Device;
 		}
 
-		ImmediateContext& GetImmediateContext() const
+		[[nodiscard]] ImmediateContext& GetImmediateContext() const
 		{
 			return *m_ImmediateContext;
 		}
 
-		ImGuiManager& GetImGuiManager() const
+		[[nodiscard]] ImGuiManager& GetImGuiManager() const
 		{
 			return *m_ImGui;
 		}
 
-		EntityManager& GetEntityManager() const
+		[[nodiscard]] EntityManager& GetEntityManager() const
 		{
 			return *m_EntityManager;
 		}

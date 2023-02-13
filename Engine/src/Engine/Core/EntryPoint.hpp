@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Engine/Core/Application.h>
-#include <Engine/Core/Log.h>
+#include <Engine/Core/Application.hpp>
+#include <Engine/Core/Log.hpp>
 
 #define CREATE_APPLICATION(app) __XXECS::Application* __XXECS::CreateApplication() {return new app();}
 

@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "Window.hpp"
 #include "pch.hpp"
 
 #if BX_PLATFORM_LINUX
@@ -10,7 +10,7 @@
 #endif
 #include <GLFW/glfw3native.h>
 
-#include "Engine/Events/Event.h"
+#include "Engine/Events/Event.hpp"
 
 bool __XXECS::Window::m_hasBeenInit = false;
 
