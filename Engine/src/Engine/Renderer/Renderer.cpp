@@ -1,6 +1,5 @@
 #include <DeviceContext.h>
 #include <RenderDevice.h>
-#include "pch.hpp"
 
 #include <GLFW/glfw3.h>
 

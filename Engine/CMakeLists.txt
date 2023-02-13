@@ -16,7 +16,7 @@ add_subdirectory("vendor/spdlog")
 add_subdirectory("vendor/glm")
 
 
-file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp" "vendor/DiligentEngine/DiligentTools/ThirdParty/imgui/backends/imgui_impl_glfw.h" "vendor/DiligentEngine/DiligentTools/ThirdParty/imgui/backends/imgui_impl_glfw.cpp")
+file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp")
 add_library(Engine ${SRC})
 
 target_precompile_headers(Engine PRIVATE "src/pch.hpp")
@@ -43,7 +43,6 @@ target_link_libraries(Engine
 target_link_libraries(Engine glfw)
 target_link_libraries(Engine EnTT::EnTT)
 target_link_libraries(Engine glm)
-
 
 copy_required_dlls(Engine)
 

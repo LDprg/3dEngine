@@ -1,5 +1,4 @@
 #include "Window.hpp"
-#include "pch.hpp"
 
 #include "Engine/Events/Event.hpp"
 
