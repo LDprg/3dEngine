@@ -5,45 +5,45 @@
 
 namespace __XXECS
 {
-	struct RenderArguments
-	{
-		uint32_t width;
-		uint32_t height;
-	};
+    struct RenderArguments
+    {
+        uint32_t width;
+        uint32_t height;
+    };
 
-	class Renderer final
-	{
-	public:
-		Renderer() = default;
+    class Renderer final
+    {
+    public:
+        Renderer() = default;
 
-		~Renderer() = default;
+        ~Renderer() = default;
 
-		auto Exit() -> void;
+        auto Exit() -> void;
 
-		auto Bind(RenderArguments renderArgs) -> void;
+        auto Bind(RenderArguments renderArgs) -> void;
 
-		auto GetPipelineState() -> Diligent::RefCntAutoPtr<Diligent::IPipelineState>&
-		{
-			return m_pPso;
-		}
+        auto GetPipelineState() -> Diligent::RefCntAutoPtr<Diligent::IPipelineState>&
+        {
+            return m_pPso;
+        }
 
-		auto GetShaderResourceBinding() -> Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding>&
-		{
-			return m_pSrb;
-		}
+        auto GetShaderResourceBinding() -> Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding>&
+        {
+            return m_pSrb;
+        }
 
-	private:
-		auto ThreadInit(const RenderArguments* args) -> void;
-		auto ThreadUpdate() -> void;
-		static auto ThreadExit() -> void;
-		auto RunThread(const RenderArguments* userData) -> int32_t;
+    private:
+        auto ThreadInit() -> void;
+        auto ThreadUpdate() -> void;
+        static auto ThreadExit() -> void;
+        auto RunThread() -> int32_t;
 
-		std::thread m_renderThread;
-		RenderArguments m_renderArgs;
+        std::thread m_renderThread;
+        RenderArguments m_renderArgs;
 
-		Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPso;
-		Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSrb;
-		Diligent::RefCntAutoPtr<Diligent::IBuffer> m_vsConstants;
-		Diligent::RENDER_DEVICE_TYPE m_deviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
-	};
+        Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPso;
+        Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSrb;
+        Diligent::RefCntAutoPtr<Diligent::IBuffer> m_vsConstants;
+        Diligent::RENDER_DEVICE_TYPE m_deviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
+    };
 }

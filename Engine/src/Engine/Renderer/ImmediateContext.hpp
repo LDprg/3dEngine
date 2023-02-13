@@ -2,22 +2,22 @@
 
 namespace __XXECS
 {
-	class ImmediateContext
-	{
-	public:
-		ImmediateContext() = default;
+    class ImmediateContext
+    {
+    public:
+        ImmediateContext() = default;
 
-		~ImmediateContext()
-		{
-			m_pImmediateContext.Release();
-		}
+        ~ImmediateContext()
+        {
+            m_pImmediateContext.Release();
+        }
 
-		auto GetNative() -> Diligent::RefCntAutoPtr<Diligent::IDeviceContext>&
-		{
-			return m_pImmediateContext;
-		}
+        auto GetNative() -> Diligent::RefCntAutoPtr<Diligent::IDeviceContext>&
+        {
+            return m_pImmediateContext;
+        }
 
-	private:
-		Diligent::RefCntAutoPtr<Diligent::IDeviceContext> m_pImmediateContext;
-	};
+    private:
+        Diligent::RefCntAutoPtr<Diligent::IDeviceContext> m_pImmediateContext;
+    };
 }

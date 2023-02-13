@@ -4,32 +4,32 @@
 
 namespace __XXECS
 {
-	class SwapChain
-	{
-	public:
-		SwapChain() = default;
+    class SwapChain
+    {
+    public:
+        SwapChain() = default;
 
-		~SwapChain()
-		{
-			m_pSwapChain.Release();
-		}
+        ~SwapChain()
+        {
+            m_pSwapChain.Release();
+        }
 
-		auto GetNative() -> Diligent::RefCntAutoPtr<Diligent::ISwapChain>&
-		{
-			return m_pSwapChain;
-		}
+        auto GetNative() -> Diligent::RefCntAutoPtr<Diligent::ISwapChain>&
+        {
+            return m_pSwapChain;
+        }
 
-		auto GetDesc() -> const Diligent::SwapChainDesc&
-		{
-			return m_pSwapChain->GetDesc();
-		}
+        auto GetDesc() -> const Diligent::SwapChainDesc&
+        {
+            return m_pSwapChain->GetDesc();
+        }
 
-		auto Present(UINT32 SyncInterval = 1) -> void
-		{
-			return m_pSwapChain->Present(SyncInterval);
-		}
+        auto Present(UINT32 SyncInterval = 1) -> void
+        {
+            return m_pSwapChain->Present(SyncInterval);
+        }
 
-	private:
-		Diligent::RefCntAutoPtr<Diligent::ISwapChain> m_pSwapChain;
-	};
+    private:
+        Diligent::RefCntAutoPtr<Diligent::ISwapChain> m_pSwapChain;
+    };
 }

@@ -3,10 +3,10 @@
 
 namespace __XXECS
 {
-	class EntityManager : public entt::registry
-	{
-	public:
-		EntityManager() = default;
-		virtual ~EntityManager() = default;
-	};
+    class EntityManager : public entt::registry
+    {
+    public:
+        EntityManager() = default;
+        virtual ~EntityManager() = default;
+    };
 }

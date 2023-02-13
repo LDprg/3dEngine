@@ -1,84 +1,86 @@
 #include "Engine/Renderer/Device.hpp"
 
-auto __XXECS::Device::createDevice(Diligent::RENDER_DEVICE_TYPE& m_DeviceType) -> void
+auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> void
 {
-	Diligent::SwapChainDesc SCDesc;
-	HWND hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
+    Diligent::SwapChainDesc scDesc;
+    HWND hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
 
-	Diligent::RefCntAutoPtr<Diligent::IRenderDevice>& m_pDevice = Application::Get()->GetDevice().GetNative();
-	Diligent::RefCntAutoPtr<Diligent::ISwapChain>& m_pSwapChain = Application::Get()->GetSwapChain().GetNative();
-	Diligent::RefCntAutoPtr<Diligent::IDeviceContext>& m_pImmediateContext = Application::Get()->GetImmediateContext().
-		GetNative();
+    Diligent::RefCntAutoPtr<Diligent::IRenderDevice> &pDevice = Application::Get()->GetDevice().GetNative();
+    Diligent::RefCntAutoPtr<Diligent::ISwapChain> &pSwapChain = Application::Get()->GetSwapChain().GetNative();
+    Diligent::RefCntAutoPtr<Diligent::IDeviceContext> &pImmediateContext = Application::Get()->GetImmediateContext().
+        GetNative();
 
-	switch (m_DeviceType)
-	{
-	case Diligent::RENDER_DEVICE_TYPE_VULKAN:
-		{
+    switch (deviceType)
+    {
+    case Diligent::RENDER_DEVICE_TYPE_VULKAN:
+    {
 #    if EXPLICITLY_LOAD_ENGINE_VK_DLL
-			// Load the dll and import GetEngineFactoryVk() function
-			auto GetEngineFactoryVk = Diligent::LoadGraphicsEngineVk();
+        // Load the dll and import GetEngineFactoryVk() function
+        auto getEngineFactoryVk = Diligent::LoadGraphicsEngineVk();
 #    endif
-			Diligent::EngineVkCreateInfo EngineCI;
+        Diligent::EngineVkCreateInfo engineCi;
 
-			auto* pFactoryVk = GetEngineFactoryVk();
-			pFactoryVk->CreateDeviceAndContextsVk(EngineCI, &m_pDevice, &m_pImmediateContext);
+        auto *pFactoryVk = getEngineFactoryVk();
+        pFactoryVk->CreateDeviceAndContextsVk(engineCi, &pDevice, &pImmediateContext);
 
-			if (!m_pSwapChain && hWnd != nullptr)
-			{
-				Diligent::Win32NativeWindow Window{hWnd};
-				pFactoryVk->CreateSwapChainVk(m_pDevice, m_pImmediateContext, SCDesc, Window, &m_pSwapChain);
-			}
-		}
-		break;
+        if (!pSwapChain && hWnd != nullptr)
+        {
+            Diligent::Win32NativeWindow window{hWnd};
+            pFactoryVk->CreateSwapChainVk(pDevice, pImmediateContext, scDesc, window, &pSwapChain);
+        }
+    }
+    break;
 
-	case Diligent::RENDER_DEVICE_TYPE_D3D12:
-		{
+    case Diligent::RENDER_DEVICE_TYPE_D3D12:
+    {
 #    if ENGINE_DLL
-			// Load the dll and import GetEngineFactoryD3D12() function
-			auto GetEngineFactoryD3D12 = Diligent::LoadGraphicsEngineD3D12();
+        // Load the dll and import GetEngineFactoryD3D12() function
+        auto getEngineFactoryD3D12 = Diligent::LoadGraphicsEngineD3D12();
 #    endif
-			Diligent::EngineD3D12CreateInfo EngineCI;
+        Diligent::EngineD3D12CreateInfo engineCi;
 
-			auto* pFactoryD3D12 = GetEngineFactoryD3D12();
-			pFactoryD3D12->CreateDeviceAndContextsD3D12(EngineCI, &m_pDevice, &m_pImmediateContext);
-			Diligent::Win32NativeWindow Window{hWnd};
-			pFactoryD3D12->CreateSwapChainD3D12(m_pDevice, m_pImmediateContext, SCDesc, Diligent::FullScreenModeDesc{},
-			                                    Window, &m_pSwapChain);
-		}
-		break;
+        auto *pFactoryD3D12 = getEngineFactoryD3D12();
+        pFactoryD3D12->CreateDeviceAndContextsD3D12(engineCi, &pDevice, &pImmediateContext);
+        Diligent::Win32NativeWindow window{hWnd};
+        pFactoryD3D12->CreateSwapChainD3D12(pDevice, pImmediateContext, scDesc, Diligent::FullScreenModeDesc{}, window,
+                                            &pSwapChain);
+    }
+    break;
 
-	case Diligent::RENDER_DEVICE_TYPE_D3D11:
-		{
-			Diligent::EngineD3D11CreateInfo EngineCI;
+    case Diligent::RENDER_DEVICE_TYPE_D3D11:
+    {
+        Diligent::EngineD3D11CreateInfo engineCi;
 #    if ENGINE_DLL
-			// Load the dll and import GetEngineFactoryD3D11() function
-			auto* GetEngineFactoryD3D11 = Diligent::LoadGraphicsEngineD3D11();
+        // Load the dll and import GetEngineFactoryD3D11() function
+        auto *getEngineFactoryD3D11 = Diligent::LoadGraphicsEngineD3D11();
 #    endif
-			auto* pFactoryD3D11 = GetEngineFactoryD3D11();
-			pFactoryD3D11->CreateDeviceAndContextsD3D11(EngineCI, &m_pDevice, &m_pImmediateContext);
-			Diligent::Win32NativeWindow Window{hWnd};
-			pFactoryD3D11->CreateSwapChainD3D11(m_pDevice, m_pImmediateContext, SCDesc, Diligent::FullScreenModeDesc{},
-			                                    Window, &m_pSwapChain);
-		}
-		break;
+        auto *pFactoryD3D11 = getEngineFactoryD3D11();
+        pFactoryD3D11->CreateDeviceAndContextsD3D11(engineCi, &pDevice, &pImmediateContext);
+        Diligent::Win32NativeWindow window{hWnd};
+        pFactoryD3D11->CreateSwapChainD3D11(pDevice, pImmediateContext, scDesc, Diligent::FullScreenModeDesc{}, window,
+                                            &pSwapChain);
+    }
+    break;
 
-	case Diligent::RENDER_DEVICE_TYPE_GL:
-		{
+    case Diligent::RENDER_DEVICE_TYPE_GL:
+    {
 #    if EXPLICITLY_LOAD_ENGINE_GL_DLL
-			// Load the dll and import GetEngineFactoryOpenGL() function
-			auto GetEngineFactoryOpenGL = Diligent::LoadGraphicsEngineOpenGL();
+        // Load the dll and import GetEngineFactoryOpenGL() function
+        auto getEngineFactoryOpenGl = Diligent::LoadGraphicsEngineOpenGL();
 #    endif
-			auto* pFactoryOpenGL = GetEngineFactoryOpenGL();
+        auto *pFactoryOpenGl = getEngineFactoryOpenGl();
 
-			Diligent::EngineGLCreateInfo EngineCI;
-			EngineCI.Window.hWnd = hWnd;
+        Diligent::EngineGLCreateInfo engineCi;
+        engineCi.Window.hWnd = hWnd;
 
-			pFactoryOpenGL->CreateDeviceAndSwapChainGL(EngineCI, &m_pDevice, &m_pImmediateContext, SCDesc,
-			                                           &m_pSwapChain);
-		}
-		break;
+        pFactoryOpenGl->CreateDeviceAndSwapChainGL(engineCi, &pDevice, &pImmediateContext, scDesc, &pSwapChain);
+    }
+    break;
 
-	default: LOG_CORE_FATAL("Unknown/unsupported device type");
-		__debugbreak();
-	}
+    case Diligent::RENDER_DEVICE_TYPE_UNDEFINED:
+    case Diligent::RENDER_DEVICE_TYPE_GLES:
+    case Diligent::RENDER_DEVICE_TYPE_METAL:
+    case Diligent::RENDER_DEVICE_TYPE_COUNT: LOG_CORE_FATAL("Unknown/unsupported device type");
+        __debugbreak();
+    }
 }

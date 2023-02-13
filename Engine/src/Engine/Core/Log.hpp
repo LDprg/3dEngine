@@ -7,25 +7,25 @@
 
 namespace __XXECS
 {
-	class Log
-	{
-	public:
-		static auto Init() -> void;
+    class Log
+    {
+    public:
+        static auto Init() -> void;
 
-		static auto GetCoreLogger() -> std::shared_ptr<spdlog::logger>&
-		{
-			return m_coreLogger;
-		}
+        static auto GetCoreLogger() -> std::shared_ptr<spdlog::logger>&
+        {
+            return m_coreLogger;
+        }
 
-		static auto GetClientLogger() -> std::shared_ptr<spdlog::logger>&
-		{
-			return m_clientLogger;
-		}
+        static auto GetClientLogger() -> std::shared_ptr<spdlog::logger>&
+        {
+            return m_clientLogger;
+        }
 
-	private:
-		static std::shared_ptr<spdlog::logger> m_coreLogger;
-		static std::shared_ptr<spdlog::logger> m_clientLogger;
-	};
+    private:
+        static std::shared_ptr<spdlog::logger> m_coreLogger;
+        static std::shared_ptr<spdlog::logger> m_clientLogger;
+    };
 }
 
 #define LOG_CORE_DEBUG(...)	::__XXECS::Log::GetCoreLogger()->debug(__VA_ARGS__)

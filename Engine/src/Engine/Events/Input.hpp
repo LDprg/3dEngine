@@ -3,14 +3,14 @@
 
 namespace __XXECS
 {
-	class Input
-	{
-	public:
-		static auto IsKeyPressed(Key keycode) -> bool;
-		static auto IsMouseButtonPressed(Mouse button) -> bool;
+    class Input
+    {
+    public:
+        static auto IsKeyPressed(Key keycode) -> bool;
+        static auto IsMouseButtonPressed(Mouse button) -> bool;
 
-		static auto GetMousePosition() -> std::pair<float, float>;
-		static auto GetMouseX() -> float;
-		static auto GetMouseY() -> float;
-	};
+        static auto GetMousePosition() -> std::pair<float, float>;
+        static auto GetMouseX() -> float;
+        static auto GetMouseY() -> float;
+    };
 }

@@ -4,5 +4,5 @@
 
 namespace __XXECS
 {
-	typedef Diligent::Uint32 Size;
+    typedef Diligent::Uint32 Size;
 }

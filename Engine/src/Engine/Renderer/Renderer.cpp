@@ -5,7 +5,7 @@
 
 #include "Engine/Core/Application.hpp"
 
-static const char* VSSource = R"(
+static const char *vsSource = R"(
 struct VSInput
 {
     float4 Pos   : ATTRIB0;
@@ -24,7 +24,7 @@ void main(in  VSInput VSIn,
 }
 )";
 
-static const char* PSSource = R"(
+static const char *psSource = R"(
 struct PSInput 
 { 
     float4 Pos   : SV_POSITION; 
@@ -43,201 +43,197 @@ void main(in  PSInput  PSIn,
 
 auto __XXECS::Renderer::Exit() -> void
 {
-	m_renderThread.detach();
+    m_renderThread.detach();
 }
 
 auto __XXECS::Renderer::Bind(const RenderArguments renderArgs) -> void
 {
-	m_renderArgs = renderArgs;
-	m_renderThread = std::thread([this]
-	{
-		RunThread(&m_renderArgs);
-	});
+    m_renderArgs = renderArgs;
+    m_renderThread = std::thread([this]
+    {
+        RunThread();
+    });
 }
 
-auto __XXECS::Renderer::RunThread(const RenderArguments* userData) -> int32_t
+auto __XXECS::Renderer::RunThread() -> int32_t
 {
-	ThreadInit(userData);
+    ThreadInit();
 
-	while (Application::Get()->IsRunning())
-		ThreadUpdate();
+    while (Application::Get()->IsRunning())
+        ThreadUpdate();
 
-	ThreadExit();
-	return 0;
+    ThreadExit();
+    return 0;
 }
 
 
-auto __XXECS::Renderer::ThreadInit(const RenderArguments* args) -> void
+auto __XXECS::Renderer::ThreadInit() -> void
 {
-	Device::createDevice(m_deviceType);
+    Device::CreateDevice(m_deviceType);
 
-	Application::Get()->GetImGuiManager().Init();
+    Application::Get()->GetImGuiManager().Init();
 
-	Application::Get()->Init();
+    Application::Get()->Init();
 
-	Diligent::BlendStateDesc BlendState;
-	BlendState.RenderTargets[0].BlendEnable = true;
-	BlendState.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
-	BlendState.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+    Diligent::BlendStateDesc blendState;
+    blendState.RenderTargets[0].BlendEnable = true;
+    blendState.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
+    blendState.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
 
-	// Pipeline state object encompasses configuration of all GPU stages
+    // Pipeline state object encompasses configuration of all GPU stages
 
-	Diligent::GraphicsPipelineStateCreateInfo PSOCreateInfo;
+    Diligent::GraphicsPipelineStateCreateInfo psoCreateInfo;
 
-	// Pipeline state name is used by the engine to report issues.
-	// It is always a good idea to give objects descriptive names.
-	PSOCreateInfo.PSODesc.Name = "Main PSO";
+    // Pipeline state name is used by the engine to report issues.
+    // It is always a good idea to give objects descriptive names.
+    psoCreateInfo.PSODesc.Name = "Main PSO";
 
-	// This is a graphics pipeline
-	PSOCreateInfo.PSODesc.PipelineType = Diligent::PIPELINE_TYPE_GRAPHICS;
+    // This is a graphics pipeline
+    psoCreateInfo.PSODesc.PipelineType = Diligent::PIPELINE_TYPE_GRAPHICS;
 
-	// This tutorial will render to a single render target
-	PSOCreateInfo.GraphicsPipeline.NumRenderTargets = 1;
-	// Set render target format which is the format of the swap chain's color buffer
-	PSOCreateInfo.GraphicsPipeline.RTVFormats[0] = Application::Get()->GetSwapChain().GetDesc().ColorBufferFormat;
-	// Use the depth buffer format from the swap chain
-	PSOCreateInfo.GraphicsPipeline.DSVFormat = Application::Get()->GetSwapChain().GetDesc().DepthBufferFormat;
-	// Primitive topology defines what kind of primitives will be rendered by this pipeline state
-	PSOCreateInfo.GraphicsPipeline.PrimitiveTopology = Diligent::PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-	// No back face culling for this tutorial
-	PSOCreateInfo.GraphicsPipeline.RasterizerDesc.CullMode = Diligent::CULL_MODE_BACK;
-	// Disable depth testing
-	PSOCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthEnable = true;
+    // This tutorial will render to a single render target
+    psoCreateInfo.GraphicsPipeline.NumRenderTargets = 1;
+    // Set render target format which is the format of the swap chain's color buffer
+    psoCreateInfo.GraphicsPipeline.RTVFormats[0] = Application::Get()->GetSwapChain().GetDesc().ColorBufferFormat;
+    // Use the depth buffer format from the swap chain
+    psoCreateInfo.GraphicsPipeline.DSVFormat = Application::Get()->GetSwapChain().GetDesc().DepthBufferFormat;
+    // Primitive topology defines what kind of primitives will be rendered by this pipeline state
+    psoCreateInfo.GraphicsPipeline.PrimitiveTopology = Diligent::PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+    // No back face culling for this tutorial
+    psoCreateInfo.GraphicsPipeline.RasterizerDesc.CullMode = Diligent::CULL_MODE_BACK;
+    // Disable depth testing
+    psoCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthEnable = true;
 
-	PSOCreateInfo.GraphicsPipeline.BlendDesc = BlendState;
+    psoCreateInfo.GraphicsPipeline.BlendDesc = blendState;
 
-	Diligent::LayoutElement LayoutElems[] = {
-		// Attribute 0 - vertex position
-		Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, Diligent::False},
-		// Attribute 1 - vertex color
-		Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, Diligent::False}
-	};
-	PSOCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = LayoutElems;
-	PSOCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(LayoutElems);
+    Diligent::LayoutElement layoutElems[] = {
+        // Attribute 0 - vertex position
+        Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, Diligent::False},
+        // Attribute 1 - vertex color
+        Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, Diligent::False}};
+    psoCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = layoutElems;
+    psoCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(layoutElems);
 
-	LOG_CORE_TRACE("Create Shaders");
-	Diligent::ShaderCreateInfo ShaderCI;
-	// Tell the system that the shader source code is in HLSL.
-	// For OpenGL, the engine will convert this into GLSL under the hood
-	ShaderCI.SourceLanguage = Diligent::SHADER_SOURCE_LANGUAGE_HLSL;
+    LOG_CORE_TRACE("Create Shaders");
+    Diligent::ShaderCreateInfo shaderCi;
+    // Tell the system that the shader source code is in HLSL.
+    // For OpenGL, the engine will convert this into GLSL under the hood
+    shaderCi.SourceLanguage = Diligent::SHADER_SOURCE_LANGUAGE_HLSL;
 
-	// Create a vertex shader
-	Diligent::RefCntAutoPtr<Diligent::IShader> pVS;
-	{
-		ShaderCI.Desc.ShaderType = Diligent::SHADER_TYPE_VERTEX;
-		ShaderCI.EntryPoint = "main";
-		ShaderCI.Desc.Name = "Triangle vertex shader";
-		ShaderCI.Source = VSSource;
-		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pVS);
-	}
+    // Create a vertex shader
+    Diligent::RefCntAutoPtr<Diligent::IShader> pVs;
+    {
+        shaderCi.Desc.ShaderType = Diligent::SHADER_TYPE_VERTEX;
+        shaderCi.EntryPoint = "main";
+        shaderCi.Desc.Name = "Triangle vertex shader";
+        shaderCi.Source = vsSource;
+        Application::Get()->GetDevice().GetNative()->CreateShader(shaderCi, &pVs);
+    }
 
-	// Create a pixel shader
-	Diligent::RefCntAutoPtr<Diligent::IShader> pPS;
-	{
-		ShaderCI.Desc.ShaderType = Diligent::SHADER_TYPE_PIXEL;
-		ShaderCI.EntryPoint = "main";
-		ShaderCI.Desc.Name = "Triangle pixel shader";
-		ShaderCI.Source = PSSource;
-		Application::Get()->GetDevice().GetNative()->CreateShader(ShaderCI, &pPS);
-	}
+    // Create a pixel shader
+    Diligent::RefCntAutoPtr<Diligent::IShader> pPs;
+    {
+        shaderCi.Desc.ShaderType = Diligent::SHADER_TYPE_PIXEL;
+        shaderCi.EntryPoint = "main";
+        shaderCi.Desc.Name = "Triangle pixel shader";
+        shaderCi.Source = psSource;
+        Application::Get()->GetDevice().GetNative()->CreateShader(shaderCi, &pPs);
+    }
 
-	// Finally, create the pipeline state
-	PSOCreateInfo.pVS = pVS;
-	PSOCreateInfo.pPS = pPS;
+    // Finally, create the pipeline state
+    psoCreateInfo.pVS = pVs;
+    psoCreateInfo.pPS = pPs;
 
-	// Define variable type that will be used by default
-	PSOCreateInfo.PSODesc.ResourceLayout.DefaultVariableType = Diligent::SHADER_RESOURCE_VARIABLE_TYPE_STATIC;
+    // Define variable type that will be used by default
+    psoCreateInfo.PSODesc.ResourceLayout.DefaultVariableType = Diligent::SHADER_RESOURCE_VARIABLE_TYPE_STATIC;
 
-	Application::Get()->GetDevice().GetNative()->CreateGraphicsPipelineState(PSOCreateInfo, &m_pPso);
+    Application::Get()->GetDevice().GetNative()->CreateGraphicsPipelineState(psoCreateInfo, &m_pPso);
 
-	// Since we did not explcitly specify the type for 'Constants' variable, default
-	// type (SHADER_RESOURCE_VARIABLE_TYPE_STATIC) will be used. Static variables never
-	// change and are bound directly through the pipeline state object.
-	if (auto* temp = m_pPso->GetStaticVariableByName(Diligent::SHADER_TYPE_VERTEX, "Constants"))
-		temp->Set(m_vsConstants);
+    // Since we did not explicitly specify the type for 'Constants' variable, default
+    // type (SHADER_RESOURCE_VARIABLE_TYPE_STATIC) will be used. Static variables never
+    // change and are bound directly through the pipeline state object.
+    if (auto *temp = m_pPso->GetStaticVariableByName(Diligent::SHADER_TYPE_VERTEX, "Constants"))
+        temp->Set(m_vsConstants);
 
-	// Create a shader resource binding object and bind all static resources in it
-	m_pPso->CreateShaderResourceBinding(&m_pSrb, true);
+    // Create a shader resource binding object and bind all static resources in it
+    m_pPso->CreateShaderResourceBinding(&m_pSrb, true);
 }
 
 auto __XXECS::Renderer::ThreadUpdate() -> void
 {
-	static int oldWidth;
-	static int oldHeight;
-	int width;
-	int height;
-	glfwGetWindowSize(Application::Get()->GetWindow().GetNative(), &width, &height);
-	if (width != oldWidth || height != oldHeight)
-	{
-		auto resize = ResizeEvent();
-		resize.width = width;
-		resize.height = height;
-		Application::Get()->GetEventManager().Push(resize);
+    static int oldWidth;
+    static int oldHeight;
+    int width;
+    int height;
+    glfwGetWindowSize(Application::Get()->GetWindow().GetNative(), &width, &height);
+    if (width != oldWidth || height != oldHeight)
+    {
+        Application::Get()->GetEventManager().Push(ResizeEvent(width, height));
 
-		oldWidth = width;
-		oldHeight = height;
-	}
+        oldWidth = width;
+        oldHeight = height;
+    }
 
-	// Handle events from the main thread.
-	while (true)
-	{
-		const std::any ev = Application::Get()->GetEventManager().Pop();
-		if (!ev.has_value())
-			break;
+    // Handle events from the main thread.
+    while (true)
+    {
+        const std::any ev = Application::Get()->GetEventManager().Pop();
+        if (!ev.has_value())
+            break;
 
-		if (ev.type() == typeid(ResizeEvent))
-		{
-			const auto resizeEvent = any_cast<ResizeEvent>(ev);
+        if (ev.type() == typeid(ResizeEvent))
+        {
+            const auto resizeEvent = any_cast<ResizeEvent>(ev);
 
-			Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
-		}
-		else if (ev.type() == typeid(ExitEvent))
-		{
-			Application::Get()->Close();
-		}
+            Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
+        }
+        else if (ev.type() == typeid(ExitEvent))
+        {
+            Application::Get()->Close();
+        }
 
-		Application::Get()->GetImGuiManager().Event(ev);
-		Application::Get()->Event(ev);
-	}
+        Application::Get()->GetImGuiManager().Event(ev);
+        Application::Get()->Event(ev);
+    }
 
-	Application::Get()->GetImGuiManager().NewFrame();
+    Application::Get()->GetImGuiManager().NewFrame();
 
-	auto& m_pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
+    auto &pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
 
-	// Set render targets before issuing any draw command.
-	// Note that Present() unbinds the back buffer if it is set as render target.
-	auto* pRTV = Application::Get()->GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
-	auto* pDSV = Application::Get()->GetSwapChain().GetNative()->GetDepthBufferDSV();
-	m_pImmediateContext->SetRenderTargets(1, &pRTV, pDSV, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    // Set render targets before issuing any draw command.
+    // Note that Present() unbinds the back buffer if it is set as render target.
+    auto *pRtv = Application::Get()->GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
+    auto *pDsv = Application::Get()->GetSwapChain().GetNative()->GetDepthBufferDSV();
+    pImmediateContext->SetRenderTargets(1, &pRtv, pDsv, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-	// Let the engine perform required state transitions
-	m_pImmediateContext->ClearRenderTarget(pRTV, Application::Get()->GetClearColor(),
-	                                       Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-	m_pImmediateContext->ClearDepthStencil(pDSV, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0,
-	                                       Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    // Let the engine perform required state transitions
+    pImmediateContext->ClearRenderTarget(pRtv, Application::Get()->GetClearColor(),
+                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pImmediateContext->ClearDepthStencil(pDsv, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0,
+                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-	Application::Get()->Update();
+    Application::Get()->Update();
 
-	Application::Get()->ImGui();
+    Application::Get()->ImGui();
 
-	// Set the pipeline state in the immediate context
-	m_pImmediateContext->SetPipelineState(m_pPso);
-	m_pImmediateContext->CommitShaderResources(m_pSrb, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    // Set the pipeline state in the immediate context
+    pImmediateContext->SetPipelineState(m_pPso);
+    pImmediateContext->CommitShaderResources(m_pSrb, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
-	Application::Get()->Render();
+    Application::Get()->Render();
 
-	Application::Get()->GetImGuiManager().Render();
+    Application::Get()->GetImGuiManager().Render();
 
-	Application::Get()->GetSwapChain().Present();
+    Application::Get()->GetSwapChain().Present();
 }
 
 auto __XXECS::Renderer::ThreadExit() -> void
 {
-	Application::Get()->Shutdown();
+    Application::Get()->Shutdown();
 
-	Application::Get()->GetImGuiManager().Destroy();
+    Application::Get()->GetImGuiManager().Destroy();
 
-	Application::Get()->GetImmediateContext().GetNative()->Flush();
-	Application::Get()->GetSwapChain().GetNative().Release();
-	Application::Get()->GetDevice().GetNative().Release();
+    Application::Get()->GetImmediateContext().GetNative()->Flush();
+    Application::Get()->GetSwapChain().GetNative().Release();
+    Application::Get()->GetDevice().GetNative().Release();
 }

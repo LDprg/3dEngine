@@ -7,19 +7,19 @@
 
 namespace __XXECS
 {
-	extern auto CreateApplication() -> Application*;
+    extern auto CreateApplication() -> Application*;
 }
 
-inline auto main(int argc, char** argv) -> int
+inline auto main() -> int
 {
-	__XXECS::Log::Init();
+    __XXECS::Log::Init();
 
-	LOG_CORE_TRACE("CREATE APP");
-	const auto app = __XXECS::CreateApplication();
+    LOG_CORE_TRACE("CREATE APP");
+    const auto app = __XXECS::CreateApplication();
 
-	LOG_CORE_TRACE("RUN APP");
-	app->RunLoop();
+    LOG_CORE_TRACE("RUN APP");
+    app->RunLoop();
 
-	LOG_CORE_TRACE("DELETE APP");
-	delete app;
+    LOG_CORE_TRACE("DELETE APP");
+    delete app;
 }
