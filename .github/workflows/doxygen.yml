@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     name: Build Release
 
     steps:
@@ -23,25 +23,8 @@ jobs:
       - name: Setup Graphviz
         uses: ts-graphviz/setup-graphviz@v1
         
-      - name: install dependencies
-        run: \
-          - sudo apt-get update
-          - sudo apt-get upgrade
-          - sudo apt-get install build-essential
-          - sudo apt-get install cmake
-          - sudo apt-get install libx11-dev
-          - sudo apt-get install mesa-common-dev
-          - sudo apt-get install mesa-utils
-          - sudo apt-get install libgl-dev
-          - sudo apt-get install python3-distutils
-          - sudo apt-get install libgl1-mesa-dev
-          - sudo apt-get install libxrandr-dev
-          - sudo apt-get install libxinerama-dev
-          - sudo apt-get install libxcursor-dev
-          - sudo apt-get install libxi-dev
-
       - name: Configure CMake
-        run: cmake -S . -B ${{github.workspace}}/build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --target doc_doxygen
+        run: cmake -S . -B ${{github.workspace}}/build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target doc_doxygen
