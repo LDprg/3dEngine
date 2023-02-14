@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Input.hpp
+ * \brief  Input management
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 #include <Engine/Events/Key.hpp>
 

@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Drawable.hpp
+ * \brief  Drawable component
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 #include <Buffer.h>
 #include <Common/interface/RefCntAutoPtr.hpp>

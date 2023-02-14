@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Input.cpp
+ * \brief  Input source
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #include "Input.hpp"
 
 #include "Engine/Core/Application.hpp"

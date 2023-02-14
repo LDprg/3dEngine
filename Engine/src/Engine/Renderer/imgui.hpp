@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   imgui.hpp
+ * \brief  ImGui manager
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 #include <Imgui/interface/ImGuiImplDiligent.hpp>

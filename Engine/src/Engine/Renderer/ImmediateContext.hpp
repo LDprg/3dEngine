@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   ImmediateContext.hpp
+ * \brief  ImmediateContext management
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 namespace __XXECS

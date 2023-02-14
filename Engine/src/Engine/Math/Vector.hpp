@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Vector.hpp
+ * \brief  Common vector types
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 namespace __XXECS

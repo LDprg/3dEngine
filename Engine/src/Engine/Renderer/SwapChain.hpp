@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   SwapChain.hpp
+ * \brief  SwapChain management
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 #include <SwapChain.h>
 #include <Common/interface/RefCntAutoPtr.hpp>

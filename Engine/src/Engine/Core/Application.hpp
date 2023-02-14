@@ -1,12 +1,19 @@
+/*****************************************************************/ /**
+ * \file   Application.hpp
+ * \brief  Application class, the base class for main applications
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
-#include "Engine/Renderer/Renderer.hpp"
 #include "Engine/Core/Window.hpp"
 #include "Engine/Entity/EntityManager.hpp"
 #include "Engine/Events/Event.hpp"
 #include "Engine/Renderer/Device.hpp"
 #include "Engine/Renderer/imgui.hpp"
 #include "Engine/Renderer/ImmediateContext.hpp"
+#include "Engine/Renderer/Renderer.hpp"
 #include "Engine/Renderer/SwapChain.hpp"
 
 #include "Engine/Math/Vector.hpp"
@@ -15,6 +22,7 @@ auto main() -> int;
 
 namespace __XXECS
 {
+
     class Application
     {
         friend auto ::main() -> int;

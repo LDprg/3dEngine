@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Event.hpp
+ * \brief  Event definitions
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 #include <any>
 #include <queue>

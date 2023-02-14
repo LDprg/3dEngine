@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Window.hpp
+ * \brief  Window class, Window management
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 #include <Engine/Core/Log.hpp>

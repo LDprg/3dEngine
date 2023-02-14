@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Device.hpp
+ * \brief  Rendering device management
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 // ReSharper disable CppUnusedIncludeDirective
 #pragma once
 
@@ -5,6 +12,8 @@
 #include <EngineFactoryD3D12.h>
 #include <EngineFactoryOpenGL.h>
 #include <EngineFactoryVk.h>
+
+#include <Common/interface/RefCntAutoPtr.hpp>
 
 namespace __XXECS
 {

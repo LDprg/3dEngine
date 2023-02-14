@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Engine.hpp
+ * \brief  Include all of the Engine header
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 #include "Engine/Core/Application.hpp"

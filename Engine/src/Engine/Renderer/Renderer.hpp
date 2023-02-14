@@ -1,16 +1,14 @@
+/*****************************************************************/ /**
+ * \file   Renderer.hpp
+ * \brief  Renderer management
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
-#include <Engine/Core/Window.hpp>
-
-#include <ImGuiDiligentRenderer.hpp>
 
 namespace __XXECS
 {
-    struct RenderArguments
-    {
-        uint32_t width;
-        uint32_t height;
-    };
-
     class Renderer final
     {
     public:

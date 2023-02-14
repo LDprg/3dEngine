@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Window.cpp
+ * \brief  Windows source
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 // ReSharper disable CppParameterNeverUsed
 // ReSharper disable IdentifierTypo
 // ReSharper disable CppParameterMayBeConst
@@ -40,7 +47,7 @@ auto GlfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height) -
 {
     __XXECS::ResizeEvent resizeEvent;
     resizeEvent.width = width;
-	resizeEvent.height = height;
+    resizeEvent.height = height;
     __XXECS::Application::Get()->GetEventManager().Push(resizeEvent);
 }
 

@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Log.cpp
+ * \brief  Log source
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #include "Log.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 

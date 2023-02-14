@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Log.hpp
+ * \brief  Log class, defines Logging Tools
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 #pragma warning(push)

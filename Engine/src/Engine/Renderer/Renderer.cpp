@@ -1,7 +1,12 @@
+/*****************************************************************/ /**
+ * \file   Renderer.cpp
+ * \brief  Renderer source
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #include <DeviceContext.h>
 #include <RenderDevice.h>
-
-#include <GLFW/glfw3.h>
 
 #include "Engine/Core/Application.hpp"
 
@@ -74,11 +79,6 @@ auto __XXECS::Renderer::ThreadInit() -> void
 
     Application::Get()->Init();
 
-    Diligent::BlendStateDesc blendState;
-    blendState.RenderTargets[0].BlendEnable = true;
-    blendState.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
-    blendState.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
-
     // Pipeline state object encompasses configuration of all GPU stages
 
     Diligent::GraphicsPipelineStateCreateInfo psoCreateInfo;
@@ -103,7 +103,20 @@ auto __XXECS::Renderer::ThreadInit() -> void
     // Disable depth testing
     psoCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthEnable = true;
 
-    psoCreateInfo.GraphicsPipeline.BlendDesc = blendState;
+
+    Diligent::BlendStateDesc &bsDesc = psoCreateInfo.GraphicsPipeline.BlendDesc;
+    bsDesc.IndependentBlendEnable = Diligent::True;
+    auto &rt0 = bsDesc.RenderTargets[0];
+    rt0.BlendEnable = Diligent::True;
+    rt0.RenderTargetWriteMask = Diligent::COLOR_MASK_ALL;
+    rt0.SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
+    rt0.DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+    rt0.BlendOp = Diligent::BLEND_OPERATION_ADD;
+    rt0.SrcBlendAlpha = Diligent::BLEND_FACTOR_SRC_ALPHA;
+    rt0.DestBlendAlpha = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+    rt0.BlendOpAlpha = Diligent::BLEND_OPERATION_ADD;
+
+    psoCreateInfo.GraphicsPipeline.BlendDesc = bsDesc;
 
     Diligent::LayoutElement layoutElems[] = {
         // Attribute 0 - vertex position

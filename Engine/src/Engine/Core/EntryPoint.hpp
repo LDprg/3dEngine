@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   EntryPoint.hpp
+ * \brief  Defines the entry point for the application
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 #include <Engine/Core/Application.hpp>

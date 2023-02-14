@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Device.cpp
+ * \brief  Device source
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #include "Engine/Renderer/Device.hpp"
 
 auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> void

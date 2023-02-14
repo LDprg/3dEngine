@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Application.cpp
+ * \brief  Application source
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #include "Application.hpp"
 
 __XXECS::Application *__XXECS::Application::m_instance;

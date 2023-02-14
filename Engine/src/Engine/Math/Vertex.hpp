@@ -1,3 +1,10 @@
+/*****************************************************************/ /**
+ * \file   Vertex.hpp
+ * \brief  Vertices and indices type definitions
+ * 
+ * \author LD
+ * \date   February 2023
+ *********************************************************************/
 #pragma once
 
 #include "Engine/Math/General.hpp"
