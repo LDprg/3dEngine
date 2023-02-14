@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     name: Build Release
 
     steps:
@@ -36,9 +36,16 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: 3dEngine-doxygen
+          name: github-pages
           path: ./build/Engine/docs/doc_doxygen/html
           retention-days: 5
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: doc_doxygen
+          path: ./build/Engine/docs/doc_doxygen
+          retention-days: 5
+          
   publish: 
     runs-on: ubuntu-latest
     name: Publish Release
@@ -52,12 +59,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: 3dEngine-doxygen
-          path: .
-          
+    steps:          
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
