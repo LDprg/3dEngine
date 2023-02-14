@@ -1,4 +1,4 @@
-name: Doxygen GitHub Pages Deploy Action
+name: Doxygen GitHub Pages
 
 on:
   push:
@@ -7,12 +7,51 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
+    name: Build Release
+
     steps:
-      - uses: DenverCoder1/doxygen-github-pages-action@v1.2.0
+      - uses: actions/checkout@v3
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+
+      - name: Configure CMake
+        run: cmake -S . -B ${{github.workspace}}/build -A x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target Sandbox
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{env.BUILD_TYPE}}
+        
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          folder: Engine/docs
-          config_file: Engine/docs/Doxyfile
+          name: 3dEngine-doxygen
+          path: ./build/Engine/docs/doc_doxygen/html
+          retention-days: 5
+  publish: 
+    runs-on: ubuntu-latest
+    name: Publish Release
+    needs: build
+    
+    permissions:
+      pages: write      
+      id-token: write 
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: 3dEngine-doxygen
+          path: .
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
