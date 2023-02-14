@@ -5,6 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  
+env:
+  BUILD_TYPE: Release
 
 jobs:
   build:
@@ -21,7 +24,7 @@ jobs:
         run: cmake -S . -B ${{github.workspace}}/build -A x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target Sandbox
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target doc_doxygen
 
       - name: Test
         working-directory: ${{github.workspace}}/build
