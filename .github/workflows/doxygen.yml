@@ -19,6 +19,9 @@ jobs:
 
       - name: Checkout submodules
         run: git submodule update --init --recursive
+        
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v1
 
       - name: Configure CMake
         run: cmake -S . -B ${{github.workspace}}/build -A x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
