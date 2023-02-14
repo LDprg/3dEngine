@@ -7,6 +7,8 @@
  *********************************************************************/
 #pragma once
 
+#include <memory>
+
 #include "Engine/Math/General.hpp"
 #include "Engine/Math/Vector.hpp"
 
@@ -27,13 +29,13 @@ namespace __XXECS::Math
         explicit Vertices(const Size size)
             : m_size(size)
         {
-            data = std::make_shared<Vertex[]>(size);
+            data = std::shared_ptr<Vertex[]>(new Vertex[size]);
         }
 
         Vertices(const std::initializer_list<Vertex> iList)
             : Vertices(static_cast<Size>(iList.size()))
         {
-            std::ranges::copy(iList.begin(), iList.end(), data.get());
+            std::copy(iList.begin(), iList.end(), data.get());
         }
 
         operator Vertex *() const
@@ -68,7 +70,7 @@ namespace __XXECS::Math
         Indices(const std::initializer_list<Index> iList)
             : Indices(static_cast<Size>(iList.size()))
         {
-            std::ranges::copy(iList.begin(), iList.end(), data.get());
+            std::copy(iList.begin(), iList.end(), data.get());
         }
 
         operator Index *() const

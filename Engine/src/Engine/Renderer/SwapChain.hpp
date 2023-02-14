@@ -7,7 +7,6 @@
  *********************************************************************/
 #pragma once
 #include <SwapChain.h>
-#include <Common/interface/RefCntAutoPtr.hpp>
 
 namespace __XXECS
 {
@@ -31,7 +30,7 @@ namespace __XXECS
             return m_pSwapChain->GetDesc();
         }
 
-        auto Present(UINT32 SyncInterval = 1) -> void
+        auto Present(Diligent::Uint32 SyncInterval = 1) -> void
         {
             return m_pSwapChain->Present(SyncInterval);
         }

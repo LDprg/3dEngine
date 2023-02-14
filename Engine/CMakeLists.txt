@@ -44,7 +44,23 @@ target_link_libraries(Engine glfw)
 target_link_libraries(Engine EnTT::EnTT)
 target_link_libraries(Engine glm)
 
-copy_required_dlls(Engine)
+if (WIN32)
+    add_compile_definitions(ENGINE_PLATFORM_WINDOWS
+                            ENGINE_SUPPORT_D3D11
+                            ENGINE_SUPPORT_D3D12
+                            ENGINE_SUPPORT_OPENGL
+                            ENGINE_SUPPORT_VULKAN)
+elseif(LINUX)
+    add_compile_definitions(ENGINE_PLATFORM_LINUX
+                            ENGINE_SUPPORT_OPENGL)
+elseif(APPLE)
+    add_compile_definitions(ENGINE_PLATFORM_MACOS
+                            ENGINE_SUPPORT_OPENGL)
+endif()
+
+if (MSVC)
+    copy_required_dlls(Engine)
+endif(MSVC)
 
 if(MSVC)
     macro(GroupSources curdir)

@@ -41,6 +41,6 @@ namespace __XXECS
         Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPso;
         Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSrb;
         Diligent::RefCntAutoPtr<Diligent::IBuffer> m_vsConstants;
-        Diligent::RENDER_DEVICE_TYPE m_deviceType = Diligent::RENDER_DEVICE_TYPE_D3D12;
+        Diligent::RENDER_DEVICE_TYPE m_deviceType = Diligent::RENDER_DEVICE_TYPE_GL;
     };
 }

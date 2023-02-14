@@ -11,8 +11,8 @@ add_executable(Sandbox ${SRC})
 
 target_link_libraries(Sandbox Engine)
 
-copy_required_dlls(Sandbox)
-
 if (MSVC)
+  copy_required_dlls(Sandbox)
+
   set_property( DIRECTORY PROPERTY VS_STARTUP_PROJECT "Sandbox")
 endif (MSVC)

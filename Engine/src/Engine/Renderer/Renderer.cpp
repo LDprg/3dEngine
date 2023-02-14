@@ -105,9 +105,9 @@ auto __XXECS::Renderer::ThreadInit() -> void
 
 
     Diligent::BlendStateDesc &bsDesc = psoCreateInfo.GraphicsPipeline.BlendDesc;
-    bsDesc.IndependentBlendEnable = Diligent::True;
+    bsDesc.IndependentBlendEnable = true;
     auto &rt0 = bsDesc.RenderTargets[0];
-    rt0.BlendEnable = Diligent::True;
+    rt0.BlendEnable = true;
     rt0.RenderTargetWriteMask = Diligent::COLOR_MASK_ALL;
     rt0.SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
     rt0.DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
@@ -120,9 +120,10 @@ auto __XXECS::Renderer::ThreadInit() -> void
 
     Diligent::LayoutElement layoutElems[] = {
         // Attribute 0 - vertex position
-        Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, Diligent::False},
+        Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, false},
         // Attribute 1 - vertex color
-        Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, Diligent::False}};
+        Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}
+    };
     psoCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = layoutElems;
     psoCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(layoutElems);
 

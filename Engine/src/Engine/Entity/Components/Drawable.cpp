@@ -6,8 +6,7 @@
  * \date   February 2023
  *********************************************************************/
 #include "Drawable.hpp"
-
-#include <Graphics/GraphicsTools/interface/MapHelper.hpp>
+#include "Engine/Core/Application.hpp"
 
 auto __XXECS::Drawable::Create(Drawable &target) -> void
 {

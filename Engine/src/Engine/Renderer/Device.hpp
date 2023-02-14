@@ -8,12 +8,25 @@
 // ReSharper disable CppUnusedIncludeDirective
 #pragma once
 
+#ifdef ENGINE_SUPPORT_D3D11
 #include <EngineFactoryD3D11.h>
-#include <EngineFactoryD3D12.h>
-#include <EngineFactoryOpenGL.h>
-#include <EngineFactoryVk.h>
+#endif
 
-#include <Common/interface/RefCntAutoPtr.hpp>
+#ifdef ENGINE_SUPPORT_D3D12
+#include <EngineFactoryD3D12.h>
+#endif
+
+#ifdef ENGINE_SUPPORT_OPENGL
+#include <EngineFactoryOpenGL.h>
+#endif
+
+#ifdef ENGINE_SUPPORT_VULKAN
+#include <EngineFactoryVk.h>
+#endif
+
+#include <RenderDevice.h>
+
+class Diligent::RefCntAutoPtr;
 
 namespace __XXECS
 {
@@ -21,12 +34,7 @@ namespace __XXECS
     {
     public:
         Device() = default;
-
-        ~Device()
-        {
-            m_pDevice.Release();
-        }
-
+        virtual ~Device() = default;
 
         static auto CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> void;
 

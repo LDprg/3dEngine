@@ -15,20 +15,18 @@
 
 #include <BasicTypes.h>
 #include <Graphics/GraphicsTools/interface/MapHelper.hpp>
-
-#include <Engine/Core/Application.hpp>
+#include <Common/interface/RefCntAutoPtr.hpp>
 
 #include <GLFW/glfw3.h>
 
-//#if LINUX
-//#define GLFW_EXPOSE_NATIVE_X11
-//#elif WINDOWS
-//#define GLFW_EXPOSE_NATIVE_WIN32
-//#elif OSX
-//#define GLFW_EXPOSE_NATIVE_COCOA
-//#endif
+#if ENGINE_PLATFORM_LINUX
+    #define GLFW_EXPOSE_NATIVE_X11
+#elif ENGINE_PLATFORM_WINDOWS
+    #define GLFW_EXPOSE_NATIVE_WIN32
+#elif ENGINE_PLATFORM_MACOS
+    #define GLFW_EXPOSE_NATIVE_COCOA
+#endif
 
-#define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
 #include <glm/glm.hpp>

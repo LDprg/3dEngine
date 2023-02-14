@@ -17,7 +17,7 @@ namespace __XXECS
     extern auto CreateApplication() -> Application*;
 }
 
-inline auto main() -> int
+auto main() -> int
 {
     __XXECS::Log::Init();
 

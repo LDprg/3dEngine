@@ -7,7 +7,6 @@
  *********************************************************************/
 #pragma once
 #include <Buffer.h>
-#include <Common/interface/RefCntAutoPtr.hpp>
 
 #include "Engine/Math/Vertex.hpp"
 
@@ -20,6 +19,12 @@ namespace __XXECS
 
         Diligent::RefCntAutoPtr<Diligent::IBuffer> vertexBuffer;
         Diligent::RefCntAutoPtr<Diligent::IBuffer> indexBuffer;
+
+        Drawable() = default;
+        Drawable(const Math::Vertices &vertices, const Math::Indices &indices)
+            : vertices(vertices), indices(indices)
+        {
+        }
 
         static auto Create(Drawable &target) -> void;
         static auto Draw(Drawable &target) -> void;

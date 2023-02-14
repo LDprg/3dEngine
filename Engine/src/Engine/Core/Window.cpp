@@ -10,6 +10,7 @@
 // ReSharper disable CppParameterMayBeConst
 #include "Window.hpp"
 
+#include "Application.hpp"
 #include "Engine/Events/Event.hpp"
 
 bool __XXECS::Window::m_hasBeenInit = false;
@@ -21,15 +22,15 @@ auto GlfwErrorCallback(int error, const char *description) -> void
 
 auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void
 {
-    __XXECS::Event::KeyEvent keyEvent;
-    keyEvent.key = static_cast<Key>(key);
-    keyEvent.action = static_cast<Action>(action);
+    __XXECS::Event::KeyEvent keyEvent{};
+    keyEvent.key = static_cast<__XXECS::Key>(key);
+    keyEvent.action = static_cast<__XXECS::Action>(action);
     __XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
 
 auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) -> void
 {
-    __XXECS::Event::MouseMovedEvent movedEvent;
+    __XXECS::Event::MouseMovedEvent movedEvent{};
     movedEvent.x = static_cast<int>(xpos);
     movedEvent.y = static_cast<int>(ypos);
     __XXECS::Application::Get()->GetEventManager().Push(movedEvent);
@@ -37,15 +38,15 @@ auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) ->
 
 auto GlfwMouseButtonCallback(GLFWwindow *window, int button, int action, int mods) -> void
 {
-    __XXECS::Event::KeyEvent keyEvent;
-    keyEvent.key = static_cast<Key>(button);
-    keyEvent.action = static_cast<Action>(action);
+    __XXECS::Event::KeyEvent keyEvent{};
+    keyEvent.key = static_cast<__XXECS::Key>(button);
+    keyEvent.action = static_cast<__XXECS::Action>(action);
     __XXECS::Application::Get()->GetEventManager().Push(keyEvent);
 }
 
 auto GlfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height) -> void
 {
-    __XXECS::Event::ResizeEvent resizeEvent;
+    __XXECS::Event::ResizeEvent resizeEvent{};
     resizeEvent.width = width;
     resizeEvent.height = height;
     __XXECS::Application::Get()->GetEventManager().Push(resizeEvent);
