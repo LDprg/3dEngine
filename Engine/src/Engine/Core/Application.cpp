@@ -14,7 +14,7 @@ __XXECS::Application::Application()
     LOG_CORE_ASSERT(!m_instance, "Application already exists!")
     m_instance = this;
 
-    m_eventManager = std::make_unique<EventManager>();
+    m_eventManager = std::make_unique<Event::EventManager>();
     m_window = std::make_unique<Window>();
     m_swapChain = std::make_unique<SwapChain>();
     m_device = std::make_unique<Device>();

@@ -180,13 +180,13 @@ auto __XXECS::Renderer::ThreadUpdate() -> void
         if (!ev.has_value())
             break;
 
-        if (ev.type() == typeid(ResizeEvent))
+        if (ev.type() == typeid(Event::ResizeEvent))
         {
-            const auto resizeEvent = any_cast<ResizeEvent>(ev);
+            const auto [width, height] = any_cast<Event::ResizeEvent>(ev);
 
-            Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
+            Application::Get()->GetSwapChain().GetNative()->Resize(width, height);
         }
-        else if (ev.type() == typeid(ExitEvent))
+        else if (ev.type() == typeid(Event::ExitEvent))
         {
             Application::Get()->Close();
         }

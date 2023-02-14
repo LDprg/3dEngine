@@ -15,8 +15,8 @@ namespace __XXECS
 {
     struct Drawable
     {
-        Vertices vertices;
-        Indices indices;
+        Math::Vertices vertices;
+        Math::Indices indices;
 
         Diligent::RefCntAutoPtr<Diligent::IBuffer> vertexBuffer;
         Diligent::RefCntAutoPtr<Diligent::IBuffer> indexBuffer;

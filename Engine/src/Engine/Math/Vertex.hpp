@@ -10,7 +10,7 @@
 #include "Engine/Math/General.hpp"
 #include "Engine/Math/Vector.hpp"
 
-namespace __XXECS
+namespace __XXECS::Math
 {
     typedef Diligent::Uint32 Index;
 

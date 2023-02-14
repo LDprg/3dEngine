@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-
 add_subdirectory("vendor/DiligentEngine/DiligentCore")
 add_subdirectory("vendor/DiligentEngine/DiligentFX")
 add_subdirectory("vendor/DiligentEngine/DiligentTools")
@@ -15,6 +14,7 @@ add_subdirectory("vendor/glfw")
 add_subdirectory("vendor/spdlog")
 add_subdirectory("vendor/glm")
 
+add_subdirectory("docs")
 
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp")
 add_library(Engine ${SRC})

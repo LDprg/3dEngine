@@ -17,22 +17,22 @@ public:
 
         {
             const auto entity = GetEntityManager().create();
-            auto &item = GetEntityManager().emplace<Drawable>(entity, Drawable(Vertices(3), Indices(3)));
+            auto &item = GetEntityManager().emplace<Drawable>(entity, Drawable(Math::Vertices(3), Math::Indices(3)));
             item.indices = {0, 1, 2};
 
-            item.vertices = {{Position(-0.5, -0.5), Color(1, 0, 0)}, {Position(0.0, +0.5), Color(0, 1, 0)},
-                             {Position(+0.5, -0.5), Color(0, 0, 1)},};
+            item.vertices = {{Math::Position(-0.5, -0.5), Math::Color(1, 0, 0)}, {Math::Position(0.0, +0.5), Math::Color(0, 1, 0)},
+                             {Math::Position(+0.5, -0.5), Math::Color(0, 0, 1)},};
 
             Drawable::Create(item);
         }
 
         {
             const auto entity = GetEntityManager().create();
-            auto &item = GetEntityManager().emplace<Drawable>(entity, Drawable(Vertices(3), Indices(3)));
+            auto &item = GetEntityManager().emplace<Drawable>(entity, Drawable(Math::Vertices(3), Math::Indices(3)));
             item.indices = {0, 1, 2};
 
-            item.vertices = {{Position(+0.5, +0.5), Color(1, 0, 0)}, {Position(0.0, -0.5), Color(0, 1, 0)},
-                             {Position(-0.5, +0.5), Color(0, 0, 1)},};
+            item.vertices = {{Math::Position(+0.5, +0.5), Math::Color(1, 0, 0)}, {Math::Position(0.0, -0.5), Math::Color(0, 1, 0)},
+                             {Math::Position(-0.5, +0.5), Math::Color(0, 0, 1)},};
 
             Drawable::Create(item);
         }
@@ -43,9 +43,9 @@ public:
         if (Input::IsKeyPressed(Key::Escape))
             Close();
 
-        if (event.type() == typeid(KeyEvent))
+        if (event.type() == typeid(Event::KeyEvent))
         {
-            const auto [key, action] = any_cast<KeyEvent>(event);
+            const auto [key, action] = any_cast<Event::KeyEvent>(event);
             if (key == Key::F11 && action == Action::Press)
                 GetWindow().SetFullscreen(!GetWindow().IsFullscreen());
         }

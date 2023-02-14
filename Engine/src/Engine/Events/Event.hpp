@@ -13,27 +13,29 @@
 
 namespace __XXECS
 {
-    struct ExitEvent
+    namespace Event
     {
-    };
+        struct ExitEvent
+        {
+        };
 
-    struct KeyEvent
-    {
-        Key key;
-        Action action;
-    };
+        struct KeyEvent
+        {
+            Key key;
+            Action action;
+        };
 
-    struct ResizeEvent
-    {
-        int width;
-        int height;
-    };
+        struct ResizeEvent
+        {
+            int width;
+            int height;
+        };
 
-    struct MouseMovedEvent
-    {
-        int x;
-        int y;
-    };
+        struct MouseMovedEvent
+        {
+            int x;
+            int y;
+        };
 
     class EventManager final
     {
@@ -62,4 +64,6 @@ namespace __XXECS
     private:
         std::queue<std::any> m_apiThreadEvents;
     };
+
+    }
 }

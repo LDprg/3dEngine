@@ -58,16 +58,16 @@ auto __XXECS::ImGuiManager::Event(const std::any &ev) const -> void
 {
     ImGuiIO &io = ImGui::GetIO();
 
-    if (ev.type() == typeid(ResizeEvent))
+    if (ev.type() == typeid(Event::ResizeEvent))
     {
-        const auto resizeEvent = any_cast<ResizeEvent>(ev);
+        const auto resizeEvent = any_cast<Event::ResizeEvent>(ev);
 
         Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
     }
 
-    if (ev.type() == typeid(KeyEvent))
+    if (ev.type() == typeid(Event::KeyEvent))
     {
-        const auto key_event = any_cast<KeyEvent>(ev);
+        const auto key_event = any_cast<Event::KeyEvent>(ev);
         if (key_event.action == Action::Press)
         {
             io.MouseDown[static_cast<int>(key_event.key)] = true;
@@ -80,10 +80,10 @@ auto __XXECS::ImGuiManager::Event(const std::any &ev) const -> void
         }
     }
 
-    if (ev.type() == typeid(MouseMovedEvent))
+    if (ev.type() == typeid(Event::MouseMovedEvent))
     {
-        const auto moved_event = any_cast<MouseMovedEvent>(ev);
-        io.MousePos = ImVec2(static_cast<float>(moved_event.x), static_cast<float>(moved_event.y));
+        const auto [x, y] = any_cast<Event::MouseMovedEvent>(ev);
+        io.MousePos = ImVec2(static_cast<float>(x), static_cast<float>(y));
     }
 }
 

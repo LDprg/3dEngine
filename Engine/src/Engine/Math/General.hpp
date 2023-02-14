@@ -9,7 +9,7 @@
 
 #include <BasicTypes.h>
 
-namespace __XXECS
+namespace __XXECS::Math
 {
     typedef Diligent::Uint32 Size;
 }
