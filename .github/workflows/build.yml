@@ -4,7 +4,8 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ main ]  
+  workflow_dispatch:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -32,4 +33,11 @@ jobs:
     - name: Test
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: 3dEngine-doxygen
+        path: ./build/${{env.BUILD_TYPE}}
+        retention-days: 5
       
