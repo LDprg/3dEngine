@@ -46,38 +46,31 @@ void main(in  PSInput  PSIn,
 }
 )";
 
-auto __XXECS::Renderer::Exit() -> void
+auto __XXECS::Renderer::Update() -> void
 {
-    m_renderThread.detach();
+    auto &pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
+
+    // Set render targets before issuing any draw command.
+    // Note that Present() unbinds the back buffer if it is set as render target.
+    auto *pRtv = Application::Get()->GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
+    auto *pDsv = Application::Get()->GetSwapChain().GetNative()->GetDepthBufferDSV();
+    pImmediateContext->SetRenderTargets(1, &pRtv, pDsv, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+
+    // Let the engine perform required state transitions
+    pImmediateContext->ClearRenderTarget(pRtv, Application::Get()->GetClearColor(),
+                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pImmediateContext->ClearDepthStencil(pDsv, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0,
+                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+
+
+    // Set the pipeline state in the immediate context
+    pImmediateContext->SetPipelineState(m_pPso);
+    pImmediateContext->CommitShaderResources(m_pSrb, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 }
 
 auto __XXECS::Renderer::Init() -> void
 {
-    m_renderThread = std::thread([this]
-    {
-        RunThread();
-    });
-}
-
-auto __XXECS::Renderer::RunThread() -> int32_t
-{
-    ThreadInit();
-
-    while (Application::Get()->IsRunning())
-        ThreadUpdate();
-
-    ThreadExit();
-    return 0;
-}
-
-
-auto __XXECS::Renderer::ThreadInit() -> void
-{
     Device::CreateDevice(m_deviceType);
-
-    Application::Get()->GetImGuiManager().Init();
-
-    Application::Get()->Init();
 
     // Pipeline state object encompasses configuration of all GPU stages
 
@@ -118,8 +111,7 @@ auto __XXECS::Renderer::ThreadInit() -> void
 
     psoCreateInfo.GraphicsPipeline.BlendDesc = bsDesc;
 
-    Diligent::LayoutElement layoutElems[] = {
-        // Attribute 0 - vertex position
+    Diligent::LayoutElement layoutElems[] = { // Attribute 0 - vertex position
         Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, false},
         // Attribute 1 - vertex color
         Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}};
@@ -171,62 +163,4 @@ auto __XXECS::Renderer::ThreadInit() -> void
 
     // Create a shader resource binding object and bind all static resources in it
     m_pPso->CreateShaderResourceBinding(&m_pSrb, true);
-}
-
-auto __XXECS::Renderer::ThreadUpdate() -> void
-{
-    // Handle events from the main thread.
-    while (true)
-    {
-        const std::any ev = Application::Get()->GetEventManager().Pop();
-        if (!ev.has_value())
-            break;
-
-        if (const auto resizeEvent = any_cast<Event::ResizeEvent>(&ev))
-        {
-            Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent->width, resizeEvent->height);
-        }
-        else if (any_cast<Event::ExitEvent>(&ev))
-        {
-            Application::Get()->Close();
-        }
-
-        Application::Get()->GetImGuiManager().Event(ev);
-        Application::Get()->Event(ev);
-    }
-
-    Application::Get()->GetImGuiManager().NewFrame();
-
-    auto &pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
-
-    // Set render targets before issuing any draw command.
-    // Note that Present() unbinds the back buffer if it is set as render target.
-    auto *pRtv = Application::Get()->GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
-    auto *pDsv = Application::Get()->GetSwapChain().GetNative()->GetDepthBufferDSV();
-    pImmediateContext->SetRenderTargets(1, &pRtv, pDsv, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-
-    // Let the engine perform required state transitions
-    pImmediateContext->ClearRenderTarget(pRtv, Application::Get()->GetClearColor(),
-                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-    pImmediateContext->ClearDepthStencil(pDsv, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0,
-                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-
-    Application::Get()->Update();
-
-    Application::Get()->ImGui();
-
-    // Set the pipeline state in the immediate context
-    pImmediateContext->SetPipelineState(m_pPso);
-    pImmediateContext->CommitShaderResources(m_pSrb, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-
-    Application::Get()->Render();
-
-    Application::Get()->GetImGuiManager().Render();
-
-    Application::Get()->GetSwapChain().Present();
-}
-
-auto __XXECS::Renderer::ThreadExit() -> void
-{
-    Application::Get()->Shutdown();
 }

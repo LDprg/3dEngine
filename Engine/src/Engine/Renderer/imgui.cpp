@@ -59,9 +59,7 @@ auto __XXECS::ImGuiManager::Event(const std::any &ev) const -> void
     ImGuiIO &io = ImGui::GetIO();
 
     if (const auto resizeEvent = any_cast<Event::ResizeEvent>(&ev))
-    {
         Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent->width, resizeEvent->height);
-    }
 
     if (const auto keyEvent = any_cast<Event::KeyEvent>(&ev))
     {

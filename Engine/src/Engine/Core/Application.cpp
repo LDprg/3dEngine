@@ -24,14 +24,60 @@ __XXECS::Application::Application()
     m_entityManager = std::make_unique<Entity::EntityManager>();
 }
 
-auto __XXECS::Application::RunLoop() const -> void
+auto __XXECS::Application::RunLoop() -> void
 {
     m_window->Init();
-    m_renderer->Init();
+
+    m_renderThread = std::thread([this]
+    {
+        RunThread();
+    });
 
     while (IsRunning())
         m_window->Update();
 
     m_window->Close();
-    m_renderer->Exit();
+
+    m_renderThread.detach();
+}
+
+auto __XXECS::Application::RunThread() -> void
+{
+    m_renderer->Init();
+    m_imGui->Init();
+    Init();
+
+    while (IsRunning())
+    {
+        while (true)
+        {
+            const std::any ev = m_eventManager->Pop();
+            if (!ev.has_value())
+                break;
+
+            if (const auto resizeEvent = any_cast<Event::ResizeEvent>(&ev))
+                m_swapChain->GetNative()->Resize(resizeEvent->width, resizeEvent->height);
+            else if (any_cast<Event::ExitEvent>(&ev))
+                Close();
+
+            m_imGui->Event(ev);
+            Event(ev);
+        }
+
+        m_imGui->NewFrame();
+
+        Update();
+
+        ImGui();
+
+        m_renderer->Update();
+
+        Render();
+
+        m_imGui->Render();
+
+        m_swapChain->Present();
+    }
+
+    Shutdown();
 }

@@ -163,7 +163,7 @@ namespace __XXECS
          * \brief Get the entity manager reference
          * \return Entity Manager reference
          */
-        [[nodiscard]] auto GetEntityManager() const -> Entity::EntityManager &
+        [[nodiscard]] auto GetEntityManager() const -> Entity::EntityManager&
         {
             return *m_entityManager;
         }
@@ -181,10 +181,12 @@ namespace __XXECS
         /**
          * \brief main thread loop
          */
-        auto RunLoop() const -> void;
+        auto RunLoop() -> void;
+        auto RunThread() -> void;
 
         bool m_running = true;
         Math::Color m_clearColor = {1.f, 1.f, 1.f};
+        std::thread m_renderThread;
 
         std::unique_ptr<Window> m_window;
         std::unique_ptr<Event::EventManager> m_eventManager;

@@ -4,6 +4,8 @@ project(Engine)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory("vendor/DiligentEngine/DiligentCore")
@@ -18,13 +20,14 @@ add_subdirectory("docs")
 
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp")
 
-if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR- /GM /EHs-c- /openmp")
+if(MSVC)    
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR- /GM /openmp")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -fno-exceptions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 endif()
 
-add_library(Engine SHARED ${SRC})
+#add_library(Engine SHARED ${SRC})
+add_library(Engine ${SRC})
 
 target_precompile_headers(Engine PRIVATE "src/pch.hpp")
 

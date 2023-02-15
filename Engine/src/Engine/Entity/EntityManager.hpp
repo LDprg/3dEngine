@@ -57,13 +57,13 @@ namespace __XXECS::Entity
         }
 
         template<typename Type>
-        auto RemoveComponent(const entt::entity &entt) 
+        auto RemoveComponent(const entt::entity &entt)
         {
             return m_registry.remove<Type>(entt);
         }
 
         template<DeleteAbleConcept Type>
-        auto RemoveComponent(const entt::entity &entt) 
+        auto RemoveComponent(const entt::entity &entt)
         {
             auto &item = m_registry.remove<Type>(entt);
             Type::Delete(item);

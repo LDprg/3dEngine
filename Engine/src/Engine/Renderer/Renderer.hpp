@@ -22,7 +22,7 @@ namespace __XXECS
 
         ~Renderer() = default;
 
-        auto Exit() -> void;
+        auto Update() -> void;
 
         auto Init() -> void;
 
@@ -37,13 +37,6 @@ namespace __XXECS
         }
 
     private:
-        auto ThreadInit() -> void;
-        auto ThreadUpdate() -> void;
-        static auto ThreadExit() -> void;
-        auto RunThread() -> int32_t;
-
-        std::thread m_renderThread;
-
         Diligent::RefCntAutoPtr<Diligent::IPipelineState> m_pPso;
         Diligent::RefCntAutoPtr<Diligent::IShaderResourceBinding> m_pSrb;
         Diligent::RefCntAutoPtr<Diligent::IBuffer> m_vsConstants;
