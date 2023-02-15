@@ -5,7 +5,6 @@
  * \author LD
  * \date   February 2023
  *********************************************************************/
-// ReSharper disable CppInconsistentNaming
 #pragma once
 
 #include "Engine/Entity/Components/Drawable.hpp"
@@ -15,6 +14,10 @@
 
 namespace __XXECS::Entity
 {
+    struct UpdateShapeTag
+    {
+    };
+
     template<typename T> concept CreateAbleConcept = requires(T &arg)
     {
         T::Create(arg);
@@ -50,13 +53,14 @@ namespace __XXECS::Entity
             const auto entity = create();
             auto &shape = emplace<T>(entity);
             auto &draw = emplace<Drawable>(entity, Drawable(T::vertices, T::indices));
+            emplace<UpdateShapeTag>(entity);
             return std::tie(entity, shape, draw);
         }
 
 		template<ShapeComponentUpdateAbleConcept T>
-        auto UpdateShape() -> auto&
+        auto UpdateShape()
         {
-            const auto v = view<T, Drawable>();
+            const auto v = view<T, Drawable, UpdateShapeTag>();
 
             v.each([this](auto &shape, auto &draw) { T::Update(shape, draw); });
 
@@ -64,13 +68,13 @@ namespace __XXECS::Entity
         }
 
         template<typename Type, typename... Args>
-        auto emplace(const entt::entity &entt, Args &&... args) -> auto&
+        auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
         {
             return entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
         }
 
         template<CreateAbleConcept Type, typename... Args>
-        auto emplace(const entt::entity &entt, Args &&... args) -> auto&
+        auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
         {
             auto &item = entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
             Type::Create(item);
