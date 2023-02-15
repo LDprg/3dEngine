@@ -30,19 +30,8 @@ public:
 
     auto Update() -> void override
     {
-        const auto viewRec = GetEntityManager().view<Entity::Rectangle, Entity::Drawable>();
-
-        viewRec.each([this](auto &shape, auto &draw)
-        {
-            Entity::Rectangle::Update(shape, draw);
-        });
-
-        const auto viewTri = GetEntityManager().view<Entity::Triangle, Entity::Drawable>();
-
-        viewTri.each([this](auto &shape, auto &draw)
-        {
-            Entity::Triangle::Update(shape, draw);
-        });
+        GetEntityManager().UpdateShape<Entity::Rectangle>();
+        GetEntityManager().UpdateShape<Entity::Triangle>();
 
         const auto viewDraw = GetEntityManager().view<Entity::Drawable>();
 
