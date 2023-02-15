@@ -21,9 +21,9 @@ add_subdirectory("docs")
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp")
 
 if(MSVC)    
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR- /GM /openmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR- /openmp")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti /openmp")
 endif()
 
 #add_library(Engine SHARED ${SRC})

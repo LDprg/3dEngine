@@ -9,6 +9,9 @@
 
 #include "Engine/Math/Vertex.hpp"
 
+#include <Common/interface/RefCntAutoPtr.hpp>
+#include <Graphics/GraphicsEngine/interface/Buffer.h>
+
 namespace __XXECS::Entity
 {
     struct Drawable
@@ -19,8 +22,8 @@ namespace __XXECS::Entity
         Diligent::RefCntAutoPtr<Diligent::IBuffer> vertexBuffer;
         Diligent::RefCntAutoPtr<Diligent::IBuffer> indexBuffer;
 
-        Drawable(const Math::Vertices &vertices, const Math::Indices &indices)
-            : vertices(vertices), indices(indices)
+        Drawable(Math::Vertices vertices, Math::Indices indices)
+            : vertices(std::move(vertices)), indices(std::move(indices))
         {
         }
 

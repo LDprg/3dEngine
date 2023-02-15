@@ -7,6 +7,8 @@
  *********************************************************************/
 #pragma once
 
+#include <Primitives/interface/BasicTypes.h>
+
 namespace __XXECS::Math
 {
     typedef Diligent::Uint32 Size;

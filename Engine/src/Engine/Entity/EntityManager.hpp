@@ -5,7 +5,11 @@
  * \author LD
  * \date   February 2023
  *********************************************************************/
+// ReSharper disable CppInconsistentNaming
 #pragma once
+
+#include "Engine/Entity/Components/Drawable.hpp"
+#include "Engine/Math/Vertex.hpp"
 
 #include <entt/entt.hpp>
 
@@ -21,62 +25,53 @@ namespace __XXECS::Entity
         T::Delete(arg);
     };
 
-    class EntityManager final
+    template<typename T> concept ShapeComponentConcept = requires()
+    {
+        {
+            T::vertices
+        } -> std::convertible_to<Math::Vertices>; {
+            T::indices
+        } -> std::convertible_to<Math::Indices>;
+    };
+
+    class EntityManager final : public entt::registry
     {
     public:
-        EntityManager() = default;
-        ~EntityManager() = default;
-
-        auto GetNative() -> entt::registry&
+        template<ShapeComponentConcept T>
+        auto CreateShape()
         {
-            return m_registry;
-        }
-
-        auto CreateEntity() -> entt::entity
-        {
-            return m_registry.create();
-        }
-
-        auto DestroyEntity(const entt::entity entity) -> void
-        {
-            m_registry.destroy(entity);
+            const auto entity = create();
+            auto &shape = emplace<T>(entity);
+            auto &draw = emplace<Drawable>(entity, Drawable(T::vertices, T::indices));
+            return std::tie(entity, shape, draw);
         }
 
         template<typename Type, typename... Args>
-        auto AddComponent(const entt::entity &entt, Args &&... args) -> auto&
+        auto emplace(const entt::entity &entt, Args &&... args) -> auto&
         {
-            return m_registry.emplace<Type>(entt, std::forward<Args>(args)...);
+            return entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
         }
 
         template<CreateAbleConcept Type, typename... Args>
-        auto AddComponent(const entt::entity &entt, Args &&... args) -> auto&
+        auto emplace(const entt::entity &entt, Args &&... args) -> auto&
         {
-            auto &item = m_registry.emplace<Type>(entt, std::forward<Args>(args)...);
+            auto &item = entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
             Type::Create(item);
             return item;
         }
 
         template<typename Type>
-        auto RemoveComponent(const entt::entity &entt)
+        auto remove(const entt::entity &entt)
         {
-            return m_registry.remove<Type>(entt);
+            return entt::registry::remove<Type>(entt);
         }
 
         template<DeleteAbleConcept Type>
-        auto RemoveComponent(const entt::entity &entt)
+        auto remove(const entt::entity &entt)
         {
-            auto &item = m_registry.remove<Type>(entt);
+            auto &item = entt::registry::remove<Type>(entt);
             Type::Delete(item);
             return item;
         }
-
-        template<typename Type, typename... Exclude>
-        auto GetEntities(entt::exclude_t<Exclude...>  = {}) -> auto
-        {
-            return m_registry.view<Type>(entt::exclude_t<Exclude...>{});
-        }
-
-    private:
-        entt::registry m_registry;
     };
 }

@@ -11,24 +11,11 @@ public:
         GetClearColor() = {0.5f, 0.5f, 0.5f};
 
         {
-            const auto entity = GetEntityManager().CreateEntity();
-            auto &item = GetEntityManager().AddComponent<Entity::Drawable>(
-                entity, Entity::Drawable(Math::Vertices(3), Math::Indices{0, 1, 2}));
-
-            item.vertices = {{Math::Position(-0.5, -0.5), Math::Color(1, 0, 0)},
-                             {Math::Position(0.0, +0.5), Math::Color(0, 1, 0)},
-                             {Math::Position(+0.5, -0.5), Math::Color(0, 0, 1)},};
+            auto [entity,rec,draw] = GetEntityManager().CreateShape<Entity::Rectangle>();
+			rec.width = 0.5f;
         }
 
-        {
-            const auto entity = GetEntityManager().CreateEntity();
-            auto &item = GetEntityManager().AddComponent<Entity::Drawable>(
-                entity, Entity::Drawable(Math::Vertices(3), Math::Indices{0, 1, 2}));
-
-            item.vertices = {{Math::Position(+0.5, +0.5), Math::Color(1, 0, 0)},
-                             {Math::Position(0.0, -0.5), Math::Color(0, 1, 0)},
-                             {Math::Position(-0.5, +0.5), Math::Color(0, 0, 1)},};
-        }
+		GetEntityManager().CreateShape<Entity::Triangle>();
     }
 
     auto Event(const std::any &event) -> void override
@@ -43,12 +30,26 @@ public:
 
     auto Update() -> void override
     {
-        const auto view = GetEntityManager().GetEntities<Entity::Drawable>();
+        const auto viewRec = GetEntityManager().view<Entity::Rectangle, Entity::Drawable>();
 
-        view.each([this](auto &render)
+        viewRec.each([this](auto &shape, auto &draw)
         {
-            for (unsigned int i = 0; i < render.vertices.size(); i++)
-                render.vertices[i].color.a = m_state ? 0 : 1;
+            Entity::Rectangle::Update(shape, draw);
+        });
+
+        const auto viewTri = GetEntityManager().view<Entity::Triangle, Entity::Drawable>();
+
+        viewTri.each([this](auto &shape, auto &draw)
+        {
+            Entity::Triangle::Update(shape, draw);
+        });
+
+        const auto viewDraw = GetEntityManager().view<Entity::Drawable>();
+
+        viewDraw.each([this](auto &draw)
+        {
+            for (unsigned int i = 0; i < draw.vertices.size(); i++)
+                draw.vertices[i].color.a = m_state ? 0 : 1;
         });
     }
 
@@ -61,8 +62,8 @@ public:
 
         if (ImGui::Button("Remove"))
         {
-            const auto view = GetEntityManager().GetEntities<Entity::Drawable>();
-            GetEntityManager().RemoveComponent<Entity::Drawable>(view.front());
+            const auto view = GetEntityManager().view<Entity::Drawable>();
+            GetEntityManager().remove<Entity::Drawable>(view.front());
         }
 
         ImGui::Spacing();
@@ -72,7 +73,7 @@ public:
 
     auto Render() -> void override
     {
-        const auto view = GetEntityManager().GetEntities<Entity::Drawable>();
+        const auto view = GetEntityManager().view<Entity::Drawable>();
         for (auto [entity, drawable] : view.each())
             Entity::Drawable::Draw(drawable);
     }

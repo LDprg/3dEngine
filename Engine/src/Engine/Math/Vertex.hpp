@@ -20,14 +20,19 @@ namespace __XXECS::Math
         Color color;
     };
 
+    typedef std::initializer_list<Index> FixedIndices;
+    typedef std::initializer_list<Vertex> FixedVertices;
+
+    typedef Size IndicesSize;
+    typedef Size VerticesSize;
+
     struct Vertices
     {
         std::shared_ptr<Vertex[]> data;
 
-        explicit Vertices(const Size size)
-            : m_size(size)
+        Vertices(const Size &size)
+            : data(new Vertex[size]), m_size(size)
         {
-            data = std::shared_ptr<Vertex[]>(new Vertex[size]);
         }
 
         Vertices(const std::initializer_list<Vertex> iList)
@@ -59,10 +64,9 @@ namespace __XXECS::Math
     {
         std::shared_ptr<Index[]> data;
 
-        explicit Indices(const Size size)
-            : m_size(size)
+        Indices(const Size size)
+            : data(new Index[size]), m_size(size)
         {
-            data = std::make_shared<Index[]>(size);
         }
 
         Indices(const std::initializer_list<Index> iList)

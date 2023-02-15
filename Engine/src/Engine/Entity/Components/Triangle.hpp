@@ -1,30 +1,27 @@
 /*****************************************************************/ /**
- * \file   Drawable.hpp
- * \brief  Drawable component
+ * \file   Triangle.hpp
+ * \brief  Triangle component
  * 
  * \author LD
  * \date   February 2023
  *********************************************************************/
 #pragma once
 
-#include "Engine/Math/Vertex.hpp"
-
 namespace __XXECS::Entity
 {
-    struct Drawable
+    struct Triangle
     {
-        Math::Vertices vertices;
-        Math::Indices indices;
+        inline static constexpr Math::FixedIndices indices{0, 1, 2};
+        inline static constexpr Math::VerticesSize vertices = 3;
 
-        Diligent::RefCntAutoPtr<Diligent::IBuffer> vertexBuffer;
-        Diligent::RefCntAutoPtr<Diligent::IBuffer> indexBuffer;
+        Math::Position position[vertices]{Math::Position(-0.5, -0.5), Math::Position(0.0, +0.5),
+                                          Math::Position(+0.5, -0.5)};
+        Math::Color color{1, 0, 0};
 
-        Drawable(const Math::Vertices &vertices, const Math::Indices &indices)
-            : vertices(vertices), indices(indices)
+        static auto Update(const Triangle &source, Drawable &target) -> void
         {
+            target.vertices = {{source.position[0], source.color}, {source.position[1], source.color},
+                               {source.position[2], source.color},};
         }
-
-        static auto Create(Drawable &target) -> void;
-        static auto Draw(Drawable &target) -> void;
     };
 }
