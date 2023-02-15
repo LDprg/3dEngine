@@ -58,25 +58,22 @@ auto __XXECS::ImGuiManager::Event(const std::any &ev) const -> void
 {
     ImGuiIO &io = ImGui::GetIO();
 
-    if (ev.type() == typeid(Event::ResizeEvent))
+    if (const auto resizeEvent = any_cast<Event::ResizeEvent>(&ev))
     {
-        const auto resizeEvent = any_cast<Event::ResizeEvent>(ev);
-
-        Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent.width, resizeEvent.height);
+        Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent->width, resizeEvent->height);
     }
 
-    if (ev.type() == typeid(Event::KeyEvent))
+    if (const auto keyEvent = any_cast<Event::KeyEvent>(&ev))
     {
-        const auto key_event = any_cast<Event::KeyEvent>(ev);
-        if (key_event.action == Action::Press)
+        if (keyEvent->action == Action::Press)
         {
-            io.MouseDown[static_cast<int>(key_event.key)] = true;
-            io.KeysDown[static_cast<int>(key_event.key)] = true;
+            io.MouseDown[static_cast<int>(keyEvent->key)] = true;
+            io.KeysDown[static_cast<int>(keyEvent->key)] = true;
         }
-        if (key_event.action == Action::Release)
+        if (keyEvent->action == Action::Release)
         {
-            io.MouseDown[static_cast<int>(key_event.key)] = false;
-            io.KeysDown[static_cast<int>(key_event.key)] = false;
+            io.MouseDown[static_cast<int>(keyEvent->key)] = false;
+            io.KeysDown[static_cast<int>(keyEvent->key)] = false;
         }
     }
 

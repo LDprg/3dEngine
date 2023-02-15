@@ -21,7 +21,7 @@ __XXECS::Application::Application()
     m_immediateContext = std::make_unique<ImmediateContext>();
     m_imGui = std::make_unique<ImGuiManager>();
     m_renderer = std::make_unique<Renderer>();
-    m_entityManager = std::make_unique<EntityManager>();
+    m_entityManager = std::make_unique<Entity::EntityManager>();
 }
 
 auto __XXECS::Application::RunLoop() const -> void

@@ -182,13 +182,11 @@ auto __XXECS::Renderer::ThreadUpdate() -> void
         if (!ev.has_value())
             break;
 
-        if (ev.type() == typeid(Event::ResizeEvent))
+        if (const auto resizeEvent = any_cast<Event::ResizeEvent>(&ev))
         {
-            const auto [width, height] = any_cast<Event::ResizeEvent>(ev);
-
-            Application::Get()->GetSwapChain().GetNative()->Resize(width, height);
+            Application::Get()->GetSwapChain().GetNative()->Resize(resizeEvent->width, resizeEvent->height);
         }
-        else if (ev.type() == typeid(Event::ExitEvent))
+        else if (any_cast<Event::ExitEvent>(&ev))
         {
             Application::Get()->Close();
         }

@@ -18,6 +18,8 @@
 
 #include "Engine/Math/Vector.hpp"
 
+#include <any>
+
 auto main() -> int;
 
 namespace __XXECS
@@ -161,7 +163,7 @@ namespace __XXECS
          * \brief Get the entity manager reference
          * \return Entity Manager reference
          */
-        [[nodiscard]] auto GetEntityManager() const -> EntityManager&
+        [[nodiscard]] auto GetEntityManager() const -> Entity::EntityManager &
         {
             return *m_entityManager;
         }
@@ -191,7 +193,7 @@ namespace __XXECS
         std::unique_ptr<Device> m_device;
         std::unique_ptr<ImmediateContext> m_immediateContext;
         std::unique_ptr<ImGuiManager> m_imGui;
-        std::unique_ptr<EntityManager> m_entityManager;
+        std::unique_ptr<Entity::EntityManager> m_entityManager;
 
         static Application *m_instance;
     };

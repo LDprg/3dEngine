@@ -18,7 +18,13 @@ add_subdirectory("docs")
 
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp")
 
-add_library(Engine ${SRC})
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR- /GM /EHs-c- /openmp")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -fno-exceptions")
+endif()
+
+add_library(Engine SHARED ${SRC})
 
 target_precompile_headers(Engine PRIVATE "src/pch.hpp")
 

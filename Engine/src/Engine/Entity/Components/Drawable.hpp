@@ -9,7 +9,7 @@
 
 #include "Engine/Math/Vertex.hpp"
 
-namespace __XXECS
+namespace __XXECS::Entity
 {
     struct Drawable
     {

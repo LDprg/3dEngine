@@ -8,7 +8,7 @@
 #include "Drawable.hpp"
 #include "Engine/Core/Application.hpp"
 
-auto __XXECS::Drawable::Create(Drawable &target) -> void
+auto __XXECS::Entity::Drawable::Create(Drawable &target) -> void
 {
     Diligent::BufferDesc vertexBuffDesc;
     vertexBuffDesc.Name = "Vertex buffer";
@@ -29,7 +29,7 @@ auto __XXECS::Drawable::Create(Drawable &target) -> void
     Application::Get()->GetDevice().GetNative()->CreateBuffer(indexBuffDesc, &ibData, &target.indexBuffer);
 }
 
-auto __XXECS::Drawable::Draw(Drawable &target) -> void
+auto __XXECS::Entity::Drawable::Draw(Drawable &target) -> void
 {
     Diligent::MapHelper<Math::Vertex> vertices(Application::Get()->GetImmediateContext().GetNative(),
                                                target.vertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
