@@ -6,7 +6,6 @@
  * \date   February 2023
  *********************************************************************/
 #pragma once
-#include <Buffer.h>
 
 #include "Engine/Math/Vertex.hpp"
 
@@ -20,7 +19,6 @@ namespace __XXECS
         Diligent::RefCntAutoPtr<Diligent::IBuffer> vertexBuffer;
         Diligent::RefCntAutoPtr<Diligent::IBuffer> indexBuffer;
 
-        Drawable() = default;
         Drawable(const Math::Vertices &vertices, const Math::Indices &indices)
             : vertices(vertices), indices(indices)
         {

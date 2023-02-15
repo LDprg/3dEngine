@@ -5,9 +5,6 @@
  * \author LD
  * \date   February 2023
  *********************************************************************/
-// ReSharper disable CppParameterNeverUsed
-// ReSharper disable IdentifierTypo
-// ReSharper disable CppParameterMayBeConst
 #include "Window.hpp"
 
 #include "Application.hpp"
@@ -60,7 +57,14 @@ auto __XXECS::Window::Init() -> void
 
         LOG_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!")
 
+#if ENGINE_PLATFORM_WINDOWS
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+#else
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#endif
+
         m_hasBeenInit = true;
     }
 

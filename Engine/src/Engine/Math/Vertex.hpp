@@ -7,8 +7,6 @@
  *********************************************************************/
 #pragma once
 
-#include <memory>
-
 #include "Engine/Math/General.hpp"
 #include "Engine/Math/Vector.hpp"
 

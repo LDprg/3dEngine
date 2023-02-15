@@ -122,8 +122,7 @@ auto __XXECS::Renderer::ThreadInit() -> void
         // Attribute 0 - vertex position
         Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, false},
         // Attribute 1 - vertex color
-        Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}
-    };
+        Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}};
     psoCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = layoutElems;
     psoCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(layoutElems);
 
@@ -132,6 +131,8 @@ auto __XXECS::Renderer::ThreadInit() -> void
     // Tell the system that the shader source code is in HLSL.
     // For OpenGL, the engine will convert this into GLSL under the hood
     shaderCi.SourceLanguage = Diligent::SHADER_SOURCE_LANGUAGE_HLSL;
+    // OpenGL backend requires emulated combined HLSL texture samplers (g_Texture + g_Texture_sampler combination)
+    shaderCi.Desc.UseCombinedTextureSamplers = true;
 
     // Create a vertex shader
     Diligent::RefCntAutoPtr<Diligent::IShader> pVs;

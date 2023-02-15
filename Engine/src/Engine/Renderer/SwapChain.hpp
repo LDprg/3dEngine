@@ -6,7 +6,9 @@
  * \date   February 2023
  *********************************************************************/
 #pragma once
-#include <SwapChain.h>
+
+#include <Common/interface/RefCntAutoPtr.hpp>
+#include <Graphics/GraphicsEngine/interface/SwapChain.h>
 
 namespace __XXECS
 {

@@ -17,6 +17,7 @@ add_subdirectory("vendor/glm")
 add_subdirectory("docs")
 
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp")
+
 add_library(Engine ${SRC})
 
 target_precompile_headers(Engine PRIVATE "src/pch.hpp")
@@ -32,14 +33,7 @@ target_include_directories(Engine PUBLIC "vendor/spdlog/include")
 target_include_directories(Engine PUBLIC "vendor/glfw/include")
 target_include_directories(Engine PUBLIC "vendor/glm")
 
-target_link_libraries(Engine
-    Diligent-GraphicsEngineD3D11-shared
-    Diligent-GraphicsEngineOpenGL-shared
-    Diligent-GraphicsEngineD3D12-shared
-    Diligent-GraphicsEngineVk-shared
-
-    Diligent-Imgui
-)
+target_link_libraries(Engine Diligent-Imgui)
 target_link_libraries(Engine glfw)
 target_link_libraries(Engine EnTT::EnTT)
 target_link_libraries(Engine glm)
@@ -50,12 +44,21 @@ if (WIN32)
                             ENGINE_SUPPORT_D3D12
                             ENGINE_SUPPORT_OPENGL
                             ENGINE_SUPPORT_VULKAN)
+
+    target_link_libraries(Engine
+            Diligent-GraphicsEngineD3D12-shared
+            Diligent-GraphicsEngineD3D11-shared
+            Diligent-GraphicsEngineVk-shared
+            Diligent-GraphicsEngineOpenGL-shared
+            )
 elseif(LINUX)
     add_compile_definitions(ENGINE_PLATFORM_LINUX
-                            ENGINE_SUPPORT_OPENGL)
-elseif(APPLE)
-    add_compile_definitions(ENGINE_PLATFORM_MACOS
-                            ENGINE_SUPPORT_OPENGL)
+                            ENGINE_SUPPORT_OPENGL
+                            ENGINE_SUPPORT_VULKAN)
+    target_link_libraries(Engine
+            Diligent-GraphicsEngineVk-shared
+            Diligent-GraphicsEngineOpenGL-shared
+            )
 endif()
 
 if (MSVC)

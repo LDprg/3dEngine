@@ -31,8 +31,8 @@ auto __XXECS::Drawable::Create(Drawable &target) -> void
 
 auto __XXECS::Drawable::Draw(Drawable &target) -> void
 {
-    Diligent::MapHelper<Math::Vertex> vertices(Application::Get()->GetImmediateContext().GetNative(), target.vertexBuffer,
-                                               Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
+    Diligent::MapHelper<Math::Vertex> vertices(Application::Get()->GetImmediateContext().GetNative(),
+                                               target.vertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
     for (Diligent::Uint32 v = 0; v < target.vertices.size(); ++v)
         vertices[v] = target.vertices[v];
 

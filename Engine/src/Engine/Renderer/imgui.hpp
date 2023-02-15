@@ -7,10 +7,7 @@
  *********************************************************************/
 #pragma once
 
-#include <Imgui/interface/ImGuiImplDiligent.hpp>
-
-#include <ImGuiDiligentRenderer.hpp>
-#include <ThirdParty/imgui/imgui.h>
+#include <Imgui/interface/ImGuiDiligentRenderer.hpp>
 
 namespace __XXECS
 {

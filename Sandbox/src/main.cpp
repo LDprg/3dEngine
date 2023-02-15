@@ -20,7 +20,8 @@ public:
             auto &item = GetEntityManager().emplace<Drawable>(entity, Drawable(Math::Vertices(3), Math::Indices(3)));
             item.indices = {0, 1, 2};
 
-            item.vertices = {{Math::Position(-0.5, -0.5), Math::Color(1, 0, 0)}, {Math::Position(0.0, +0.5), Math::Color(0, 1, 0)},
+            item.vertices = {{Math::Position(-0.5, -0.5), Math::Color(1, 0, 0)},
+                             {Math::Position(0.0, +0.5), Math::Color(0, 1, 0)},
                              {Math::Position(+0.5, -0.5), Math::Color(0, 0, 1)},};
 
             Drawable::Create(item);
@@ -31,7 +32,8 @@ public:
             auto &item = GetEntityManager().emplace<Drawable>(entity, Drawable(Math::Vertices(3), Math::Indices(3)));
             item.indices = {0, 1, 2};
 
-            item.vertices = {{Math::Position(+0.5, +0.5), Math::Color(1, 0, 0)}, {Math::Position(0.0, -0.5), Math::Color(0, 1, 0)},
+            item.vertices = {{Math::Position(+0.5, +0.5), Math::Color(1, 0, 0)},
+                             {Math::Position(0.0, -0.5), Math::Color(0, 1, 0)},
                              {Math::Position(-0.5, +0.5), Math::Color(0, 0, 1)},};
 
             Drawable::Create(item);

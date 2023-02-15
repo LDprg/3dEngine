@@ -8,12 +8,28 @@
 #include "Engine/Renderer/Device.hpp"
 #include "Engine/Core/Application.hpp"
 
+#ifdef ENGINE_SUPPORT_D3D11
+#include <Graphics/GraphicsEngineD3D11/interface/EngineFactoryD3D11.h>
+#endif
+
+#ifdef ENGINE_SUPPORT_D3D12
+#include <Graphics/GraphicsEngineD3D12/interface/EngineFactoryD3D12.h>
+#endif
+
+#ifdef ENGINE_SUPPORT_OPENGL
+#include <Graphics/GraphicsEngineOpenGL/interface/EngineFactoryOpenGL.h>
+#endif
+
+#ifdef ENGINE_SUPPORT_VULKAN
+#include <Graphics/GraphicsEngineVulkan/interface/EngineFactoryVk.h>
+#endif
+
 auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> void
 {
     Diligent::SwapChainDesc scDesc;
 
 #ifdef ENGINE_PLATFORM_WINDOWS
-    auto hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
+    HWND hWnd = glfwGetWin32Window(Application::Get()->GetWindow().GetNative());
 #endif
 
     Diligent::RefCntAutoPtr<Diligent::IRenderDevice> &pDevice = Application::Get()->GetDevice().GetNative();
@@ -29,17 +45,29 @@ auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> 
 #    if EXPLICITLY_LOAD_ENGINE_VK_DLL
         // Load the dll and import GetEngineFactoryVk() function
         auto *getEngineFactoryVk = Diligent::LoadGraphicsEngineVk();
+        auto *pFactoryVk = getEngineFactoryVk();
+#else
+        auto *pFactoryVk = Diligent::GetEngineFactoryVk();
 #    endif
         Diligent::EngineVkCreateInfo engineCi;
 
-        auto *pFactoryVk = getEngineFactoryVk();
         pFactoryVk->CreateDeviceAndContextsVk(engineCi, &pDevice, &pImmediateContext);
 
+#ifdef ENGINE_PLATFORM_WINDOWS
         if (!pSwapChain && hWnd != nullptr)
         {
-            auto window{hWnd};
+            Diligent::Win32NativeWindow window{hWnd};
             pFactoryVk->CreateSwapChainVk(pDevice, pImmediateContext, scDesc, window, &pSwapChain);
         }
+#endif
+
+#ifdef ENGINE_PLATFORM_LINUX
+
+        Diligent::LinuxNativeWindow window{static_cast<Diligent::Uint32>(glfwGetX11Window(Application::Get()->GetWindow().GetNative())), glfwGetX11Display(), nullptr};
+
+        pFactoryVk->CreateSwapChainVk(pDevice, pImmediateContext, scDesc, window, &pSwapChain);
+#endif
+
     }
     break;
 #endif
@@ -55,7 +83,7 @@ auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> 
 
         auto *pFactoryD3D12 = getEngineFactoryD3D12();
         pFactoryD3D12->CreateDeviceAndContextsD3D12(engineCi, &pDevice, &pImmediateContext);
-        auto window{hWnd};
+        Diligent::Win32NativeWindow window{hWnd};
         pFactoryD3D12->CreateSwapChainD3D12(pDevice, pImmediateContext, scDesc, Diligent::FullScreenModeDesc{}, window,
                                             &pSwapChain);
     }
@@ -72,7 +100,7 @@ auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> 
 #    endif
         auto *pFactoryD3D11 = getEngineFactoryD3D11();
         pFactoryD3D11->CreateDeviceAndContextsD3D11(engineCi, &pDevice, &pImmediateContext);
-        auto window{hWnd};
+        Diligent::Win32NativeWindow window{hWnd};
         pFactoryD3D11->CreateSwapChainD3D11(pDevice, pImmediateContext, scDesc, Diligent::FullScreenModeDesc{}, window,
                                             &pSwapChain);
     }
@@ -80,15 +108,16 @@ auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> 
 #endif
 
 #ifdef ENGINE_SUPPORT_OPENGL
+    case Diligent::RENDER_DEVICE_TYPE_GLES:
     case Diligent::RENDER_DEVICE_TYPE_GL:
     {
-#    if EXPLICITLY_LOAD_ENGINE_GL_DLL
+#if EXPLICITLY_LOAD_ENGINE_GL_DLL
         // Load the dll and import GetEngineFactoryOpenGL() function
         auto *getEngineFactoryOpenGl = Diligent::LoadGraphicsEngineOpenGL();
         auto *pFactoryOpenGl = getEngineFactoryOpenGl();
 #else
         auto *pFactoryOpenGl = Diligent::GetEngineFactoryOpenGL();
-#    endif
+#endif
 
         Diligent::EngineGLCreateInfo engineCi;
 
@@ -99,6 +128,8 @@ auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> 
 #ifdef ENGINE_PLATFORM_LINUX
         engineCi.Window.WindowId = glfwGetX11Window(Application::Get()->GetWindow().GetNative());
         engineCi.Window.pDisplay = glfwGetX11Display();
+
+        glfwMakeContextCurrent(Application::Get()->GetWindow().GetNative());
 #endif
 
         pFactoryOpenGl->CreateDeviceAndSwapChainGL(engineCi, &pDevice, &pImmediateContext, scDesc, &pSwapChain);

@@ -7,6 +7,9 @@
  *********************************************************************/
 #pragma once
 
+#include <Common/interface/RefCntAutoPtr.hpp>
+#include <Graphics/GraphicsEngine/interface/DeviceContext.h>
+
 namespace __XXECS
 {
     class ImmediateContext

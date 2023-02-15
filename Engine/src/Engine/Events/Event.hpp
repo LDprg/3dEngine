@@ -6,36 +6,34 @@
  * \date   February 2023
  *********************************************************************/
 #pragma once
-#include <any>
+
 #include <queue>
 
 #include "Key.hpp"
 
-namespace __XXECS
+namespace __XXECS::Event
 {
-    namespace Event
+    struct ExitEvent
     {
-        struct ExitEvent
-        {
-        };
+    };
 
-        struct KeyEvent
-        {
-            Key key;
-            Action action;
-        };
+    struct KeyEvent
+    {
+        Key key;
+        Action action;
+    };
 
-        struct ResizeEvent
-        {
-            int width;
-            int height;
-        };
+    struct ResizeEvent
+    {
+        int width;
+        int height;
+    };
 
-        struct MouseMovedEvent
-        {
-            int x;
-            int y;
-        };
+    struct MouseMovedEvent
+    {
+        int x;
+        int y;
+    };
 
     class EventManager final
     {
@@ -65,5 +63,4 @@ namespace __XXECS
         std::queue<std::any> m_apiThreadEvents;
     };
 
-    }
 }
