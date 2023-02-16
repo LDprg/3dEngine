@@ -28,7 +28,7 @@ namespace __XXECS::Entity
         T::Delete(arg);
     };
 
-	template<typename T> concept UpdateAbleConcept = requires(const T &arg, Drawable &target)
+    template<typename T> concept UpdateAbleConcept = requires(const T &arg, Drawable &target)
     {
         T::Update(arg, target);
     };
@@ -53,28 +53,68 @@ namespace __XXECS::Entity
             const auto entity = create();
             auto &shape = emplace<T>(entity);
             auto &draw = emplace<Drawable>(entity, Drawable(T::vertices, T::indices));
+
             emplace<UpdateShapeTag>(entity);
             return std::tie(entity, shape, draw);
         }
 
-		template<ShapeComponentUpdateAbleConcept T>
-        constexpr auto UpdateShape()
+		template<ShapeComponentConcept T>
+        constexpr auto CreateDynamicShape()
         {
-            const auto v = view<T, Drawable, UpdateShapeTag>();
+            const auto entity = create();
+            auto &shape = emplace<T>(entity);
+            auto &draw = emplace<Drawable>(entity, Drawable(T::vertices, T::indices));
 
-            v.each([this](auto &shape, auto &draw) { T::Update(shape, draw); });
+            return std::tie(entity, shape, draw);
+        }
 
-			return v;
+        template<ShapeComponentUpdateAbleConcept T, typename... Other, typename... Args>
+        constexpr auto UpdateShape(Args &&... args)
+        {
+            const auto v = view<T, Other..., Drawable, UpdateShapeTag>(std::forward<Args>(args)...);
+
+            v.each([this](const auto entity, auto &shape, auto &draw)
+            {
+                T::Update(shape, draw);
+                remove<UpdateShapeTag>(entity);
+            });
+
+            return v;
+        }
+
+		template<ShapeComponentUpdateAbleConcept T, typename... Other, typename... Args>
+        constexpr auto UpdateDynamicShape(Args &&...args)
+        {
+            const auto v = view<T, Other..., Drawable>(std::forward<Args>(args)...);
+
+            v.each(
+                [this](const auto entity, auto &shape, auto &draw)
+                {
+                    T::Update(shape, draw);
+                });
+
+            return v;
+        }
+
+        template<typename... Other, typename... Args>
+        constexpr auto DrawShape(Args &&... args)
+        {
+            const auto v = view<Other..., Drawable>(std::forward<Args>(args)...);
+
+            for (auto entity : v)
+                Drawable::Draw(get<Drawable>(entity));
+
+            return v;
         }
 
         template<typename Type, typename... Args>
-        constexpr auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
+        constexpr auto emplace(const entt::entity &entt, Args &&... args) -> decltype(auto)
         {
             return entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
         }
 
         template<CreateAbleConcept Type, typename... Args>
-        constexpr auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
+        constexpr auto emplace(const entt::entity &entt, Args &&... args) -> decltype(auto)
         {
             auto &item = entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
             Type::Create(item);
@@ -82,7 +122,7 @@ namespace __XXECS::Entity
         }
 
         template<typename Type>
-        constexpr auto remove(entt::entity &&entt)
+        constexpr auto remove(const entt::entity &entt)
         {
             return entt::registry::remove<Type>(entt);
         }

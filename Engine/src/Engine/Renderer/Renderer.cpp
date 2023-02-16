@@ -98,16 +98,16 @@ auto __XXECS::Renderer::Init() -> void
 
 
     Diligent::BlendStateDesc &bsDesc = psoCreateInfo.GraphicsPipeline.BlendDesc;
-    bsDesc.IndependentBlendEnable = true;
-    auto &rt0 = bsDesc.RenderTargets[0];
-    rt0.BlendEnable = true;
-    rt0.RenderTargetWriteMask = Diligent::COLOR_MASK_ALL;
-    rt0.SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
-    rt0.DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
-    rt0.BlendOp = Diligent::BLEND_OPERATION_ADD;
-    rt0.SrcBlendAlpha = Diligent::BLEND_FACTOR_SRC_ALPHA;
-    rt0.DestBlendAlpha = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
-    rt0.BlendOpAlpha = Diligent::BLEND_OPERATION_ADD;
+    bsDesc.IndependentBlendEnable = false;
+    bsDesc.AlphaToCoverageEnable = false;
+    bsDesc.RenderTargets[0].BlendEnable = true;
+    bsDesc.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
+    bsDesc.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+    bsDesc.RenderTargets[0].BlendOp = Diligent::BLEND_OPERATION_ADD;
+    bsDesc.RenderTargets[0].SrcBlendAlpha = Diligent::BLEND_FACTOR_SRC_ALPHA;
+    bsDesc.RenderTargets[0].DestBlendAlpha = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+    bsDesc.RenderTargets[0].BlendOpAlpha = Diligent::BLEND_OPERATION_ADD;
+    bsDesc.RenderTargets[0].RenderTargetWriteMask = Diligent::COLOR_MASK_ALL;
 
     psoCreateInfo.GraphicsPipeline.BlendDesc = bsDesc;
 

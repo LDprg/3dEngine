@@ -11,6 +11,7 @@
 #include <Graphics/GraphicsEngine/interface/Buffer.h>
 #include <Graphics/GraphicsEngine/interface/PipelineState.h>
 #include <Graphics/GraphicsEngine/interface/RenderDevice.h>
+#include <Graphics/GraphicsEngine/interface/BlendState.h>
 #include <Graphics/GraphicsEngine/interface/ShaderResourceBinding.h>
 
 namespace __XXECS

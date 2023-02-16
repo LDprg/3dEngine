@@ -22,9 +22,17 @@ namespace __XXECS::Entity
 
         static auto Update(const Rectangle &source, Drawable &target) -> void
         {
-            target.vertices = {{Math::Position(source.width, source.height), source.color},
-                               {Math::Position(source.width, 0), source.color}, {Math::Position(0, 0), source.color},
-                               {Math::Position(0, source.height), source.color},};
+			const float width = std::max(source.width, 0.f);
+			const float height = std::max(source.height, 0.f);
+            const float nwidth = std::min(source.width, 0.f);
+            const float nheight = std::min(source.height, 0.f);
+
+            target.vertices = {
+                {Math::Position(width, height), source.color},
+                {Math::Position(width, nheight), source.color},
+                {Math::Position(nwidth, nheight), source.color},
+                {Math::Position(nwidth, height), source.color},
+            };
         }
     };
 }
