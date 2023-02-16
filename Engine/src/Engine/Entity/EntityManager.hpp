@@ -48,7 +48,7 @@ namespace __XXECS::Entity
     {
     public:
         template<ShapeComponentConcept T>
-        auto CreateShape()
+        constexpr auto CreateShape()
         {
             const auto entity = create();
             auto &shape = emplace<T>(entity);
@@ -58,7 +58,7 @@ namespace __XXECS::Entity
         }
 
 		template<ShapeComponentUpdateAbleConcept T>
-        auto UpdateShape()
+        constexpr auto UpdateShape()
         {
             const auto v = view<T, Drawable, UpdateShapeTag>();
 
@@ -68,13 +68,13 @@ namespace __XXECS::Entity
         }
 
         template<typename Type, typename... Args>
-        auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
+        constexpr auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
         {
             return entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
         }
 
         template<CreateAbleConcept Type, typename... Args>
-        auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
+        constexpr auto emplace(const entt::entity &entt, Args &&...args) -> decltype(auto) 
         {
             auto &item = entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
             Type::Create(item);
@@ -82,13 +82,13 @@ namespace __XXECS::Entity
         }
 
         template<typename Type>
-        auto remove(const entt::entity &entt)
+        constexpr auto remove(entt::entity &&entt)
         {
             return entt::registry::remove<Type>(entt);
         }
 
         template<DeleteAbleConcept Type>
-        auto remove(const entt::entity &entt)
+        constexpr auto remove(const entt::entity &entt)
         {
             auto &item = entt::registry::remove<Type>(entt);
             Type::Delete(item);
