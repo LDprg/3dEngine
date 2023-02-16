@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 add_subdirectory("Engine")
 
-file(GLOB SRC "Sandbox/src/**.c" "Sandbox/src/**.cpp" "Sandbox/src/**.h" "Sandbox/src/**.hpp" )
+file(GLOB_RECURSE SRC "Sandbox/src/**.cpp" "Sandbox/src/**.ixx" )
 add_executable(Sandbox ${SRC})
 
 target_link_libraries(Sandbox Engine)

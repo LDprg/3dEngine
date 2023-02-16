@@ -3,6 +3,7 @@ project(Engine)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
@@ -18,12 +19,12 @@ add_subdirectory("vendor/glm")
 
 add_subdirectory("docs")
 
-file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp")
+file(GLOB_RECURSE SRC "src/*.cpp" "src/*.hpp" "src/*.ixx")
 
 if(MSVC)    
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR- /openmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR-")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti /openmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 endif()
 
 #add_library(Engine SHARED ${SRC})
