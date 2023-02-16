@@ -137,6 +137,6 @@ auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> 
     break;
 #endif
 
-    default: LOG_CORE_FATAL("Unknown/unsupported device type");
+    default: Log::CoreFatal("Unknown/unsupported device type");
     }
 }

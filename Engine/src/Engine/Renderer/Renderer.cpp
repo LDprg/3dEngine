@@ -118,7 +118,7 @@ auto __XXECS::Renderer::Init() -> void
     psoCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = layoutElems;
     psoCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(layoutElems);
 
-    LOG_CORE_TRACE("Create Shaders");
+    Log::CoreTrace("Create Shaders");
     Diligent::ShaderCreateInfo shaderCi;
     // Tell the system that the shader source code is in HLSL.
     // For OpenGL, the engine will convert this into GLSL under the hood

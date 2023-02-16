@@ -14,7 +14,7 @@ bool __XXECS::Window::m_hasBeenInit = false;
 
 auto GlfwErrorCallback(int error, const char *description) -> void
 {
-    LOG_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
+    __XXECS::Log::CoreError("GLFW Error ({0}): {1}", error, description);
 }
 
 auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void
@@ -55,7 +55,7 @@ auto __XXECS::Window::Init() -> void
     {
         glfwSetErrorCallback(GlfwErrorCallback);
 
-        LOG_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!")
+        Log::CoreAssert(glfwInit(), "Could not initialize GLFW!");
 
 #if ENGINE_PLATFORM_WINDOWS
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -78,7 +78,7 @@ auto __XXECS::Window::Init() -> void
     m_oldPosX = posX;
     m_oldPosY = posY;
 
-    LOG_CORE_ASSERT(m_window, "Could not initialize Window!")
+    Log::CoreAssert(m_window, "Could not initialize Window!");
 
     glfwSetKeyCallback(m_window, GlfwKeyCallback);
     glfwSetCursorPosCallback(m_window, GlfwCursorPositionCallback);

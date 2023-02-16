@@ -19,14 +19,14 @@ namespace __XXECS
 
 auto main() -> int
 {
-    __XXECS::Log::Init();
+    __XXECS::Log::Log::Init();
 
-    LOG_CORE_TRACE("CREATE APP");
+    __XXECS::Log::CoreTrace("CREATE APP");
     const auto app = __XXECS::CreateApplication();
 
-    LOG_CORE_TRACE("RUN APP");
+    __XXECS::Log::CoreTrace("RUN APP");
     app->RunLoop();
 
-    LOG_CORE_TRACE("DELETE APP");
+    __XXECS::Log::CoreTrace("DELETE APP");
     delete app;
 }

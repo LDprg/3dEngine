@@ -11,7 +11,7 @@ __XXECS::Application *__XXECS::Application::m_instance;
 
 __XXECS::Application::Application()
 {
-    LOG_CORE_ASSERT(!m_instance, "Application already exists!")
+    Log::CoreAssert(!m_instance, "Application already exists!");
     m_instance = this;
 
     m_eventManager = std::make_unique<Event::EventManager>();
