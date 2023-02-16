@@ -10,11 +10,9 @@
 #include <Engine/Core/Application.hpp>
 #include <Engine/Core/Log.hpp>
 
-#define CREATE_APPLICATION(app) __XXECS::Application* __XXECS::CreateApplication() {return new app();}
-
 namespace __XXECS
 {
-    extern auto CreateApplication() -> Application*;
+    extern auto CreateApplication() -> Application *;
 }
 
 auto main() -> int

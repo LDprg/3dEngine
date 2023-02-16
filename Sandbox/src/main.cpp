@@ -72,5 +72,7 @@ public:
     }
 };
 
-
-CREATE_APPLICATION(App)
+auto __XXECS::CreateApplication() -> Application*
+{
+    return new App();
+}
