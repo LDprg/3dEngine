@@ -7,9 +7,11 @@
  *********************************************************************/
 #include "Application.hpp"
 
-__XXECS::Application *__XXECS::Application::m_instance;
+using namespace __XXECS;
 
-__XXECS::Application::Application()
+Application *Application::m_instance;
+
+Application::Application()
 {
     Log::CoreAssert(!m_instance, "Application already exists!");
     m_instance = this;
@@ -24,7 +26,7 @@ __XXECS::Application::Application()
     m_entityManager = std::make_unique<Entity::EntityManager>();
 }
 
-auto __XXECS::Application::RunLoop() -> void
+auto Application::RunLoop() -> void
 {
     m_window->Init();
 
@@ -41,7 +43,7 @@ auto __XXECS::Application::RunLoop() -> void
     m_renderThread.detach();
 }
 
-auto __XXECS::Application::RunThread() -> void
+auto Application::RunThread() -> void
 {
     m_renderer->Init();
     m_imGui->Init();

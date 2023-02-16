@@ -10,46 +10,48 @@
 #include "Application.hpp"
 #include "Engine/Events/Event.hpp"
 
-bool __XXECS::Window::m_hasBeenInit = false;
+using namespace __XXECS;
+
+bool Window::m_hasBeenInit = false;
 
 auto GlfwErrorCallback(int error, const char *description) -> void
 {
-    __XXECS::Log::CoreError("GLFW Error ({0}): {1}", error, description);
+    Log::CoreError("GLFW Error ({0}): {1}", error, description);
 }
 
 auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void
 {
-    __XXECS::Event::KeyEvent keyEvent{};
-    keyEvent.key = static_cast<__XXECS::Key>(key);
-    keyEvent.action = static_cast<__XXECS::Action>(action);
-    __XXECS::Application::Get()->GetEventManager().Push(keyEvent);
+    Event::KeyEvent keyEvent{};
+    keyEvent.key = static_cast<Key>(key);
+    keyEvent.action = static_cast<Action>(action);
+    Application::Get()->GetEventManager().Push(keyEvent);
 }
 
 auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) -> void
 {
-    __XXECS::Event::MouseMovedEvent movedEvent{};
+    Event::MouseMovedEvent movedEvent{};
     movedEvent.x = static_cast<int>(xpos);
     movedEvent.y = static_cast<int>(ypos);
-    __XXECS::Application::Get()->GetEventManager().Push(movedEvent);
+    Application::Get()->GetEventManager().Push(movedEvent);
 }
 
 auto GlfwMouseButtonCallback(GLFWwindow *window, int button, int action, int mods) -> void
 {
-    __XXECS::Event::KeyEvent keyEvent{};
-    keyEvent.key = static_cast<__XXECS::Key>(button);
-    keyEvent.action = static_cast<__XXECS::Action>(action);
-    __XXECS::Application::Get()->GetEventManager().Push(keyEvent);
+    Event::KeyEvent keyEvent{};
+    keyEvent.key = static_cast<Key>(button);
+    keyEvent.action = static_cast<Action>(action);
+    Application::Get()->GetEventManager().Push(keyEvent);
 }
 
 auto GlfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height) -> void
 {
-    __XXECS::Event::ResizeEvent resizeEvent{};
+    Event::ResizeEvent resizeEvent{};
     resizeEvent.width = width;
     resizeEvent.height = height;
-    __XXECS::Application::Get()->GetEventManager().Push(resizeEvent);
+    Application::Get()->GetEventManager().Push(resizeEvent);
 }
 
-auto __XXECS::Window::Init() -> void
+auto Window::Init() -> void
 {
     if (!m_hasBeenInit)
     {
@@ -86,13 +88,13 @@ auto __XXECS::Window::Init() -> void
     glfwSetFramebufferSizeCallback(m_window, GlfwSetFramebufferSizeCallback);
 }
 
-auto __XXECS::Window::Close() const -> void
+auto Window::Close() const -> void
 {
     glfwDestroyWindow(m_window);
     glfwTerminate();
 }
 
-auto __XXECS::Window::Update() const -> void
+auto Window::Update() const -> void
 {
     glfwWaitEvents();
 
@@ -100,7 +102,7 @@ auto __XXECS::Window::Update() const -> void
         Application::Get()->Close();
 }
 
-auto __XXECS::Window::SetFullscreen(const bool fullscreen) -> void
+auto Window::SetFullscreen(const bool fullscreen) -> void
 {
     if (fullscreen)
     {
@@ -128,7 +130,7 @@ auto __XXECS::Window::SetFullscreen(const bool fullscreen) -> void
     }
 }
 
-auto __XXECS::Window::GetSize() -> std::pair<float, float>
+auto Window::GetSize() -> std::pair<float, float>
 {
     int width, height;
 
@@ -140,19 +142,19 @@ auto __XXECS::Window::GetSize() -> std::pair<float, float>
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
-auto __XXECS::Window::GetWidth() -> float
+auto Window::GetWidth() -> float
 {
     auto [width, height] = GetSize();
     return width;
 }
 
-auto __XXECS::Window::GetHeight() -> float
+auto Window::GetHeight() -> float
 {
     auto [width, height] = GetSize();
     return height;
 }
 
-auto __XXECS::Window::GetPos() const -> std::pair<float, float>
+auto Window::GetPos() const -> std::pair<float, float>
 {
     int x, y;
 
@@ -161,13 +163,13 @@ auto __XXECS::Window::GetPos() const -> std::pair<float, float>
     return {static_cast<float>(x), static_cast<float>(y)};
 }
 
-auto __XXECS::Window::GetPosX() const -> float
+auto Window::GetPosX() const -> float
 {
     auto [x, y] = GetPos();
     return x;
 }
 
-auto __XXECS::Window::GetPosY() const -> float
+auto Window::GetPosY() const -> float
 {
     auto [x, y] = GetPos();
     return y;
