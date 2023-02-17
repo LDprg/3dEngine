@@ -46,31 +46,14 @@ void main(in  PSInput  PSIn,
 }
 )";
 
-auto __XXECS::Renderer::Update() -> void
-{
-    auto &pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
-
-    // Set render targets before issuing any draw command.
-    // Note that Present() unbinds the back buffer if it is set as render target.
-    auto *pRtv = Application::Get()->GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
-    auto *pDsv = Application::Get()->GetSwapChain().GetNative()->GetDepthBufferDSV();
-    pImmediateContext->SetRenderTargets(1, &pRtv, pDsv, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-
-    // Let the engine perform required state transitions
-    pImmediateContext->ClearRenderTarget(pRtv, Application::Get()->GetClearColor(),
-                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-    pImmediateContext->ClearDepthStencil(pDsv, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0,
-                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-
-
-    // Set the pipeline state in the immediate context
-    pImmediateContext->SetPipelineState(m_pPso);
-    pImmediateContext->CommitShaderResources(m_pSrb, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-}
-
 auto __XXECS::Renderer::Init() -> void
 {
     Device::CreateDevice(m_deviceType);
+
+	Diligent::LayoutElement layoutElems[] = {// Attribute 0 - vertex position
+                                             Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, false},
+                                             // Attribute 1 - vertex color
+                                             Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}};
 
     // Pipeline state object encompasses configuration of all GPU stages
 
@@ -83,6 +66,12 @@ auto __XXECS::Renderer::Init() -> void
     // This is a graphics pipeline
     psoCreateInfo.PSODesc.PipelineType = Diligent::PIPELINE_TYPE_GRAPHICS;
 
+    psoCreateInfo.GraphicsPipeline.BlendDesc.RenderTargets[0].BlendEnable = true;
+    psoCreateInfo.GraphicsPipeline.BlendDesc.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
+    // psoCreateInfo.GraphicsPipeline.BlendDesc.RenderTargets[0].SrcBlendAlpha = Diligent::BLEND_FACTOR_SRC_ALPHA;
+    psoCreateInfo.GraphicsPipeline.BlendDesc.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+    // psoCreateInfo.GraphicsPipeline.BlendDesc.RenderTargets[0].DestBlendAlpha = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
+
     // This tutorial will render to a single render target
     psoCreateInfo.GraphicsPipeline.NumRenderTargets = 1;
     // Set render target format which is the format of the swap chain's color buffer
@@ -91,30 +80,8 @@ auto __XXECS::Renderer::Init() -> void
     psoCreateInfo.GraphicsPipeline.DSVFormat = Application::Get()->GetSwapChain().GetDesc().DepthBufferFormat;
     // Primitive topology defines what kind of primitives will be rendered by this pipeline state
     psoCreateInfo.GraphicsPipeline.PrimitiveTopology = Diligent::PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-    // No back face culling for this tutorial
-    psoCreateInfo.GraphicsPipeline.RasterizerDesc.CullMode = Diligent::CULL_MODE_BACK;
-    // Disable depth testing
-    psoCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthEnable = true;
+    psoCreateInfo.GraphicsPipeline.DepthStencilDesc.DepthFunc = Diligent::COMPARISON_FUNC_LESS_EQUAL;
 
-
-    Diligent::BlendStateDesc &bsDesc = psoCreateInfo.GraphicsPipeline.BlendDesc;
-    bsDesc.IndependentBlendEnable = false;
-    bsDesc.AlphaToCoverageEnable = false;
-    bsDesc.RenderTargets[0].BlendEnable = true;
-    bsDesc.RenderTargets[0].SrcBlend = Diligent::BLEND_FACTOR_SRC_ALPHA;
-    bsDesc.RenderTargets[0].DestBlend = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
-    bsDesc.RenderTargets[0].BlendOp = Diligent::BLEND_OPERATION_ADD;
-    bsDesc.RenderTargets[0].SrcBlendAlpha = Diligent::BLEND_FACTOR_SRC_ALPHA;
-    bsDesc.RenderTargets[0].DestBlendAlpha = Diligent::BLEND_FACTOR_INV_SRC_ALPHA;
-    bsDesc.RenderTargets[0].BlendOpAlpha = Diligent::BLEND_OPERATION_ADD;
-    bsDesc.RenderTargets[0].RenderTargetWriteMask = Diligent::COLOR_MASK_ALL;
-
-    psoCreateInfo.GraphicsPipeline.BlendDesc = bsDesc;
-
-    Diligent::LayoutElement layoutElems[] = { // Attribute 0 - vertex position
-        Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, false},
-        // Attribute 1 - vertex color
-        Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}};
     psoCreateInfo.GraphicsPipeline.InputLayout.LayoutElements = layoutElems;
     psoCreateInfo.GraphicsPipeline.InputLayout.NumElements = _countof(layoutElems);
 
@@ -158,9 +125,31 @@ auto __XXECS::Renderer::Init() -> void
     // Since we did not explicitly specify the type for 'Constants' variable, default
     // type (SHADER_RESOURCE_VARIABLE_TYPE_STATIC) will be used. Static variables never
     // change and are bound directly through the pipeline state object.
-    if (auto *temp = m_pPso->GetStaticVariableByName(Diligent::SHADER_TYPE_VERTEX, "Constants"))
-        temp->Set(m_vsConstants);
+    //if (auto *temp = m_pPso->GetStaticVariableByName(Diligent::SHADER_TYPE_VERTEX, "Constants"))
+    //    temp->Set(m_vsConstants);
 
     // Create a shader resource binding object and bind all static resources in it
     m_pPso->CreateShaderResourceBinding(&m_pSrb, true);
+}
+
+auto __XXECS::Renderer::Update() -> void
+{
+    auto &pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
+
+    // Set render targets before issuing any draw command.
+    // Note that Present() unbinds the back buffer if it is set as render target.
+    auto *pRtv = Application::Get()->GetSwapChain().GetNative()->GetCurrentBackBufferRTV();
+    auto *pDsv = Application::Get()->GetSwapChain().GetNative()->GetDepthBufferDSV();
+    pImmediateContext->SetRenderTargets(1, &pRtv, pDsv, Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+
+    // Let the engine perform required state transitions
+    pImmediateContext->ClearRenderTarget(pRtv, Application::Get()->GetClearColor(),
+                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+    pImmediateContext->ClearDepthStencil(pDsv, Diligent::CLEAR_DEPTH_FLAG, 1.f, 0,
+                                         Diligent::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+
+
+    // Set the pipeline state in the immediate context
+    pImmediateContext->SetPipelineState(m_pPso);
+    pImmediateContext->CommitShaderResources(m_pSrb, Diligent::RESOURCE_STATE_TRANSITION_MODE_VERIFY);
 }

@@ -10,14 +10,14 @@ public:
     auto Init() -> void override
     {
         GetClearColor() = {0.5f, 0.5f, 0.5f};
+		
+        GetEntityManager().CreateDynamicShape<Entity::Triangle>();
 
         {
             auto [entity,rec,draw] = GetEntityManager().CreateShape<Entity::Rectangle>();
             rec.width = 0.5f;
             rec.color = {0, 0, 1};
         }
-
-        GetEntityManager().CreateDynamicShape<Entity::Triangle>();
     }
 
     auto Event(const std::any &event) -> void override
