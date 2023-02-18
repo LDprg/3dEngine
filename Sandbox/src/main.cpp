@@ -10,14 +10,16 @@ public:
     auto Init() -> void override
     {
         GetClearColor() = {0.5f, 0.5f, 0.5f};
+
+        //GetEntityManager().CreateShape<Entity::Circle<20>>();
 		
         GetEntityManager().CreateDynamicShape<Entity::Triangle>();
 
-        {
+        /*{
             auto [entity,rec,draw] = GetEntityManager().CreateShape<Entity::Rectangle>();
             rec.width = 0.5f;
             rec.color = {0, 0, 1};
-        }
+        }*/
     }
 
     auto Event(const std::any &event) -> void override
@@ -32,7 +34,7 @@ public:
 
     auto Update() -> void override
     {
-        const auto viewRec = GetEntityManager().view<Entity::Rectangle>();
+        /*const auto viewRec = GetEntityManager().view<Entity::Rectangle>();
 
         viewRec.each([this](auto &rec)
         {
@@ -40,7 +42,7 @@ public:
                 rec.width = 1.0f;
             else
                 rec.width = 0.5f;
-        });
+        });*/
 
         const auto viewTri = GetEntityManager().view<Entity::Triangle>();
 
@@ -54,8 +56,9 @@ public:
             GetEntityManager().emplace_or_replace<Entity::UpdateShapeTag>(entity);
         });
 
-        GetEntityManager().UpdateDynamicShape<Entity::Rectangle>();
+        //GetEntityManager().UpdateDynamicShape<Entity::Rectangle>();
         GetEntityManager().UpdateShape<Entity::Triangle>();
+        //GetEntityManager().UpdateShape<Entity::Circle<20>>();
     }
 
     auto ImGui() -> void override
