@@ -11,7 +11,7 @@ namespace __XXECS::Entity
 {
     struct Triangle
     {
-        inline static const Math::Indices indices = std::make_integer_sequence<Math::Index, 3>();
+        inline static const Math::Indices indices = {0,1,2};
         inline static const Math::Vertices vertices = 3;
 
         Math::Position position[3]{ Math::Position(-0.5, -0.5),

@@ -11,9 +11,12 @@ public:
     {
         GetClearColor() = {0.5f, 0.5f, 0.5f};
 
-        GetEntityManager().CreateShape<Entity::Circle<20>>();
-		
-        GetEntityManager().CreateDynamicShape<Entity::Triangle>();
+		{
+            auto [entity, tri, draw] = GetEntityManager().CreateDynamicShape<Entity::Triangle>();
+            tri.color = {0, 1, 0};
+		}
+
+        GetEntityManager().CreateShape<Entity::Circle>();
 
         {
             auto [entity,rec,draw] = GetEntityManager().CreateShape<Entity::Rectangle>();
@@ -58,7 +61,7 @@ public:
 
         GetEntityManager().UpdateDynamicShape<Entity::Rectangle>();
         GetEntityManager().UpdateShape<Entity::Triangle>();
-        GetEntityManager().UpdateShape<Entity::Circle<20>>();
+        GetEntityManager().UpdateShape<Entity::Circle>();
     }
 
     auto ImGui() -> void override
