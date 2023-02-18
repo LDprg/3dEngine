@@ -11,11 +11,12 @@ namespace __XXECS::Entity
 {
     struct Triangle
     {
-        inline static constexpr Math::FixedIndices indices{0, 1, 2};
-        inline static constexpr Math::VerticesSize vertices = 3;
+        inline static const Math::Indices indices = std::make_integer_sequence<Math::Index, 3>();
+        inline static const Math::Vertices vertices = 3;
 
-        Math::Position position[vertices]{Math::Position(-0.5, -0.5), Math::Position(0.0, +0.5),
-                                          Math::Position(+0.5, -0.5)};
+        Math::Position position[3]{ Math::Position(-0.5, -0.5),
+                                    Math::Position(0.0, +0.5),
+                                    Math::Position(+0.5, -0.5)};
         Math::Color color{1, 0, 0};
 
         static auto Update(const Triangle &source, Drawable &target) -> void

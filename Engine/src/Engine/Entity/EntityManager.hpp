@@ -58,7 +58,7 @@ namespace __XXECS::Entity
             return std::tie(entity, shape, draw);
         }
 
-		template<ShapeComponentConcept T>
+        template<ShapeComponentConcept T>
         constexpr auto CreateDynamicShape()
         {
             const auto entity = create();
@@ -82,16 +82,15 @@ namespace __XXECS::Entity
             return v;
         }
 
-		template<ShapeComponentUpdateAbleConcept T, typename... Other, typename... Args>
-        constexpr auto UpdateDynamicShape(Args &&...args)
+        template<ShapeComponentUpdateAbleConcept T, typename... Other, typename... Args>
+        constexpr auto UpdateDynamicShape(Args &&... args)
         {
             const auto v = view<T, Other..., Drawable>(std::forward<Args>(args)...);
 
-            v.each(
-                [this](const auto entity, auto &shape, auto &draw)
-                {
-                    T::Update(shape, draw);
-                });
+            v.each([this](const auto entity, auto &shape, auto &draw)
+            {
+                T::Update(shape, draw);
+            });
 
             return v;
         }

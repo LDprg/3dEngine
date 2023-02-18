@@ -23,12 +23,6 @@ namespace __XXECS::Math
         Color color;
     };
 
-    typedef std::initializer_list<Index> FixedIndices;
-    typedef std::initializer_list<Vertex> FixedVertices;
-
-	typedef Size IndicesSize;
-    typedef Size VerticesSize;
-
 	typedef Buffer<Vertex> Vertices;
     typedef Buffer<Index> Indices;
 
@@ -42,9 +36,14 @@ namespace __XXECS::Math
         {
         }
 
-        Buffer(const std::initializer_list<T>& iList) : Buffer(static_cast<Size>(iList.size()))
+        Buffer(const std::initializer_list<T>& iList) : Buffer(iList.size())
         {
             std::copy(iList.begin(), iList.end(), data.get());
+        }
+
+		template<T... vals>
+        Buffer(const std::integer_sequence<T, vals...>) : Buffer(std::initializer_list<T>{vals...})
+        {            
         }
 
         operator T *() const

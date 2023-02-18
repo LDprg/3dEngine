@@ -13,8 +13,8 @@ namespace __XXECS::Entity
 {
     struct Rectangle
     {
-        inline static constexpr Math::FixedIndices indices{0, 1, 2, 2, 3, 0};
-        inline static constexpr Math::VerticesSize vertices = 4;
+        inline static const Math::Indices indices = {0, 1, 2, 2, 3, 0};
+        inline static const Math::Vertices vertices = 4;
 
         float width = 1;
         float height = 1;
