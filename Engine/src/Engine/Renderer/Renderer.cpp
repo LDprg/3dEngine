@@ -50,10 +50,10 @@ auto __XXECS::Renderer::Init() -> void
 {
     Device::CreateDevice(m_deviceType);
 
-	Diligent::LayoutElement layoutElems[] = {// Attribute 0 - vertex position
-                                             Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, false},
-                                             // Attribute 1 - vertex color
-                                             Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}};
+    Diligent::LayoutElement layoutElems[] = { // Attribute 0 - vertex position
+        Diligent::LayoutElement{0, 0, 4, Diligent::VT_FLOAT32, false},
+        // Attribute 1 - vertex color
+        Diligent::LayoutElement{1, 0, 4, Diligent::VT_FLOAT32, false}};
 
     // Pipeline state object encompasses configuration of all GPU stages
 

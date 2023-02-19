@@ -18,7 +18,7 @@
 
 namespace __XXECS
 {
-    extern auto CreateApplication() -> Application *;
+    extern auto CreateApplication() -> Application*;
 }
 
 auto main() -> int

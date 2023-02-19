@@ -1,4 +1,4 @@
-/*****************************************************************//**
+/*****************************************************************/ /**
  * \file   Timer.hpp
  * \brief  Timer class
  * 
@@ -14,19 +14,19 @@ namespace __XXECS
     public:
         Timer() = default;
 
-		void Restart()
+        auto Restart() -> void
         {
             m_start = clock::now();
         }
 
-		std::chrono::microseconds Duration() const
+        auto Duration() const -> std::chrono::microseconds
         {
             return std::chrono::duration_cast<std::chrono::microseconds>(clock::now() - m_start);
         }
 
     private:
-		using clock = std::chrono::steady_clock;
-        using timep = clock::time_point;
+        typedef std::chrono::steady_clock clock;
+        typedef clock::time_point timep;
         timep m_start = clock::now();
     };
-} 
+}

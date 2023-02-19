@@ -13,14 +13,14 @@ namespace __XXECS::Math
     {
         float r, g, b, a;
 
-        Color() = default;
+        constexpr Color() = default;
 
-        Color(const float r, const float g, const float b, const float a)
+        constexpr Color(const float r, const float g, const float b, const float a)
             : r(r), g(g), b(b), a(a)
         {
         }
 
-        Color(const float r, const float g, const float b)
+        constexpr Color(const float r, const float g, const float b)
             : r(r), g(g), b(b), a(1.f)
         {
         }
@@ -35,21 +35,31 @@ namespace __XXECS::Math
     {
         float x, y, z, w;
 
-        Position() = default;
+        constexpr Position() = default;
 
-        Position(const float x, const float y, const float z, const float w)
+        constexpr Position(const float x, const float y, const float z, const float w)
             : x(x), y(y), z(z), w(w)
         {
         }
 
-        Position(const float x, const float y, const float z)
+        constexpr Position(const float x, const float y, const float z)
             : x(x), y(y), z(z), w(1.f)
         {
         }
 
-        Position(const float x, const float y)
+        constexpr Position(const float x, const float y)
             : x(x), y(y), z(0.f), w(1.f)
         {
+        }
+
+        auto operator +(const Position &other) const -> Position
+        {
+            return Position(x + other.x, y + other.y, z + other.z, w);
+        }
+
+        auto operator -(const Position &other) const -> Position
+        {
+            return Position(x - other.x, y - other.y, z - other.z, w);
         }
 
         operator float *() const

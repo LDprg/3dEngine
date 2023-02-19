@@ -51,7 +51,7 @@ auto Application::RunThread() -> void
 
     while (IsRunning())
     {
-		m_timer.Restart();
+        m_timer.Restart();
 
         while (true)
         {
@@ -70,7 +70,7 @@ auto Application::RunThread() -> void
 
         m_imGui->NewFrame();
 
-        Update(static_cast<float>(m_frameTime.count())/1000000.f);
+        Update(static_cast<float>(m_frameTime.count()) / 1000000.f);
 
         ImGui();
 
@@ -82,7 +82,7 @@ auto Application::RunThread() -> void
 
         m_swapChain->Present();
 
-		m_frameTime = m_timer.Duration();
+        m_frameTime = m_timer.Duration();
     }
 
     Shutdown();

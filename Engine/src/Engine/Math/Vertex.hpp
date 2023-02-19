@@ -23,10 +23,10 @@ namespace __XXECS::Math
         Color color;
     };
 
-	typedef Buffer<Vertex> Vertices;
+    typedef Buffer<Vertex> Vertices;
     typedef Buffer<Index> Indices;
 
-	template<typename T>
+    template<typename T>
     struct Buffer
     {
         std::shared_ptr<T[]> data;
@@ -36,14 +36,16 @@ namespace __XXECS::Math
         {
         }
 
-        Buffer(const std::initializer_list<T>& iList) : Buffer(iList.size())
+        Buffer(const std::initializer_list<T> &iList)
+            : Buffer(iList.size())
         {
             std::copy(iList.begin(), iList.end(), data.get());
         }
 
-		template<T... vals>
-        Buffer(const std::integer_sequence<T, vals...>) : Buffer(std::initializer_list<T>{vals...})
-        {            
+        template<T... vals>
+        Buffer(const std::integer_sequence<T, vals...>)
+            : Buffer(std::initializer_list<T>{vals...})
+        {
         }
 
         operator T *() const
