@@ -35,16 +35,18 @@ public:
                 GetWindow().SetFullscreen(!GetWindow().IsFullscreen());
     }
 
-    auto Update() -> void override
+    auto Update(float deltaTime) -> void override
     {
+		Log::Info("FPS: {}", 1.f / deltaTime);
+
         const auto viewRec = GetEntityManager().view<Entity::Rectangle>();
 
-        viewRec.each([this](auto &rec)
+        viewRec.each([this, &deltaTime](auto &rec)
         {
             if (m_size)
-                rec.width = 1.0f;
+                rec.width += 0.1f * deltaTime;
             else
-                rec.width = 0.5f;
+                rec.width -= 0.1f * deltaTime;
         });
 
         const auto viewTri = GetEntityManager().view<Entity::Triangle>();

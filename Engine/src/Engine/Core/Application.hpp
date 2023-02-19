@@ -19,12 +19,12 @@
 #include "Engine/Math/Vector.hpp"
 
 #include <any>
+#include <Engine/Util/Timer.hpp>
 
 auto main() -> int;
 
 namespace __XXECS
 {
-
     class Application
     {
         friend auto ::main() -> int;
@@ -50,8 +50,9 @@ namespace __XXECS
 
         /**
          * \brief Is called to update the application
+         * \param deltaTime Time since last update
          */
-        virtual auto Update() -> void = 0;
+        virtual auto Update(float deltaTime) -> void = 0;
 
         /**
          * \brief Is called to render the application
@@ -183,6 +184,9 @@ namespace __XXECS
          */
         auto RunLoop() -> void;
         auto RunThread() -> void;
+
+        Timer m_timer;
+        std::chrono::microseconds m_frameTime = std::chrono::microseconds(0);
 
         bool m_running = true;
         Math::Color m_clearColor = {1.f, 1.f, 1.f};
