@@ -14,12 +14,12 @@ using namespace __XXECS;
 
 bool Window::m_hasBeenInit = false;
 
-auto GlfwErrorCallback(int error, const char *description) -> void
+auto Window::GlfwErrorCallback(int error, const char *description) -> void
 {
     Log::CoreError("GLFW Error ({0}): {1}", error, description);
 }
 
-auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void
+auto Window::GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void
 {
     Event::KeyEvent keyEvent{};
     keyEvent.key = static_cast<Key>(key);
@@ -27,7 +27,7 @@ auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int 
     Application::Get()->GetEventManager().Push(keyEvent);
 }
 
-auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) -> void
+auto Window::GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) -> void
 {
     Event::MouseMovedEvent movedEvent{};
     movedEvent.x = static_cast<int>(xpos);
@@ -35,7 +35,7 @@ auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) ->
     Application::Get()->GetEventManager().Push(movedEvent);
 }
 
-auto GlfwMouseButtonCallback(GLFWwindow *window, int button, int action, int mods) -> void
+auto Window::GlfwMouseButtonCallback(GLFWwindow *window, int button, int action, int mods) -> void
 {
     Event::KeyEvent keyEvent{};
     keyEvent.key = static_cast<Key>(button);
@@ -43,7 +43,7 @@ auto GlfwMouseButtonCallback(GLFWwindow *window, int button, int action, int mod
     Application::Get()->GetEventManager().Push(keyEvent);
 }
 
-auto GlfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height) -> void
+auto Window::GlfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height) -> void
 {
     Event::ResizeEvent resizeEvent{};
     resizeEvent.width = width;

@@ -45,6 +45,12 @@ namespace __XXECS
         auto GetPosY() const -> float;
 
     private:
+        static auto GlfwErrorCallback(int error, const char *description) -> void;
+        static auto GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) -> void;
+        static auto GlfwCursorPositionCallback(GLFWwindow *window, double xpos, double ypos) -> void;
+        static auto GlfwMouseButtonCallback(GLFWwindow *window, int button, int action, int mods) -> void;
+        static auto GlfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height) -> void;
+
         GLFWwindow *m_window = nullptr;
         static bool m_hasBeenInit;
         bool m_isFullscreen = false;
