@@ -65,9 +65,9 @@ public:
             GetEntityManager().emplace_or_replace<Entity::UpdateShapeTag>(entity);
         });
 
-        GetEntityManager().UpdateDynamicShape<Entity::Rectangle>();
-        GetEntityManager().UpdateShape<Entity::Triangle>();
-        GetEntityManager().UpdateShape<Entity::Circle>();
+        GetEntityManager().UpdateDynamicShape<Entity::Rectangle, Entity::RectangleSystem>();
+        GetEntityManager().UpdateShape<Entity::Triangle, Entity::TriangleSystem>();
+        GetEntityManager().UpdateShape<Entity::Circle, Entity::CircleSystem>();
     }
 
     auto ImGui() -> void override

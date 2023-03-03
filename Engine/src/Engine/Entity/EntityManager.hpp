@@ -7,6 +7,7 @@
  *********************************************************************/
 #pragma once
 
+#include  "Engine/Entity/System.hpp"
 #include "Engine/Entity/Components/Drawable.hpp"
 #include "Engine/Math/Vertex.hpp"
 
@@ -14,26 +15,13 @@
 
 namespace __XXECS::Entity
 {
+    class DrawableSystem;
+
     struct UpdateShapeTag
     {
     };
 
-    template<typename T> concept CreateAbleConcept = requires(T &arg)
-    {
-        T::Create(arg);
-    };
-
-    template<typename T> concept DeleteAbleConcept = requires(T &arg)
-    {
-        T::Delete(arg);
-    };
-
-    template<typename T> concept UpdateAbleConcept = requires(const T &arg, Drawable &target)
-    {
-        T::Update(arg, target);
-    };
-
-    template<typename T> concept ShapeComponentConcept = requires(T)
+    template<typename T> concept ShapeComponentConcept = requires()
     {
         {
             T::vertices
@@ -42,7 +30,7 @@ namespace __XXECS::Entity
         } -> std::convertible_to<Math::Indices>;
     };
 
-    template<typename T> concept ShapeComponentUpdateAbleConcept = ShapeComponentConcept<T> && UpdateAbleConcept<T>;
+    template<typename T> concept ShapeSystemConcept = requires() { std::derived_from<T, System<T>>; };
 
     class EntityManager final : public entt::registry
     {
@@ -52,7 +40,7 @@ namespace __XXECS::Entity
         {
             const auto entity = create();
             auto &shape = emplace<T>(entity);
-            auto &draw = emplace<Drawable>(entity, Drawable(T::vertices, T::indices));
+            auto &draw = emplace<Drawable, DrawableSystem>(entity, Drawable(T::vertices, T::indices));
 
             emplace<UpdateShapeTag>(entity);
             return std::tie(entity, shape, draw);
@@ -63,33 +51,33 @@ namespace __XXECS::Entity
         {
             const auto entity = create();
             auto &shape = emplace<T>(entity);
-            auto &draw = emplace<Drawable>(entity, Drawable(T::vertices, T::indices));
+            auto &draw = emplace<Drawable, DrawableSystem>(entity, Drawable(T::vertices, T::indices));
 
             return std::tie(entity, shape, draw);
         }
 
-        template<ShapeComponentUpdateAbleConcept T, typename... Other, typename... Args>
+        template<ShapeComponentConcept Comp, ShapeSystemConcept Sys, typename... Other, typename... Args>
         constexpr auto UpdateShape(Args &&... args)
         {
-            const auto v = view<T, Other..., Drawable, UpdateShapeTag>(std::forward<Args>(args)...);
+            const auto v = view<Comp, Other..., Drawable, UpdateShapeTag>(std::forward<Args>(args)...);
 
             v.each([this](const auto entity, auto &shape, auto &draw)
             {
-                T::Update(shape, draw);
+                Sys::Update(shape, draw);
                 remove<UpdateShapeTag>(entity);
             });
 
             return v;
         }
 
-        template<ShapeComponentUpdateAbleConcept T, typename... Other, typename... Args>
+        template<ShapeComponentConcept Comp, ShapeSystemConcept Sys, typename... Other, typename... Args>
         constexpr auto UpdateDynamicShape(Args &&... args)
         {
-            const auto v = view<T, Other..., Drawable>(std::forward<Args>(args)...);
+            const auto v = view<Comp, Other..., Drawable>(std::forward<Args>(args)...);
 
             v.each([this](const auto entity, auto &shape, auto &draw)
             {
-                T::Update(shape, draw);
+                Sys::Update(shape, draw);
             });
 
             return v;
@@ -101,7 +89,7 @@ namespace __XXECS::Entity
             const auto v = view<Other..., Drawable>(std::forward<Args>(args)...);
 
             for (auto entity : v)
-                Drawable::Draw(get<Drawable>(entity));
+                DrawableSystem::Update(get<Drawable>(entity));
 
             return v;
         }
@@ -112,11 +100,11 @@ namespace __XXECS::Entity
             return entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
         }
 
-        template<CreateAbleConcept Type, typename... Args>
+        template<ShapeComponentConcept Comp, ShapeSystemConcept Sys, typename... Args>
         constexpr auto emplace(const entt::entity &entt, Args &&... args) -> decltype(auto)
         {
-            auto &item = entt::registry::emplace<Type>(entt, std::forward<Args>(args)...);
-            Type::Create(item);
+            auto &item = entt::registry::emplace<Comp>(entt, std::forward<Args>(args)...);
+            Sys::Create(item);
             return item;
         }
 
@@ -126,11 +114,11 @@ namespace __XXECS::Entity
             return entt::registry::remove<Type>(entt);
         }
 
-        template<DeleteAbleConcept Type>
+        template<ShapeComponentConcept Comp, ShapeSystemConcept Sys>
         constexpr auto remove(const entt::entity &entt)
         {
-            auto &item = entt::registry::remove<Type>(entt);
-            Type::Delete(item);
+            auto &item = entt::registry::remove<Comp>(entt);
+            Sys::Delete(item);
             return item;
         }
     };

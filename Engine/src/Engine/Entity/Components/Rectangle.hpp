@@ -19,18 +19,5 @@ namespace __XXECS::Entity
 
         float width = 1;
         float height = 1;
-
-        static auto Update(const Rectangle &source, Drawable &target) -> void
-        {
-            const float width = std::max(source.width, 0.f);
-            const float height = std::max(source.height, 0.f);
-            const float nwidth = std::min(source.width, 0.f);
-            const float nheight = std::min(source.height, 0.f);
-
-            target.vertices = {{Math::Position(width, height) + source.position, source.color},
-                               {Math::Position(width, nheight) + source.position, source.color},
-                               {Math::Position(nwidth, nheight) + source.position, source.color},
-                               {Math::Position(nwidth, height) + source.position, source.color},};
-        }
     };
 }

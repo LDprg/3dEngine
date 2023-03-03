@@ -26,8 +26,5 @@ namespace __XXECS::Entity
             : vertices(std::move(vertices)), indices(std::move(indices))
         {
         }
-
-        static auto Create(Drawable &target) -> void;
-        static auto Draw(Drawable &target) -> void;
     };
 }
