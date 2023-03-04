@@ -12,18 +12,18 @@ public:
         GetClearColor() = {0.5f, 0.5f, 0.5f};
 
         {
-            auto [entity, tri, draw] = GetEntityManager().CreateDynamicShape<Entity::Triangle>();
+            auto [entity, tri, draw] = GetEntityManager().CreateDynamicShape<Entity::Triangle, Entity::TriangleSystem>();
             tri.color = {0, 1, 0};
         }
 
 
         {
-            auto [entity, cir, draw] = GetEntityManager().CreateShape<Entity::Circle>();
+            auto [entity, cir, draw] = GetEntityManager().CreateShape<Entity::Circle, Entity::CircleSystem>();
             cir.position = {0.5f, 0.5f};
         }
 
         {
-            auto [entity,rec,draw] = GetEntityManager().CreateShape<Entity::Rectangle>();
+            auto [entity, rec, draw] = GetEntityManager().CreateShape<Entity::Rectangle, Entity::RectangleSystem>();
             rec.width = 0.5f;
             rec.color = {0, 0, 1};
         }
@@ -41,7 +41,7 @@ public:
 
     auto Update(float deltaTime) -> void override
     {
-        Log::Info("FPS: {}", 1.f / deltaTime);
+        //Log::Info("FPS: {}", 1.f / deltaTime);
 
         const auto viewRec = GetEntityManager().view<Entity::Rectangle>();
 

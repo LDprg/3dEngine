@@ -15,11 +15,14 @@
 
 namespace __XXECS::Entity
 {
-    class CircleSystem : System<CircleSystem>
+    class CircleSystem : public System<CircleSystem>
     {
     public:
-        static auto Update(const Circle &source, Drawable &target) -> void
+        static auto Update(const entt::entity entity) -> void
         {
+            auto &target = Application::Get()->GetEntityManager().get<Drawable>(entity);
+            const auto &source = Application::Get()->GetEntityManager().get<Circle>(entity);
+
             target.vertices[0] = {source.position, source.color};
 
             for (auto i = 1; i < Circle::points; i++)

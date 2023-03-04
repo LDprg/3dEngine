@@ -11,11 +11,11 @@
 
 namespace __XXECS::Entity
 {
-    class DrawableSystem : System<DrawableSystem>
+    class DrawableSystem : public System<DrawableSystem>
     {
     public:
-        static auto Create(Drawable &target) -> void;
+        static auto Create(const entt::entity entity) -> void;
 
-        static auto Update(Drawable &target) -> void;
+        static auto Update(const entt::entity entity) -> void;
     };
 }

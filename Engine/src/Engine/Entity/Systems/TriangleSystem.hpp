@@ -13,11 +13,14 @@
 
 namespace __XXECS::Entity
 {
-    class TriangleSystem : System<TriangleSystem>
+    class TriangleSystem : public System<TriangleSystem>
     {
     public:
-        static auto Update(const Triangle &source, Drawable &target) -> void
+        static auto Update(const entt::entity entity) -> void
         {
+            auto &target = Application::Get()->GetEntityManager().get<Drawable>(entity);
+            const auto &source = Application::Get()->GetEntityManager().get<Triangle>(entity);
+
             target.vertices = {{source.points[0] + source.position, source.color},
                                {source.points[1] + source.position, source.color},
                                {source.points[2] + source.position, source.color},};

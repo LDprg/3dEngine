@@ -11,8 +11,10 @@
 
 using namespace __XXECS::Entity;
 
-auto DrawableSystem::Create(Drawable &target) -> void
+auto DrawableSystem::Create(const entt::entity entity) -> void
 {
+	auto &target = Application::Get()->GetEntityManager().get<Drawable>(entity);
+
     Diligent::BufferDesc vertexBuffDesc;
     vertexBuffDesc.Name = "Vertex buffer";
     vertexBuffDesc.Usage = Diligent::USAGE_DYNAMIC;
@@ -32,8 +34,10 @@ auto DrawableSystem::Create(Drawable &target) -> void
     Application::Get()->GetDevice().GetNative()->CreateBuffer(indexBuffDesc, &ibData, &target.indexBuffer);
 }
 
-auto DrawableSystem::Update(Drawable &target) -> void
+auto DrawableSystem::Update(const entt::entity entity) -> void
 {
+    auto &target = Application::Get()->GetEntityManager().get<Drawable>(entity);
+
     Diligent::MapHelper<Math::Vertex> vertices(Application::Get()->GetImmediateContext().GetNative(),
                                                target.vertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
     for (Diligent::Uint32 v = 0; v < target.vertices.size(); ++v)

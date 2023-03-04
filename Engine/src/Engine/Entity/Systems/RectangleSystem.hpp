@@ -14,11 +14,14 @@
 
 namespace __XXECS::Entity
 {
-    class RectangleSystem : System<RectangleSystem>
+    class RectangleSystem : public System<RectangleSystem>
     {
     public:
-        static auto Update(const Rectangle &source, Drawable &target) -> void
+        static auto Update(const entt::entity entity) -> void
         {
+            auto &target = Application::Get()->GetEntityManager().get<Drawable>(entity);
+            const auto &source = Application::Get()->GetEntityManager().get<Rectangle>(entity);
+
             const float width = std::max(source.width, 0.f);
             const float height = std::max(source.height, 0.f);
             const float nwidth = std::min(source.width, 0.f);
