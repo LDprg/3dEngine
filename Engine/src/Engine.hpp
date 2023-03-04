@@ -20,15 +20,15 @@
 
 #include "Engine/Math/Vertex.hpp"
 
-#include "Engine/Entity/Systems/DrawableSystem.hpp"
-#include "Engine/Entity/Systems/TriangleSystem.hpp"
-#include "Engine/Entity/Systems/RectangleSystem.hpp"
 #include "Engine/Entity/Systems/CircleSystem.hpp"
+#include "Engine/Entity/Systems/DrawableSystem.hpp"
+#include "Engine/Entity/Systems/RectangleSystem.hpp"
+#include "Engine/Entity/Systems/TriangleSystem.hpp"
 
-#include "Engine/Entity/Components/Drawable.hpp"
-#include "Engine/Entity/Components/Triangle.hpp"
-#include "Engine/Entity/Components/Rectangle.hpp"
 #include "Engine/Entity/Components/Circle.hpp"
+#include "Engine/Entity/Components/Drawable.hpp"
+#include "Engine/Entity/Components/Rectangle.hpp"
+#include "Engine/Entity/Components/Triangle.hpp"
 
 
 #include <any>

@@ -7,7 +7,8 @@
  *********************************************************************/
 #pragma once
 
-#include  "Engine/Entity/System.hpp"
+#include <Engine/Entity/System.hpp>
+
 #include "Engine/Entity/Components/Drawable.hpp"
 #include "Engine/Math/Vertex.hpp"
 
@@ -39,21 +40,22 @@ namespace __XXECS::Entity
         constexpr auto CreateShape()
         {
             const auto entity = create();
-            auto &shape = Create<Comp, Sys>(entity);
-            auto &draw = Create<Drawable, DrawableSystem>(entity, Drawable(Comp::vertices, Comp::indices));
+
+            Create<Comp, Sys>(entity);
+            Create<Drawable, DrawableSystem>(entity, Drawable(Comp::vertices, Comp::indices));
 
             emplace<UpdateShapeTag>(entity);
-            return std::tie(entity, shape, draw);
+            return entity;
         }
 
         template<ShapeComponentConcept Comp, ShapeSystemConcept Sys>
         constexpr auto CreateDynamicShape()
         {
             const auto entity = create();
-            auto &shape = Create<Comp, Sys>(entity);
-            auto &draw = Create<Drawable, DrawableSystem>(entity, Drawable(Comp::vertices, Comp::indices));
+            Create<Comp, Sys>(entity);
+            Create<Drawable, DrawableSystem>(entity, Drawable(Comp::vertices, Comp::indices));
 
-            return std::tie(entity, shape, draw);
+            return entity;
         }
 
         template<ShapeComponentConcept Comp, ShapeSystemConcept Sys, typename... Other, typename... Args>
@@ -64,6 +66,7 @@ namespace __XXECS::Entity
             for (auto entity : v)
             {
                 Sys::Update(entity);
+
                 remove<UpdateShapeTag>(entity);
             }
 

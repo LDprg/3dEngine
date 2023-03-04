@@ -12,20 +12,20 @@ public:
         GetClearColor() = {0.5f, 0.5f, 0.5f};
 
         {
-            auto [entity, tri, draw] = GetEntityManager().CreateDynamicShape<Entity::Triangle, Entity::TriangleSystem>();
-            tri.color = {0, 1, 0};
+            const auto entity = GetEntityManager().CreateDynamicShape<Entity::Triangle, Entity::TriangleSystem>();
+            GetEntityManager().get<Entity::Color>(entity).color = {0, 1, 0};
         }
 
 
         {
-            auto [entity, cir, draw] = GetEntityManager().CreateShape<Entity::Circle, Entity::CircleSystem>();
-            cir.position = {0.5f, 0.5f};
+            const auto entity = GetEntityManager().CreateShape<Entity::Circle, Entity::CircleSystem>();
+            GetEntityManager().get<Entity::Position>(entity).position = {0.5f, 0.5f};
         }
 
         {
-            auto [entity, rec, draw] = GetEntityManager().CreateShape<Entity::Rectangle, Entity::RectangleSystem>();
-            rec.width = 0.5f;
-            rec.color = {0, 0, 1};
+            const auto entity = GetEntityManager().CreateShape<Entity::Rectangle, Entity::RectangleSystem>();
+            GetEntityManager().get<Entity::Rectangle>(entity).width = 0.5f;
+            GetEntityManager().get<Entity::Color>(entity).color = {0, 0, 1};
         }
     }
 
@@ -53,14 +53,14 @@ public:
                 rec.width -= 0.1f * deltaTime;
         });
 
-        const auto viewTri = GetEntityManager().view<Entity::Triangle>();
+        const auto viewTri = GetEntityManager().view<Entity::Triangle, Entity::Color>();
 
-        viewTri.each([this](const auto entity, auto &tri)
+        viewTri.each([this](const auto entity, auto &tri, auto &col)
         {
             if (m_transp)
-                tri.color.a = 0.5f;
+                col.color.a = 0.5f;
             else
-                tri.color.a = 1.f;
+                col.color.a = 1.f;
 
             GetEntityManager().emplace_or_replace<Entity::UpdateShapeTag>(entity);
         });

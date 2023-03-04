@@ -7,15 +7,14 @@
  *********************************************************************/
 #pragma once
 #include <Engine/Entity/System.hpp>
-#include <Engine/Entity/Components/Drawable.hpp>
 
 namespace __XXECS::Entity
 {
     class DrawableSystem : public System<DrawableSystem>
     {
     public:
-        static auto Create(const entt::entity entity) -> void;
+        static auto Create(entt::entity entity) -> void;
 
-        static auto Update(const entt::entity entity) -> void;
+        static auto Update(entt::entity entity) -> void;
     };
 }

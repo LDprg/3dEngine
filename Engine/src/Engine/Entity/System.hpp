@@ -1,9 +1,9 @@
 /*****************************************************************/ /**
- * \file   EntityManager.hpp
- * \brief  Entity Manager
+ * \file   System.hpp
+ * \brief  System Base for entities
  * 
  * \author LD
- * \date   February 2023
+ * \date   March 2023
  *********************************************************************/
 #pragma once
 
@@ -11,7 +11,9 @@
 
 namespace __XXECS::Entity
 {
-    template<class Derived>
+    class EntityManager;
+
+    template<typename Derived>
     struct System
     {
         static auto Create(const entt::entity arg) -> void
@@ -25,5 +27,7 @@ namespace __XXECS::Entity
         static auto Delete(const entt::entity arg) -> void
         {
         }
+
+        static auto GetEntityManager() -> EntityManager&;
     };
 }
