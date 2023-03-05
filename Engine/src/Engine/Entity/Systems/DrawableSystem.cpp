@@ -11,7 +11,7 @@
 
 using namespace __XXECS::Entity;
 
-auto DrawableSystem::Create(const entt::entity entity) -> void
+auto DrawableSystem::Create(const entt::entity& entity) -> void
 {
     auto &target = GetEntityManager().get<Drawable>(entity);
 
@@ -34,7 +34,7 @@ auto DrawableSystem::Create(const entt::entity entity) -> void
     Application::Get()->GetDevice().GetNative()->CreateBuffer(indexBuffDesc, &ibData, &target.indexBuffer);
 }
 
-auto DrawableSystem::Update(const entt::entity entity) -> void
+auto DrawableSystem::Run(const entt::entity &entity) -> void
 {
     auto &target = GetEntityManager().get<Drawable>(entity);
 

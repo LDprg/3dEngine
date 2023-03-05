@@ -7,6 +7,7 @@
  *********************************************************************/
 #pragma once
 
+#include <execution>
 #include <entt/entt.hpp>
 
 namespace __XXECS
@@ -21,16 +22,17 @@ namespace __XXECS::Entity
     template<typename Derived>
     struct System
     {
-        static auto Create(const entt::entity arg) -> void
+        template<typename T>
+        static auto Execute(T& v) -> void
         {
-        }
-
-        static auto Update(const entt::entity arg) -> void
-        {
-        }
-
-        static auto Delete(const entt::entity arg) -> void
-        {
+            if constexpr (requires(Derived) { Derived::Run(entt::entity{}); })
+                for (auto &entity : v)
+                    Derived::Run(entity);
+            else if constexpr (requires(Derived) { Derived::RunParallel(entt::entity{}); })
+                std::for_each(std::execution::par_unseq, v.begin(), v.end(), [](auto &&entity)
+                {
+                    Derived::RunParallel(std::forward<const entt::entity>(entity));
+                });
         }
 
         static auto GetEntityManager() -> EntityManager&

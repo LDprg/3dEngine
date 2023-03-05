@@ -6,15 +6,15 @@
  * \date   March 2023
  *********************************************************************/
 #pragma once
-#include <Engine/Entity/System.hpp>
+#include <Engine/Entity/ShapeSystem.hpp>
 
 namespace __XXECS::Entity
 {
-    class DrawableSystem : public System<DrawableSystem>
+    class DrawableSystem : public ShapeSystem<DrawableSystem>
     {
     public:
-        static auto Create(entt::entity entity) -> void;
+        static auto Create(const entt::entity& entity) -> void;
 
-        static auto Update(entt::entity entity) -> void;
+        static auto Run(const entt::entity &entity) -> void;
     };
 }

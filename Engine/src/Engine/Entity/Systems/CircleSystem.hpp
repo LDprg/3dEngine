@@ -8,7 +8,7 @@
 #pragma once
 
 #include <numbers>
-#include <Engine/Entity/System.hpp>
+#include <Engine/Entity/ShapeSystem.hpp>
 #include <Engine/Entity/Components/Circle.hpp>
 #include <Engine/Entity/Components/Color.hpp>
 #include <Engine/Entity/Components/Drawable.hpp>
@@ -16,16 +16,16 @@
 
 namespace __XXECS::Entity
 {
-    class CircleSystem : public System<CircleSystem>
+    class CircleSystem : public ShapeSystem<CircleSystem>
     {
     public:
-        static auto Create(const entt::entity entity) -> void
+        static auto Create(const entt::entity& entity) -> void
         {
             GetEntityManager().emplace<Color>(entity, Color(Math::Color(1, 0, 0)));
             GetEntityManager().emplace<Position>(entity, Position(Math::Position(0, 0)));
         }
 
-        static auto Update(const entt::entity entity) -> void
+        static auto RunParallel(const entt::entity &entity) -> void
         {
             auto &target = GetEntityManager().get<Drawable>(entity);
             const auto &source = GetEntityManager().get<Circle>(entity);

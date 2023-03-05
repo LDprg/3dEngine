@@ -6,7 +6,7 @@
  * \date   March 2023
  *********************************************************************/
 #pragma once
-#include <Engine/Entity/System.hpp>
+#include <Engine/Entity/ShapeSystem.hpp>
 #include <Engine/Entity/Components/Color.hpp>
 #include <Engine/Entity/Components/Drawable.hpp>
 #include <Engine/Entity/Components/Position.hpp>
@@ -15,16 +15,16 @@
 
 namespace __XXECS::Entity
 {
-    class RectangleSystem : public System<RectangleSystem>
+    class RectangleSystem : public ShapeSystem<RectangleSystem>
     {
     public:
-        static auto Create(const entt::entity entity) -> void
+        static auto Create(const entt::entity& entity) -> void
         {
             GetEntityManager().emplace<Color>(entity, Color(Math::Color(1, 0, 0)));
             GetEntityManager().emplace<Position>(entity, Position(Math::Position(0, 0)));
         }
 
-        static auto Update(const entt::entity entity) -> void
+        static auto RunParallel(const entt::entity &entity) -> void
         {
             auto &target = GetEntityManager().get<Drawable>(entity);
             const auto &source = GetEntityManager().get<Rectangle>(entity);
