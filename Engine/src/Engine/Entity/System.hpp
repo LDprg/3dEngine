@@ -9,6 +9,11 @@
 
 #include <entt/entt.hpp>
 
+namespace __XXECS
+{
+    class Application;
+}
+
 namespace __XXECS::Entity
 {
     class EntityManager;
@@ -28,6 +33,9 @@ namespace __XXECS::Entity
         {
         }
 
-        static auto GetEntityManager() -> EntityManager&;
+        static auto GetEntityManager() -> EntityManager&
+        {
+            return Application::Get()->GetEntityManager();
+        }
     };
 }
