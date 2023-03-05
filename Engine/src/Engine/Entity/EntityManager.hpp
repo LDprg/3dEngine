@@ -7,6 +7,7 @@
  *********************************************************************/
 #pragma once
 
+#include <execution>
 #include <Engine/Entity/System.hpp>
 
 #include "Engine/Entity/Components/Drawable.hpp"
@@ -63,12 +64,14 @@ namespace __XXECS::Entity
         {
             const auto v = view<Comp, Other..., Drawable, UpdateShapeTag>(std::forward<Args>(args)...);
 
-            for (auto entity : v)
+			auto size = v.size_hint();
+
+            std::for_each(std::execution::par_unseq, v.begin(), v.end(), [this](auto &&entity)
             {
                 Sys::Update(entity);
+            });
 
-                remove<UpdateShapeTag>(entity);
-            }
+            remove<UpdateShapeTag>(v.begin(), v.end());
 
             return v;
         }
@@ -78,8 +81,12 @@ namespace __XXECS::Entity
         {
             const auto v = view<Comp, Other..., Drawable>(std::forward<Args>(args)...);
 
-            for (auto entity : v)
+            auto size = v.size_hint();
+
+            std::for_each(std::execution::par_unseq, v.begin(), v.end(), [](auto &&entity)
+            {
                 Sys::Update(entity);
+            });
 
             return v;
         }
@@ -89,7 +96,7 @@ namespace __XXECS::Entity
         {
             const auto v = view<Other..., Drawable>(std::forward<Args>(args)...);
 
-            for (auto entity : v)
+            for (auto& entity : v)
                 DrawableSystem::Update(entity);
 
             return v;
