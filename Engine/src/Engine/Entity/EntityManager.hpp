@@ -14,6 +14,7 @@
 
 #include <execution>
 #include <Engine/Entity/System.hpp>
+#include <Engine/Entity/Systems/DynamicDrawableSystem.hpp>
 
 #include <entt/entt.hpp>
 
@@ -61,7 +62,7 @@ namespace __XXECS::Entity
             const auto entity = create();
 
             Create<Comp, Sys>(entity);
-            Create<Drawable, DrawableSystem>(entity, Drawable(Comp::vertices, Comp::indices));
+            Create<Drawable, DynamicDrawableSystem>(entity, Drawable(Comp::vertices, Comp::indices));
 
             return entity;
         }
@@ -94,6 +95,16 @@ namespace __XXECS::Entity
             const auto v = view<Other..., Drawable>(std::forward<Args>(args)...);
 
             DrawableSystem::Execute(v);
+
+            return v;
+        }
+
+		template<typename... Other, typename... Args>
+        constexpr auto DrawDynamicShape(Args &&...args)
+        {
+            const auto v = view<Other..., Drawable>(std::forward<Args>(args)...);
+
+            DynamicDrawableSystem::Execute(v);
 
             return v;
         }

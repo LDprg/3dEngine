@@ -26,10 +26,6 @@ namespace __XXECS::Entity
         {
         }
 
-        static auto RunParallel(const entt::entity &arg) -> void
-        {
-        }
-
         static auto Delete(const entt::entity& arg) -> void
         {
         }
