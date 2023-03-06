@@ -13,7 +13,12 @@ namespace __XXECS::Entity
     class DynamicDrawableSystem : public ShapeSystem<DynamicDrawableSystem>
     {
     public:
-        static auto Create(const entt::entity& entity) -> void;
+        static auto Create(const entt::entity &entity) -> void;
+
+        template<typename T>
+        static auto Update(T &) -> void
+        {
+        }
 
         static auto Run(const entt::entity &entity) -> void;
     };

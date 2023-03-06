@@ -11,14 +11,13 @@
 
 using namespace __XXECS::Entity;
 
-auto DrawableSystem::Create(const entt::entity& entity) -> void
+auto DrawableSystem::Create(const entt::entity &entity) -> void
 {
     auto &target = GetEntityManager().get<Drawable>(entity);
 
     Diligent::BufferDesc vertexBuffDesc;
     vertexBuffDesc.Name = "Vertex buffer";
-    vertexBuffDesc.Usage = Diligent::USAGE_DYNAMIC;
-    vertexBuffDesc.CPUAccessFlags = Diligent::CPU_ACCESS_WRITE;
+    vertexBuffDesc.Usage = Diligent::USAGE_DEFAULT;
     vertexBuffDesc.BindFlags = Diligent::BIND_VERTEX_BUFFER;
     vertexBuffDesc.Size = target.vertices.SizeInBytes();
     Application::Get()->GetDevice().GetNative()->CreateBuffer(vertexBuffDesc, nullptr, &target.vertexBuffer);
@@ -37,11 +36,6 @@ auto DrawableSystem::Create(const entt::entity& entity) -> void
 auto DrawableSystem::Run(const entt::entity &entity) -> void
 {
     auto &target = GetEntityManager().get<Drawable>(entity);
-
-    Diligent::MapHelper<Math::Vertex> vertices(Application::Get()->GetImmediateContext().GetNative(),
-                                               target.vertexBuffer, Diligent::MAP_WRITE, Diligent::MAP_FLAG_DISCARD);
-    for (Diligent::Uint32 v = 0; v < target.vertices.size(); ++v)
-        vertices[v] = target.vertices[v];
 
     constexpr Diligent::Uint64 offset = 0;
     Diligent::IBuffer *pBuffs[] = {target.vertexBuffer};

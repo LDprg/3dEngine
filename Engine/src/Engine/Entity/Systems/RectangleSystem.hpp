@@ -18,7 +18,7 @@ namespace __XXECS::Entity
     class RectangleSystem : public ShapeSystem<RectangleSystem>
     {
     public:
-        static auto Create(const entt::entity& entity) -> void
+        static auto Create(const entt::entity &entity) -> void
         {
             GetEntityManager().emplace<Color>(entity, Color(Math::Color(1, 0, 0)));
             GetEntityManager().emplace<Position>(entity, Position(Math::Position(0, 0)));

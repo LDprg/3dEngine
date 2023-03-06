@@ -22,11 +22,11 @@ namespace __XXECS::Entity
     template<typename Derived>
     struct ShapeSystem : System<Derived>
     {
-        static auto Create(const entt::entity& arg) -> void
+        static auto Create(const entt::entity &arg) -> void
         {
         }
 
-        static auto Delete(const entt::entity& arg) -> void
+        static auto Delete(const entt::entity &arg) -> void
         {
         }
     };

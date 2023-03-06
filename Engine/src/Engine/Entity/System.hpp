@@ -23,7 +23,7 @@ namespace __XXECS::Entity
     struct System
     {
         template<typename T>
-        static auto Execute(T& v) -> void
+        static auto Execute(T &v) -> void
         {
             if constexpr (requires(Derived) { Derived::Run(entt::entity{}); })
                 for (auto &entity : v)

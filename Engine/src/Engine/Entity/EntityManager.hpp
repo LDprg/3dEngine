@@ -12,7 +12,6 @@
 #include "Engine/Entity/Components/Drawable.hpp"
 #include "Engine/Math/Vertex.hpp"
 
-#include <execution>
 #include <Engine/Entity/System.hpp>
 #include <Engine/Entity/Systems/DynamicDrawableSystem.hpp>
 
@@ -26,6 +25,10 @@ namespace __XXECS::Entity
     {
     };
 
+    struct DynamicShapeTag
+    {
+    };
+
     template<typename T> concept ShapeComponentConcept = requires()
     {
         {
@@ -35,10 +38,8 @@ namespace __XXECS::Entity
         } -> std::convertible_to<Math::Indices>;
     };
 
-    template<typename T>
-    concept ShapeSystemConcept = requires() { std::derived_from<T, ShapeSystem<T>>; };
-    template<typename T>
-    concept SystemConcept = requires() { std::derived_from<T, System<T>>; };
+    template<typename T> concept ShapeSystemConcept = requires() { std::derived_from<T, ShapeSystem<T>>; };
+    template<typename T> concept SystemConcept = requires() { std::derived_from<T, System<T>>; };
 
     class EntityManager final : public entt::registry
     {
@@ -64,6 +65,8 @@ namespace __XXECS::Entity
             Create<Comp, Sys>(entity);
             Create<Drawable, DynamicDrawableSystem>(entity, Drawable(Comp::vertices, Comp::indices));
 
+            emplace<DynamicShapeTag>(entity);
+
             return entity;
         }
 
@@ -71,8 +74,10 @@ namespace __XXECS::Entity
         constexpr auto UpdateShape(Args &&... args)
         {
             const auto v = view<Comp, Other..., Drawable, UpdateShapeTag>(std::forward<Args>(args)...);
-			
+
             Sys::Execute(v);
+
+            DrawableSystem::Update(v);
 
             remove<UpdateShapeTag>(v.begin(), v.end());
 
@@ -82,9 +87,11 @@ namespace __XXECS::Entity
         template<ShapeComponentConcept Comp, SystemConcept Sys, typename... Other, typename... Args>
         constexpr auto UpdateDynamicShape(Args &&... args)
         {
-            const auto v = view<Comp, Other..., Drawable>(std::forward<Args>(args)...);
-			
+            const auto v = view<Comp, Other..., Drawable, DynamicShapeTag>(std::forward<Args>(args)...);
+
             Sys::Execute(v);
+
+            DynamicDrawableSystem::Update(v);
 
             return v;
         }
@@ -92,17 +99,17 @@ namespace __XXECS::Entity
         template<typename... Other, typename... Args>
         constexpr auto DrawShape(Args &&... args)
         {
-            const auto v = view<Other..., Drawable>(std::forward<Args>(args)...);
+            const auto v = view<Other..., Drawable>(entt::exclude<DynamicShapeTag>, std::forward<Args>(args)...);
 
             DrawableSystem::Execute(v);
 
             return v;
         }
 
-		template<typename... Other, typename... Args>
-        constexpr auto DrawDynamicShape(Args &&...args)
+        template<typename... Other, typename... Args>
+        constexpr auto DrawDynamicShape(Args &&... args)
         {
-            const auto v = view<Other..., Drawable>(std::forward<Args>(args)...);
+            const auto v = view<Other..., Drawable, DynamicShapeTag>(std::forward<Args>(args)...);
 
             DynamicDrawableSystem::Execute(v);
 

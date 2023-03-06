@@ -12,7 +12,7 @@ public:
         GetClearColor() = {0.5f, 0.5f, 0.5f};
 
         {
-            const auto entity = GetEntityManager().CreateDynamicShape<Entity::Triangle, Entity::TriangleSystem>();
+            const auto entity = GetEntityManager().CreateShape<Entity::Triangle, Entity::TriangleSystem>();
             GetEntityManager().get<Entity::Color>(entity).color = {0, 1, 0};
         }
 
@@ -23,7 +23,7 @@ public:
         }
 
         {
-            const auto entity = GetEntityManager().CreateShape<Entity::Rectangle, Entity::RectangleSystem>();
+            const auto entity = GetEntityManager().CreateDynamicShape<Entity::Rectangle, Entity::RectangleSystem>();
             GetEntityManager().get<Entity::Rectangle>(entity).width = 0.5f;
             GetEntityManager().get<Entity::Color>(entity).color = {0, 0, 1};
         }
@@ -41,7 +41,7 @@ public:
 
     auto Update(float deltaTime) -> void override
     {
-        //Log::Info("FPS: {}", 1.f / deltaTime);
+        Log::Info("FPS: {}", 1.f / deltaTime);
 
         const auto viewRec = GetEntityManager().view<Entity::Rectangle>();
 
@@ -55,7 +55,7 @@ public:
 
         const auto viewTri = GetEntityManager().view<Entity::Triangle, Entity::Color>();
 
-        viewTri.each([this](const auto entity, auto &tri, auto &col)
+        viewTri.each([this](const auto entity, auto &, auto &col)
         {
             if (m_transp)
                 col.color.a = 0.5f;
@@ -95,6 +95,7 @@ public:
 
     auto Render() -> void override
     {
+        GetEntityManager().DrawDynamicShape();
         GetEntityManager().DrawShape();
     }
 
