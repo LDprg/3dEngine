@@ -10,7 +10,7 @@
 #include "Application.hpp"
 #include "Engine/Events/Event.hpp"
 
-using namespace __XXECS;
+using namespace XXECS;
 
 bool Window::m_hasBeenInit = false;
 

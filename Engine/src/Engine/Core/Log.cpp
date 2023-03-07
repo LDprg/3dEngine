@@ -8,7 +8,7 @@
 #include "Log.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-using namespace __XXECS::Log;
+using namespace XXECS::Log;
 
 std::shared_ptr<spdlog::logger> Log::m_coreLogger;
 std::shared_ptr<spdlog::logger> Log::m_clientLogger;

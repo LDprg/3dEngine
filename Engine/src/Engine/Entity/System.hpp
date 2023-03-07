@@ -10,12 +10,12 @@
 #include <execution>
 #include <entt/entt.hpp>
 
-namespace __XXECS
+namespace XXECS
 {
     class Application;
 }
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     class EntityManager;
 

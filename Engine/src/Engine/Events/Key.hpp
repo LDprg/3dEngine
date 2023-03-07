@@ -1,6 +1,6 @@
 #pragma once
 
-namespace __XXECS
+namespace XXECS
 {
     enum class Action
     {

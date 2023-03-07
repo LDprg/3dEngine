@@ -9,7 +9,7 @@
 
 #include "Engine/Core/Application.hpp"
 
-using namespace __XXECS;
+using namespace XXECS;
 
 auto Input::IsKeyPressed(Key keycode) -> bool
 {

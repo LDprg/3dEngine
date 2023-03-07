@@ -13,7 +13,7 @@
 #include <Engine/Entity/Components/Rectangle.hpp>
 #include <Engine/Math/Vertex.hpp>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     class RectangleSystem : public ShapeSystem<RectangleSystem>
     {

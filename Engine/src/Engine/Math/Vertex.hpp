@@ -10,7 +10,7 @@
 #include "Engine/Math/General.hpp"
 #include "Engine/Math/Vector.hpp"
 
-namespace __XXECS::Math
+namespace XXECS::Math
 {
     template<typename T>
     struct Buffer;

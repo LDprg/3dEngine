@@ -12,7 +12,7 @@
 
 #include <DeviceContext.h>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     class DrawableSystem : public ShapeSystem<DrawableSystem>
     {

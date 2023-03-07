@@ -46,7 +46,7 @@ void main(in  PSInput  PSIn,
 }
 )";
 
-auto __XXECS::Renderer::Init() -> void
+auto XXECS::Renderer::Init() -> void
 {
     Device::CreateDevice(m_deviceType);
 
@@ -132,7 +132,7 @@ auto __XXECS::Renderer::Init() -> void
     m_pPso->CreateShaderResourceBinding(&m_pSrb, true);
 }
 
-auto __XXECS::Renderer::Update() -> void
+auto XXECS::Renderer::Update() -> void
 {
     auto &pImmediateContext = Application::Get()->GetImmediateContext().GetNative();
 

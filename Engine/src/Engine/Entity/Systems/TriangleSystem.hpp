@@ -12,7 +12,7 @@
 #include <Engine/Entity/Components/Position.hpp>
 #include <Engine/Entity/Components/Triangle.hpp>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     class TriangleSystem : public ShapeSystem<TriangleSystem>
     {

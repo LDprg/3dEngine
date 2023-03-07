@@ -10,7 +10,7 @@
 #include <Engine/Core/Log.hpp>
 #include <GLFW/glfw3.h>
 
-namespace __XXECS
+namespace XXECS
 {
     class Window final
     {

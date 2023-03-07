@@ -8,7 +8,7 @@
 #pragma once
 #include <Engine/Math/Vector.hpp>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     struct Color
     {

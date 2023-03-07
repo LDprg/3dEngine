@@ -7,7 +7,7 @@
  *********************************************************************/
 #pragma once
 
-namespace __XXECS::Math
+namespace XXECS::Math
 {
     struct Color
     {

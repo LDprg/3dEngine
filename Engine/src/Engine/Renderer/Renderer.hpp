@@ -14,7 +14,7 @@
 #include <Graphics/GraphicsEngine/interface/RenderDevice.h>
 #include <Graphics/GraphicsEngine/interface/ShaderResourceBinding.h>
 
-namespace __XXECS
+namespace XXECS
 {
     class Renderer final
     {

@@ -9,7 +9,7 @@
 
 #include <numbers>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     template<Math::Index N, Math::Index... Next>
     struct CircleSequenceHelper : CircleSequenceHelper<N - 1, 0, N + 1, N, Next...>

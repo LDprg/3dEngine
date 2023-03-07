@@ -12,7 +12,7 @@
 #include <Common/interface/RefCntAutoPtr.hpp>
 #include <Graphics/GraphicsEngine/interface/Buffer.h>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     struct Drawable
     {

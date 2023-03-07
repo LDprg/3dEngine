@@ -10,27 +10,21 @@
 #include <Engine/Core/Application.hpp>
 #include <Engine/Core/Log.hpp>
 
-#define CREATE_APPLICATION(app)                                                                                        \
-    __XXECS::Application *__XXECS::CreateApplication()                                                                 \
-    {                                                                                                                  \
-        return new app();                                                                                              \
+namespace XXECS
+{
+    template<typename T> concept ApplicationConcept = requires() { std::derived_from<T, Application>; };
+
+    template<ApplicationConcept T>
+    auto CreateApplication() -> void
+    {
+        Log::Log::Init();
+
+        Log::CoreTrace("CREATE APP");
+        T app;
+
+        Log::CoreTrace("RUN APP");
+        app.RunLoop();
+
+        Log::CoreTrace("DELETE APP");
     }
-
-namespace __XXECS
-{
-    extern auto CreateApplication() -> Application*;
-}
-
-auto main() -> int
-{
-    __XXECS::Log::Log::Init();
-
-    __XXECS::Log::CoreTrace("CREATE APP");
-    const auto app = __XXECS::CreateApplication();
-
-    __XXECS::Log::CoreTrace("RUN APP");
-    app->RunLoop();
-
-    __XXECS::Log::CoreTrace("DELETE APP");
-    delete app;
 }

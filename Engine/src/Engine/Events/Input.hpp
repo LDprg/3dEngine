@@ -8,7 +8,7 @@
 #pragma once
 #include <Engine/Events/Key.hpp>
 
-namespace __XXECS
+namespace XXECS
 {
     class Input
     {

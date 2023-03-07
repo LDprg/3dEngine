@@ -9,7 +9,7 @@
 
 #include <Imgui/interface/ImGuiDiligentRenderer.hpp>
 
-namespace __XXECS
+namespace XXECS
 {
     class ImGuiManager
     {

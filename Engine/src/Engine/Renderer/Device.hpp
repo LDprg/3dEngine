@@ -10,7 +10,7 @@
 #include <Common/interface/RefCntAutoPtr.hpp>
 #include <Graphics/GraphicsEngine/interface/RenderDevice.h>
 
-namespace __XXECS
+namespace XXECS
 {
     class Device
     {

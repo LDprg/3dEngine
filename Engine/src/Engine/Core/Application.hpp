@@ -23,12 +23,10 @@
 
 auto main() -> int;
 
-namespace __XXECS
+namespace XXECS
 {
     class Application
     {
-        friend auto ::main() -> int;
-
     public:
         Application();
         virtual ~Application() = default;
@@ -178,11 +176,12 @@ namespace __XXECS
             return m_clearColor;
         }
 
-    private:
         /**
          * \brief main thread loop
          */
         auto RunLoop() -> void;
+
+    private:
         auto RunThread() -> void;
 
         Timer m_timer;

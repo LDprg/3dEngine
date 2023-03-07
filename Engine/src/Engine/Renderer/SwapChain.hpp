@@ -10,7 +10,7 @@
 #include <Common/interface/RefCntAutoPtr.hpp>
 #include <Graphics/GraphicsEngine/interface/SwapChain.h>
 
-namespace __XXECS
+namespace XXECS
 {
     class SwapChain
     {

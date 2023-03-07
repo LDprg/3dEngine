@@ -7,7 +7,7 @@
  *********************************************************************/
 #pragma once
 
-namespace __XXECS
+namespace XXECS
 {
     class Timer
     {

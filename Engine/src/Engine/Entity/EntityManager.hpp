@@ -17,7 +17,7 @@
 
 #include <entt/entt.hpp>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     class DrawableSystem;
 

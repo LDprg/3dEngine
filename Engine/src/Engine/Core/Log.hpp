@@ -12,7 +12,7 @@
 #include <spdlog/spdlog.h>
 #pragma warning(pop)
 
-namespace __XXECS::Log
+namespace XXECS::Log
 {
     class Log
     {

@@ -1,5 +1,7 @@
 #include "Engine.hpp"
 
+using namespace XXECS;
+
 class App final : public Application
 {
 protected:
@@ -41,7 +43,13 @@ public:
 
     auto Update(float deltaTime) -> void override
     {
-        Log::Info("FPS: {}", 1.f / deltaTime);
+        static auto time = 0.f;
+        time += deltaTime;
+        if (time > 1.f)
+        {
+            Log::Info("FPS: {}", 1.f / deltaTime);
+            time = 0.f;
+        }
 
         const auto viewRec = GetEntityManager().view<Entity::Rectangle>();
 
@@ -104,4 +112,7 @@ public:
     }
 };
 
-CREATE_APPLICATION(App);
+auto main() -> int
+{
+    XXECS::CreateApplication<App>();
+}

@@ -7,7 +7,7 @@
  *********************************************************************/
 #include "Application.hpp"
 
-using namespace __XXECS;
+using namespace XXECS;
 
 Application *Application::m_instance;
 
@@ -49,10 +49,10 @@ auto Application::RunThread() -> void
     m_imGui->Init();
     Init();
 
+    m_timer.Restart();
+
     while (IsRunning())
     {
-        m_timer.Restart();
-
         while (true)
         {
             const std::any ev = m_eventManager->Pop();
@@ -83,6 +83,7 @@ auto Application::RunThread() -> void
         m_swapChain->Present();
 
         m_frameTime = m_timer.Duration();
+        m_timer.Restart();
     }
 
     Shutdown();

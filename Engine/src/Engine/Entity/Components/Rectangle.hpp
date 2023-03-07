@@ -9,7 +9,7 @@
 #include <Engine/Entity/Components/Drawable.hpp>
 #include <Engine/Math/Vertex.hpp>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     struct Rectangle
     {

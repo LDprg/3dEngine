@@ -24,7 +24,7 @@
 #include <Graphics/GraphicsEngineVulkan/interface/EngineFactoryVk.h>
 #endif
 
-auto __XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> void
+auto XXECS::Device::CreateDevice(Diligent::RENDER_DEVICE_TYPE &deviceType) -> void
 {
     Diligent::SwapChainDesc scDesc;
 

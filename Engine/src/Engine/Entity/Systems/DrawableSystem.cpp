@@ -9,7 +9,7 @@
 
 #include <Engine/Core/Application.hpp>
 
-using namespace __XXECS::Entity;
+using namespace XXECS::Entity;
 
 auto DrawableSystem::Create(const entt::entity &entity) -> void
 {

@@ -10,7 +10,7 @@
 #include <Common/interface/RefCntAutoPtr.hpp>
 #include <Graphics/GraphicsEngine/interface/DeviceContext.h>
 
-namespace __XXECS
+namespace XXECS
 {
     class ImmediateContext
     {

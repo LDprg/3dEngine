@@ -7,7 +7,7 @@
  *********************************************************************/
 #pragma once
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     struct Triangle
     {

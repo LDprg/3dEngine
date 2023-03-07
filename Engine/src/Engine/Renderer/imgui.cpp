@@ -11,7 +11,7 @@
 
 #include "Engine/Core/Application.hpp"
 
-auto __XXECS::ImGuiManager::Init() -> void
+auto XXECS::ImGuiManager::Init() -> void
 {
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
@@ -54,7 +54,7 @@ auto __XXECS::ImGuiManager::Init() -> void
     m_pImGui->CreateFontsTexture();
 }
 
-auto __XXECS::ImGuiManager::Event(const std::any &ev) const -> void
+auto XXECS::ImGuiManager::Event(const std::any &ev) const -> void
 {
     ImGuiIO &io = ImGui::GetIO();
 
@@ -82,7 +82,7 @@ auto __XXECS::ImGuiManager::Event(const std::any &ev) const -> void
     }
 }
 
-auto __XXECS::ImGuiManager::NewFrame() const -> void
+auto XXECS::ImGuiManager::NewFrame() const -> void
 {
     const auto &scDesc = Application::Get()->GetSwapChain().GetDesc();
     m_pImGui->NewFrame(scDesc.Width, scDesc.Height, scDesc.PreTransform);
@@ -93,13 +93,13 @@ auto __XXECS::ImGuiManager::NewFrame() const -> void
     ImGui::NewFrame();
 }
 
-auto __XXECS::ImGuiManager::Render() const -> void
+auto XXECS::ImGuiManager::Render() const -> void
 {
     ImGui::Render();
     m_pImGui->RenderDrawData(Application::Get()->GetImmediateContext().GetNative(), ImGui::GetDrawData());
 }
 
-auto __XXECS::ImGuiManager::Destroy() const -> void
+auto XXECS::ImGuiManager::Destroy() const -> void
 {
     m_pImGui->InvalidateDeviceObjects();
     ImGui::DestroyContext();

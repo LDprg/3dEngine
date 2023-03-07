@@ -8,7 +8,7 @@
 #pragma once
 #include <Engine/Entity/ShapeSystem.hpp>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     class DynamicDrawableSystem : public ShapeSystem<DynamicDrawableSystem>
     {

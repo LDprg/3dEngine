@@ -14,7 +14,7 @@
 #include <Engine/Entity/Components/Drawable.hpp>
 #include <Engine/Entity/Components/Position.hpp>
 
-namespace __XXECS::Entity
+namespace XXECS::Entity
 {
     class CircleSystem : public ShapeSystem<CircleSystem>
     {

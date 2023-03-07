@@ -12,7 +12,7 @@
 #include <any>
 #include <queue>
 
-namespace __XXECS::Event
+namespace XXECS::Event
 {
     struct ExitEvent
     {

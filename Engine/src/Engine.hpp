@@ -32,5 +32,3 @@
 
 
 #include <any>
-
-using namespace __XXECS;
