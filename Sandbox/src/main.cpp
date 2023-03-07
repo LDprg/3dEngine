@@ -114,5 +114,7 @@ public:
 
 auto main() -> int
 {
-    XXECS::CreateApplication<App>();
+    App app;
+
+    app.RunLoop();
 }

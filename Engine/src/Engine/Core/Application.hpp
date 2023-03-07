@@ -29,7 +29,12 @@ namespace XXECS
     {
     public:
         Application();
-        virtual ~Application() = default;
+
+        virtual ~Application()
+        {
+            Log::CoreTrace("DELETE APP");
+        }
+
         Application(const Application &) = delete;
         Application(const Application &&) = delete;
         auto operator=(const Application &) -> void = delete;

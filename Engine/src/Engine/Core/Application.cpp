@@ -16,6 +16,11 @@ Application::Application()
     Log::CoreAssert(!m_instance, "Application already exists!");
     m_instance = this;
 
+    Log::Log::Init();
+
+
+    Log::CoreTrace("CREATE APP");
+
     m_eventManager = std::make_unique<Event::EventManager>();
     m_window = std::make_unique<Window>();
     m_swapChain = std::make_unique<SwapChain>();
@@ -28,6 +33,7 @@ Application::Application()
 
 auto Application::RunLoop() -> void
 {
+    Log::CoreTrace("RUN APP");
     m_window->Init();
 
     m_renderThread = std::thread([this]
